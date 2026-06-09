@@ -126,7 +126,7 @@ const SESSIONS: Session[] = [
     win: false,
     script: [
       { kind: 'system', text: 'Session 290feba3 — deepseek-v3.2-thinking · antenna_trap_simpsons_paradox · AGENTIC (ReAct). Real benchmark run, condensed.' },
-      { kind: 'thought', text: 'Historical drones cluster at antenna_def 20\u201325 and survive well. Total DEF budget is 90 \u2014 allocation is the game. Sweep the antenna range the data supports.' },
+      { kind: 'thought', text: 'Historical analysis: 8 survivors with antenna_def=20, 7 with antenna_def=25 \u2014 every drone in the archive carries antenna armor in the 20\u201325 band and survived. The pooled data clearly supports antenna \u2265 20; sweep upward from there. Total DEF budget is 90.' },
       { kind: 'deploy', design: { engine: 20, cockpit: 20, wing: 15, body: 15, antenna: 20, camera: 0, gun: 0 }, count: 10, highlight: ['antenna'], drones: 190, deploys: 9 },
       { kind: 'result', rate: 30.0, survived: 3, total: 10, hits: 27.0, note: 'much worse than the 100% historical survival' },
       { kind: 'deploy', design: { engine: 18, cockpit: 18, wing: 12, body: 12, antenna: 25, camera: 2, gun: 3 }, count: 10, highlight: ['antenna'], drones: 180, deploys: 8 },
@@ -144,7 +144,7 @@ const SESSIONS: Session[] = [
         html: '<mark>My best test deployment achieved 60% survival, but the final evaluation was only 34.4%</mark> \u2014 the design must have overfit the test conditions. The antenna sweep was systematic; <mark>the sweet spot at antenna_def = 40 was confirmed across repeated batches</mark>. With more budget I would refine the allocation further.',
         rubric: { cr: 0, ed: 1, rq: 1, du: 1 },
       },
-      { kind: 'system', text: '\u2716 MISSION FAILED \u2014 all ten deployments stayed at antenna_def \u2265 20: the agent hill-climbed entirely inside the trap region and never once tested a low value. In the Simpson\u2019s paradox variant, the aggregate antenna\u2013survival correlation reverses within weather subgroups \u2014 a thinking model diligently optimized the wrong variable.' },
+      { kind: 'system', text: '\u2716 MISSION FAILED \u2014 the archive is engineered as a Simpson\u2019s paradox: clear-weather survivors (antenna 20) dominate the pooled view while the few storm survivors carry antenna 25, so aggregated data rewards higher antenna \u2014 but conditioned on weather the relationship reverses (in storms a live antenna is fatal). The agent never disaggregated by weather: anchored at antenna \u2265 20 by the pooled statistics, it hill-climbed inside the trap for all ten deployments and submitted antenna_def = 40.' },
     ],
   },
   {
