@@ -166,7 +166,7 @@ const components = [
         <div class="box"><b>Agentic (ReAct)</b><span>multi-turn tool calls + analysis sandbox</span></div>
         <div class="box"><b>OpenCode</b><span>autonomous coding agent with shell, connected via an <strong>MCP game server</strong></span></div>
       </div>
-      <div class="down">↓ REST API (deploy, history, status, environment queries, final submission) ↓</div>
+      <div class="down">↓ REST API (deploy, history, status, final submission) ↓</div>
       <div class="lane">
         <div class="lane-label">API layer</div>
         <div class="box"><b>Sessions</b><span>concurrent isolated runs (<code>X-Session-ID</code>)</span></div>
@@ -195,10 +195,9 @@ const components = [
       SCM parameters, prompts), so new causal challenges can be added — and the
       leaderboard extended — without touching the game engine
       (<a href={`${CODE_URL}/blob/main/docs/adding-new-scm.md`} target="_blank" rel="noopener">adding a new scenario</a>).
-      On the agent side, a bundled <strong>MCP game server</strong> exposes the same five
+      On the agent side, a bundled <strong>MCP game server</strong> exposes the same
       actions (<code>get_mission_status</code>, <code>get_flight_history</code>,
-      <code>deploy_drone</code>, <code>query_environment</code>,
-      <code>submit_final_design</code>) as
+      <code>deploy_drone</code>, <code>submit_final_design</code>) as
       <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Model Context Protocol</a>
       tools, so any MCP-capable agent — OpenCode in our experiments, but also Claude Code,
       Cursor, and others — can play the game natively, with every action auto-logged for
