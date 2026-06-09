@@ -27,9 +27,9 @@ const STAGES: Stage[] = [
   {
     icon: '🔬',
     label: 'Reason',
-    title: 'Stage 1 — Analyze & query',
-    text: 'Mine the feedback, query hidden environment variables in natural language, form causal hypotheses — and design the next deployment to test them.',
-    chips: ['≤10 env queries', 'sandboxed analysis'],
+    title: 'Stage 1 — Analyze',
+    text: 'Mine the feedback in the analysis sandbox, form causal hypotheses — and design the next deployment to test them.',
+    chips: ['sandboxed analysis', 'hypothesize → test'],
   },
   {
     icon: '🎯',
