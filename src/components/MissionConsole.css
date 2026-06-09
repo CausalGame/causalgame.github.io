@@ -402,6 +402,13 @@
   background: rgba(248, 113, 113, 0.06);
 }
 
+.mc-reflect .rnote {
+  font-size: 0.62rem;
+  color: #8b949e;
+  align-self: center;
+  margin-left: auto;
+}
+
 /* ---- stage-2 eval banner ---- */
 .mc-eval {
   margin-top: 0.35rem;
