@@ -1,0 +1,136 @@
+.gf {
+  margin: 1.6rem 0;
+}
+
+.gf-track {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  position: relative;
+}
+
+.gf-node {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+}
+
+.gf-dot {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2.5px solid var(--border);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  transition: all 0.35s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.gf-node.active .gf-dot {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+  transform: scale(1.22);
+  box-shadow: 0 0 0 6px var(--accent-soft);
+}
+
+.gf-node.done .gf-dot {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.gf-node .gf-label {
+  margin-top: 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  text-align: center;
+  transition: color 0.3s;
+}
+
+.gf-node.active .gf-label {
+  color: var(--accent);
+}
+
+.gf-bar {
+  position: absolute;
+  top: 19px;
+  left: 8%;
+  right: 8%;
+  height: 2.5px;
+  background: var(--border);
+  z-index: 1;
+}
+
+.gf-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.5s ease;
+}
+
+.gf-panel {
+  margin-top: 1.1rem;
+  border: 1.5px solid var(--accent);
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--accent-soft), #fff 70%);
+  padding: 1.1rem 1.3rem;
+  min-height: 7.2rem;
+  animation: gf-fade 0.35s ease;
+}
+
+@keyframes gf-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.gf-panel h4 {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+}
+
+.gf-panel p {
+  margin: 0 0 0.5rem;
+  color: var(--text-soft);
+  font-size: 0.95rem;
+}
+
+.gf-chips {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.gf-chip {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  padding: 0.18rem 0.7rem;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 640px) {
+  .gf-node .gf-label {
+    font-size: 0.62rem;
+  }
+}

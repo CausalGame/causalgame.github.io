@@ -1,0 +1,230 @@
+---
+import Base from '../layouts/Base.astro';
+import GameFlow from '../components/GameFlow.tsx';
+import MissionConsole from '../components/MissionConsole.tsx';
+import TrapSimulator from '../components/TrapSimulator.tsx';
+
+const CODE_URL = 'https://github.com/viewsetting/CausalGame';
+
+const components = [
+  { name: 'engine', hp: 100, def: 20, critical: true, note: 'Power core' },
+  { name: 'cockpit', hp: 100, def: 20, critical: true, note: 'Pilot safety' },
+  { name: 'wing', hp: 80, def: 15, critical: true, note: 'Flight surfaces' },
+  { name: 'body', hp: 80, def: 15, critical: true, note: 'Structural integrity' },
+  { name: 'antenna', hp: 50, def: 10, critical: false, note: 'Communications — may emit signal…' },
+  { name: 'camera', hp: 20, def: 5, critical: false, note: 'Visual recon (evasion bonus)' },
+  { name: 'gun', hp: 30, def: 5, critical: false, note: 'Offensive capability' },
+  { name: 'shield*', hp: 30, def: 0, critical: false, note: 'EMI protection (Deployment Zone scenarios only)' },
+];
+---
+
+<Base title="The Game — CausalGame">
+  <main class="container">
+    <h1 style="margin-top:2rem">The Game</h1>
+    <p>
+      You are an advanced <strong>drone designer</strong>. Command has tasked you with
+      optimizing drones for survival in a hostile canyon patrolled by enemy radar and
+      anti-air defenses. The simulation is a <strong>black box</strong>: nobody hands you
+      the rules — you must discover them through observation and experimentation, on a
+      budget, before committing to one final design for the whole fleet.
+    </p>
+
+    <figure class="figure">
+      <img src="/scene.jpg" alt="Illustration of CausalGame scenarios: drones flying through a hostile canyon under storms and enemy radar." loading="lazy" />
+      <figcaption>
+        The CausalGame world. Weather, enemy detection, and component damage are governed
+        by a hidden structural causal model — and the data you get to see is censored,
+        confounded, and noisy.
+      </figcaption>
+    </figure>
+
+    <h2 id="numbers">Your budget</h2>
+    <div class="numbers">
+      <div class="n"><div class="v">50</div><div class="l">historical flights (briefing)</div></div>
+      <div class="n"><div class="v">200</div><div class="l">drones for exploration</div></div>
+      <div class="n"><div class="v">≤10</div><div class="l">deployment calls</div></div>
+      <div class="n"><div class="v">≤10</div><div class="l">environment queries</div></div>
+      <div class="n"><div class="v">1</div><div class="l">final submission (irreversible)</div></div>
+      <div class="n"><div class="v">1,000</div><div class="l">drones in the evaluation fleet</div></div>
+    </div>
+    <p class="note">
+      Budgets shown for <code>antenna_trap</code> (from <code>game.json</code>); variants
+      adjust them — e.g. <code>no_history</code> scenarios start with zero historical
+      flights.
+    </p>
+
+    <h2 id="flow">How a game unfolds</h2>
+    <GameFlow client:visible />
+    <p>
+      The exploration loop is where causal thinking happens: deploy → observe → analyze →
+      hypothesize → test. Agents that simply chase correlations in the briefing data walk
+      straight into the traps; agents that intervene deliberately — e.g. sending a batch
+      with <code>antenna_def = 0</code> just to see what happens — can uncover the real
+      mechanism before committing.
+    </p>
+
+    <h2 id="session">Watch a session</h2>
+    <p>
+      This is what an actual game looks like from mission control — an agent reasoning its
+      way out of the antenna trap, with real action payloads:
+    </p>
+    <MissionConsole client:visible />
+
+    <h2 id="try">Try the trap yourself</h2>
+    <p>
+      The briefing data tells you survivors have well-armored antennas. Trust it — or
+      experiment. Drag the sliders and deploy:
+    </p>
+    <TrapSimulator client:visible />
+    <p class="note">
+      This widget runs a simplified version of the real <code>antenna_trap</code>
+      structural equations in your browser. The full simulator adds per-component combat,
+      hidden weather variables, agility trade-offs, and survivor-censored feedback.
+    </p>
+
+    <h2 id="drone">The drone</h2>
+    <p>
+      A design is an allocation of <strong>DEF (armor)</strong> across seven components,
+      each value in [0, 50] — e.g.
+      <code>{'{'}"engine_def": 20, "antenna_def": 0, …{'}'}</code>. HP is fixed and
+      hidden. Destroying any <em>critical</em> component destroys the drone; non-critical
+      components change behavior in subtler ways — a live antenna emits a signal, a lost
+      camera hurts evasion. Some scenarios add an equipment slot (e.g. a categorical
+      choice among five enhancement modules).
+    </p>
+    <table class="simple">
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>HP (hidden)</th>
+          <th>Default DEF</th>
+          <th>Critical</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          components.map((c) => (
+            <tr>
+              <td><code>{c.name}</code></td>
+              <td class="num">{c.hp}</td>
+              <td class="num">{c.def}</td>
+              <td>{c.critical ? 'Yes' : 'No'}</td>
+              <td>{c.note}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+
+    <h2 id="visibility">What you see — and what you don't</h2>
+    <table class="simple">
+      <thead>
+        <tr><th>Signal</th><th>Agent</th><th>Why it matters</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>DEF allocation</td>
+          <td><span class="check">visible &amp; writable</span></td>
+          <td>Your only intervention lever</td>
+        </tr>
+        <tr>
+          <td>Survival, hit counts, component damage</td>
+          <td><span class="check">visible</span></td>
+          <td>…but only for <strong>surviving</strong> drones (<code>hide_failed_drones</code>)</td>
+        </tr>
+        <tr>
+          <td>Weather / environment readings</td>
+          <td>partially visible</td>
+          <td>Some variables hidden until you ask via <code>query_environment</code>; noisy in some scenarios</td>
+        </tr>
+        <tr>
+          <td>Component HP, agility</td>
+          <td>hidden</td>
+          <td>Internal state, admin-only</td>
+        </tr>
+        <tr>
+          <td>The SCM itself</td>
+          <td>hidden</td>
+          <td>The thing you are trying to discover</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      This censoring is not incidental — it is the benchmark. Observing only survivors
+      manufactures <strong>selection bias</strong> (most survivors of the antenna trap
+      have <em>damaged</em> antennas, so "protect the antenna" looks like the fix);
+      unobserved variables act as <strong>hidden confounders</strong> (the mission zone
+      drives both visible altitude and hidden EMI); and weather-dependent
+      <strong>measurement noise</strong> corrupts what little you do see.
+    </p>
+
+    <h2 id="architecture">Inside the simulator</h2>
+    <p>
+      CausalGame is a client–server system: agents talk to a FastAPI simulation engine
+      over REST, so any agent framework — single-prompt, ReAct tool-calling, or a full
+      coding agent — plays the exact same game under the same budgets.
+    </p>
+    <div class="arch">
+      <div class="lane">
+        <div class="lane-label">Agents</div>
+        <div class="box"><b>Prompting</b><span>one-turn code execution against <code>client.*()</code></span></div>
+        <div class="box"><b>Agentic (ReAct)</b><span>multi-turn tool calls + analysis sandbox</span></div>
+        <div class="box"><b>OpenCode</b><span>autonomous coding agent with shell, connected via an <strong>MCP game server</strong></span></div>
+      </div>
+      <div class="down">↓ REST API (deploy, history, status, environment queries, final submission) ↓</div>
+      <div class="lane">
+        <div class="lane-label">API layer</div>
+        <div class="box"><b>Sessions</b><span>concurrent isolated runs (<code>X-Session-ID</code>)</span></div>
+        <div class="box"><b>Action space</b><span>validates designs against scenario schema</span></div>
+        <div class="box"><b>Visibility filter</b><span>strips HP/agility, censors failed drones</span></div>
+      </div>
+      <div class="down">↓</div>
+      <div class="lane">
+        <div class="lane-label">Sim core</div>
+        <div class="box core"><b>SCM engine</b><span>per-scenario structural causal model (<code>@register_scm</code> + <code>game.json</code>)</span></div>
+        <div class="box core"><b>DroneSheet</b><span>single source of truth for all drone state</span></div>
+        <div class="box"><b>Combat &amp; judge</b><span>detection, damage, survival adjudication</span></div>
+      </div>
+    </div>
+    <p>Each deployment call runs the full causal pipeline:</p>
+    <ol>
+      <li>The agent's DEF design is validated and written to the <strong>DroneSheet</strong>.</li>
+      <li>The scenario's <strong>SCM samples an environment</strong> (weather, zones, enemy state) and applies its structural equations to the sheet.</li>
+      <li><strong>Detection and combat</strong> are simulated (a live antenna raises detection; EMI breaks comms; storms batter components).</li>
+      <li>The <strong>judge</strong> adjudicates survival per drone.</li>
+      <li>The <strong>visibility filter</strong> censors the result — hidden internals removed, failed drones dropped — and returns it to the agent.</li>
+    </ol>
+    <p>
+      The system is deliberately pluggable on both ends. On the environment side, a
+      scenario is just an SCM class plus a <code>game.json</code> (budgets, visibility,
+      SCM parameters, prompts), so new causal challenges can be added — and the
+      leaderboard extended — without touching the game engine
+      (<a href={`${CODE_URL}/blob/main/docs/adding-new-scm.md`} target="_blank" rel="noopener">adding a new scenario</a>).
+      On the agent side, a bundled <strong>MCP game server</strong> exposes the same five
+      actions (<code>get_mission_status</code>, <code>get_flight_history</code>,
+      <code>deploy_drone</code>, <code>query_environment</code>,
+      <code>submit_final_design</code>) as
+      <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Model Context Protocol</a>
+      tools, so any MCP-capable agent — OpenCode in our experiments, but also Claude Code,
+      Cursor, and others — can play the game natively, with every action auto-logged for
+      trajectory analysis.
+    </p>
+
+    <h2 id="next">Go deeper</h2>
+    <div class="cards">
+      <div class="card">
+        <h3><a href="/docs/#scenarios">The 14 scenarios →</a></h3>
+        <p>Three families of causal traps: Antenna Trap, Deployment Zone Trap (Farr's Cholera Paradox), and Weather noise.</p>
+      </div>
+      <div class="card">
+        <h3><a href="/leaderboard/">The leaderboard →</a></h3>
+        <p>29 frontier LLMs across three execution modes. None clears the win threshold on average.</p>
+      </div>
+      <div class="card">
+        <h3><a href={CODE_URL} target="_blank" rel="noopener">Run it yourself →</a></h3>
+        <p>Open-source simulation engine and agent harness. One command starts the backend; one runs an agent.</p>
+      </div>
+    </div>
+  </main>
+</Base>
