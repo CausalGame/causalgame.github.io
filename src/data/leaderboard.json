@@ -188,7 +188,36 @@
           "display": "Kimi K2.5",
           "delta": 2.2
         }
-      ]
+      ],
+      "recent_sweep": {
+        "note": "Post-paper results: 14 scenarios × 3 rounds per model, scenario-mean over ≤3 valid runs",
+        "rows": [
+          {
+            "display": "GPT-5.5",
+            "opencode": 75.7,
+            "agentic": 68.4,
+            "prompting": 60.1
+          },
+          {
+            "display": "DeepSeek V4 Pro",
+            "opencode": 75.0,
+            "agentic": 70.9,
+            "prompting": 65.2
+          },
+          {
+            "display": "Claude Opus 4.7",
+            "opencode": 74.9,
+            "agentic": 69.1,
+            "prompting": 68.6
+          },
+          {
+            "display": "Qwen3.7 Max",
+            "opencode": 73.0,
+            "agentic": 68.4,
+            "prompting": 67.4
+          }
+        ]
+      }
     }
   },
   "modes": {

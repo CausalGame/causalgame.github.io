@@ -106,5 +106,41 @@ const families = Object.entries(data.meta.families);
         }
       </tbody>
     </table>
+
+    <h3>New: OpenCode sweep on 4 frontier models <span class="note">(post-paper results)</span></h3>
+    <p>
+      We additionally ran the OpenCode harness on four of the strongest models
+      ({opencode.recent_sweep.note.toLowerCase()}). All four beat their own Agentic and
+      Prompting scores, yet none clears the 75% win threshold on average — the causal
+      thinking gap persists even with a full coding agent.
+    </p>
+    <table class="simple">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>OpenCode</th>
+          <th>Agentic (ReAct)</th>
+          <th>Prompting</th>
+          <th>Δ vs best other mode</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          opencode.recent_sweep.rows.map((m: any) => (
+            <tr>
+              <td>{m.display}</td>
+              <td class="num"><strong>{m.opencode.toFixed(1)}%</strong></td>
+              <td class="num">{m.agentic.toFixed(1)}%</td>
+              <td class="num">{m.prompting.toFixed(1)}%</td>
+              <td class="num">+{(m.opencode - Math.max(m.agentic, m.prompting)).toFixed(1)}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+    <p class="note">
+      These four runs are newer than the camera-ready paper; Agentic/Prompting reference
+      numbers are the paper values. Same protocol as the paper's OpenCode comparison.
+    </p>
   </main>
 </Base>
