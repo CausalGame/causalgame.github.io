@@ -1,0 +1,112 @@
+.lb-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 1.2rem 0 0.9rem;
+}
+
+.lb-seg {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.lb-seg button {
+  border: none;
+  background: #fff;
+  padding: 0.42rem 1.05rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-soft);
+}
+
+.lb-seg button.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.lb-hint {
+  color: var(--text-soft);
+  font-size: 0.88rem;
+  margin-left: auto;
+}
+
+.lb-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+table.lb {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.92rem;
+  white-space: nowrap;
+}
+
+table.lb th,
+table.lb td {
+  padding: 0.45rem 0.65rem;
+  border-bottom: 1px solid var(--border);
+}
+
+table.lb thead th {
+  background: var(--bg-soft);
+  position: sticky;
+  top: 0;
+  cursor: pointer;
+  user-select: none;
+  text-align: right;
+}
+
+table.lb thead th.txt {
+  text-align: left;
+}
+
+table.lb thead th:hover {
+  color: var(--accent);
+}
+
+table.lb td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+table.lb td.model {
+  font-weight: 600;
+}
+
+table.lb td .provider {
+  color: var(--text-soft);
+  font-weight: 400;
+  font-size: 0.84rem;
+}
+
+table.lb .std {
+  color: var(--text-soft);
+  font-size: 0.78rem;
+}
+
+table.lb td.win {
+  background: var(--win-bg);
+  color: var(--win);
+  font-weight: 700;
+}
+
+table.lb tbody tr:nth-child(-n + 3) td.rank {
+  font-weight: 800;
+}
+
+table.lb td.rank {
+  color: var(--text-soft);
+  text-align: right;
+}
+
+.lb-foot {
+  color: var(--text-soft);
+  font-size: 0.87rem;
+  margin-top: 0.7rem;
+}

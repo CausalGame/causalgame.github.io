@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#101828"/>
+  <!-- causal DAG: Z -> X, Z -> Y, X -> Y -->
+  <circle cx="32" cy="15" r="7" fill="#7dd3fc"/>
+  <circle cx="16" cy="46" r="7" fill="#fbbf24"/>
+  <circle cx="48" cy="46" r="7" fill="#34d399"/>
+  <g stroke="#e5e7eb" stroke-width="3" fill="none" marker-end="url(#a)">
+    <path d="M27 21 L20 38"/>
+    <path d="M37 21 L44 38"/>
+    <path d="M24 46 L39 46"/>
+  </g>
+  <defs>
+    <marker id="a" markerWidth="6" markerHeight="6" refX="4" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#e5e7eb"/>
+    </marker>
+  </defs>
+</svg>

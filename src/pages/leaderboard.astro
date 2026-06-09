@@ -1,0 +1,110 @@
+---
+import Base from '../layouts/Base.astro';
+import LeaderboardTable from '../components/LeaderboardTable.tsx';
+import data from '../data/leaderboard.json';
+
+const baselines = data.meta.baselines;
+const opencode = data.meta.opencode;
+const families = Object.entries(data.meta.families);
+---
+
+<Base title="Leaderboard — CausalGame">
+  <main class="container">
+    <h1 style="margin-top:2rem">Leaderboard</h1>
+    <p class="note">
+      {data.meta.metric}. Numbers are taken verbatim from the ICML 2026 camera-ready
+      paper ({data.meta.trials_per_cell} independent trials per model × scenario;
+      {data.meta.ci_note}).
+    </p>
+
+    <LeaderboardTable client:load />
+
+    <h2>Win thresholds &amp; optimal designs</h2>
+    <table class="simple">
+      <thead>
+        <tr>
+          <th>Scenario family</th>
+          <th>Optimal intervention</th>
+          <th>Optimal survival</th>
+          <th>Win threshold</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          families.map(([name, f]: [string, any]) => (
+            <tr>
+              <td>{name}</td>
+              <td><code>{f.optimal_intervention}</code></td>
+              <td class="num">~{f.optimal}%</td>
+              <td class="num">{f.threshold}%</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+    <p class="note">
+      The optimal design for each scenario is derived analytically from the underlying SCM
+      and verified empirically on fleets of 1,000 drones (agreement within ±2–3 pp).
+      Thresholds sit 5–8% below the theoretical optimum, so the games are winnable with
+      correct causal understanding but not through random exploration.
+    </p>
+
+    <h2>Non-LLM baselines</h2>
+    <table class="simple">
+      <thead>
+        <tr>
+          <th>Baseline</th>
+          <th>Strategy</th>
+          <th>Avg survival</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          baselines.map((b: any) => (
+            <tr>
+              <td>{b.name}</td>
+              <td>{b.description}</td>
+              <td class="num">
+                {b.survival !== undefined
+                  ? `${b.survival.toFixed(1)}%`
+                  : `${b.survival_min.toFixed(0)}–${b.survival_max.toFixed(0)}%`}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+    <p class="note">
+      Simple rule-based baselines reach 49–53% — and can even outperform several
+      full-agent models on bias-heavy scenarios, underscoring that correlational
+      shortcuts are not enough.
+    </p>
+
+    <h2>OpenCode (coding-agent) comparison</h2>
+    <p>
+      To test whether a more capable agentic framework helps, the paper additionally
+      evaluates the OpenCode coding-agent framework on 5 models × 14 scenarios × 3 trials.
+      OpenCode outperforms ReAct on all five models (average
+      <strong>{opencode.avg.opencode}%</strong> vs {opencode.avg.react}% ReAct /
+      {opencode.avg.prompting}% Prompting) — yet remains far below the win threshold.
+    </p>
+    <table class="simple">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Δ survival, OpenCode vs ReAct</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          opencode.delta_vs_react.map((m: any) => (
+            <tr>
+              <td>{m.display}</td>
+              <td class="num">+{m.delta.toFixed(1)}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </main>
+</Base>

@@ -1,0 +1,53 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'CausalGame: Benchmarking Causal Thinking of LLM Agents in Games (ICML 2026 Oral)',
+} = Astro.props;
+
+const CODE_URL = 'https://github.com/viewsetting/CausalGame';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="/fig1.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <nav class="site">
+      <div class="inner">
+        <a class="brand" href="/">
+          <img src="/favicon.svg" alt="" width="24" height="24" />
+          CausalGame
+        </a>
+        <a href="/leaderboard/">Leaderboard</a>
+        <a href="/docs/">Docs</a>
+        <span class="spacer"></span>
+        <a href={CODE_URL} target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </nav>
+    <slot />
+    <footer class="site">
+      <div class="container">
+        CausalGame — ICML 2026 (Oral) ·
+        <a href={CODE_URL} target="_blank" rel="noopener">Code</a> ·
+        <a href="/leaderboard/">Leaderboard</a>
+        <br />
+        © 2026 the CausalGame team
+      </div>
+    </footer>
+  </body>
+</html>

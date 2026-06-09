@@ -1,0 +1,199 @@
+---
+import Base from '../layouts/Base.astro';
+import data from '../data/leaderboard.json';
+
+const CODE_URL = 'https://github.com/viewsetting/CausalGame';
+
+const authors = [
+  { name: 'Zhenhao Chen', affil: '1', equal: true },
+  { name: 'Yongqiang Chen', affil: '1,2', equal: true },
+  { name: 'Chenxi Liu', affil: '3', equal: true },
+  { name: 'Junchi Yu', affil: '4' },
+  { name: 'Xiangchen Song', affil: '2' },
+  { name: 'Zijian Li', affil: '1,2' },
+  { name: 'Jialin Li', affil: '5' },
+  { name: 'Philip Torr', affil: '4' },
+  { name: 'Bo Han', affil: '3' },
+  { name: 'Kun Zhang', affil: '1,2' },
+];
+
+const affiliations =
+  '¹ MBZUAI · ² Carnegie Mellon University · ³ TMLR Group, Hong Kong Baptist University · ⁴ University of Oxford · ⁵ New York University, Abu Dhabi';
+
+const top5 = (mode: 'agentic' | 'prompting') =>
+  data.modes[mode].rows.slice(0, 5).map((r, i) => ({
+    rank: i + 1,
+    display: r.display,
+    avg: r.avg.mean.toFixed(1),
+  }));
+
+const bibtex = `@inproceedings{chen2026causalgame,
+  title     = {CausalGame: Benchmarking Causal Thinking of LLM Agents in Games},
+  author    = {Chen, Zhenhao and Chen, Yongqiang and Liu, Chenxi and Yu, Junchi
+               and Song, Xiangchen and Li, Zijian and Li, Jialin
+               and Torr, Philip and Han, Bo and Zhang, Kun},
+  booktitle = {Proceedings of the 43rd International Conference on Machine Learning (ICML)},
+  year      = {2026},
+  note      = {Oral presentation}
+}`;
+---
+
+<Base title="CausalGame — Benchmarking Causal Thinking of LLM Agents in Games">
+  <header class="hero container">
+    <span class="badge">ICML 2026 · Oral</span>
+    <h1>CausalGame: Benchmarking Causal Thinking of LLM Agents in Games</h1>
+    <p class="authors">
+      {
+        authors.map((a, i) => (
+          <span>
+            {a.name}
+            <sup>
+              {a.affil}
+              {a.equal ? '*' : ''}
+            </sup>
+            {i < authors.length - 1 ? ', ' : ''}
+          </span>
+        ))
+      }
+    </p>
+    <p class="affil">{affiliations}</p>
+    <p class="affil">* Equal contribution and core contributors</p>
+    <div class="links">
+      <a class="btn disabled" title="arXiv link coming soon" aria-disabled="true">📄 arXiv (soon)</a>
+      <a class="btn primary" href={CODE_URL} target="_blank" rel="noopener">⌨️ Code</a>
+      <a class="btn" href="/leaderboard/">🏆 Leaderboard</a>
+      <a class="btn" href="/docs/">📚 Docs</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <figure class="figure">
+      <img
+        src="/fig1.png"
+        alt="Why causal thinking matters for AI scientist agents: hidden confounders make observational correlations misleading; a causal agent identifies the mechanism through active experimentation."
+        loading="eager"
+      />
+      <figcaption>
+        <strong>Why causal thinking matters for AI scientist agents.</strong>
+        Observational correlations (left) can be misleading due to hidden confounders. A
+        naive agent that treats correlation as causation arrives at a suboptimal solution
+        (middle), while a causal agent identifies the underlying mechanism through active
+        experimentation and achieves a substantially better outcome (right). CausalGame
+        instantiates such challenges in interactive game scenarios to evaluate whether LLM
+        agents can reason beyond statistical patterns.
+      </figcaption>
+    </figure>
+
+    <h2 id="abstract">Abstract</h2>
+    <div class="abstract">
+      <p>
+        Recently, it has received growing attention in building AI Scientist agents with
+        Large Language Models (LLMs). Since scientific discovery fundamentally relies on
+        uncovering causal relationships from observations, the capability of
+        <em>causal thinking</em> that distinguishes causation from correlation and hidden
+        biases is essential to LLM agents. Despite a number of existing benchmarks for AI
+        scientists, they do not explicitly incorporate challenges from hidden confounders,
+        selection bias, and noisy measurements that widely exist in real-world scientific
+        discovery.
+      </p>
+      <p>
+        To this end, we present <strong>CausalGame</strong>, a benchmark that evaluates the
+        causal thinking capabilities of LLM agents through interactive games. More
+        specifically, we ask LLM agents to actively design experimental protocols, collect
+        observation data, and derive a final solution with an explanation report. To
+        emulate realistic scientific discovery challenges, we design
+        <strong>14 game settings</strong> with the incorporation of selection bias, noisy
+        measurements, and hidden confounders. The results with
+        <strong>29 frontier LLM agents</strong> show that they consistently fail to reason
+        about and recover the underlying causal relationships required to solve the games.
+        CausalGame provides a controlled testbed for evaluating causal thinking of AI
+        Scientist agents.
+      </p>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="num">14</div><div class="label">game scenarios</div></div>
+      <div class="stat"><div class="num">29</div><div class="label">frontier LLMs</div></div>
+      <div class="stat"><div class="num">3</div><div class="label">execution modes</div></div>
+      <div class="stat"><div class="num">3×</div><div class="label">trials per cell</div></div>
+      <div class="stat"><div class="num">0</div><div class="label">models above win threshold</div></div>
+    </div>
+
+    <h2 id="findings">Key findings</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>1 · Frontier LLMs fail at hidden causal mechanisms</h3>
+        <p>
+          All 29 models remain significantly below the optimal survival rate (~80%) under
+          selection bias, hidden confounders, and noisy measurements — and below every
+          scenario's win threshold.
+        </p>
+      </div>
+      <div class="card">
+        <h3>2 · More reasoning ≠ better causal thinking</h3>
+        <p>
+          Scaling reasoning compute yields no consistent benefit: GPT-5.5-XHigh drops below
+          GPT-5.5 / GPT-5.5-High, and DeepSeek-V3.2-Think underperforms its non-thinking
+          counterpart.
+        </p>
+      </div>
+      <div class="card">
+        <h3>3 · Agentic frameworks help the strongest models</h3>
+        <p>
+          Among top-10 models, iterative tool-calling (ReAct) usually beats single-turn
+          prompting; a coding-agent framework (OpenCode) adds +6.9% on average — yet the
+          gap to optimal persists.
+        </p>
+      </div>
+      <div class="card">
+        <h3>4 · Agents stop at surface statistics</h3>
+        <p>
+          Rubric analysis shows 68% of agent sessions never engage in causal reasoning, and
+          only 3.5% show nascent causal reasoning; causal-reasoning rubric scores are
+          near-zero across all failure patterns.
+        </p>
+      </div>
+    </div>
+
+    <h2 id="leaderboard">Leaderboard preview</h2>
+    <div class="cards">
+      {
+        (['agentic', 'prompting'] as const).map((mode) => (
+          <div class="card">
+            <h3>{data.modes[mode].label} — top 5</h3>
+            <table class="simple">
+              <tbody>
+                {top5(mode).map((r) => (
+                  <tr>
+                    <td>{r.rank}</td>
+                    <td>{r.display}</td>
+                    <td class="num">{r.avg}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ))
+      }
+    </div>
+    <p>
+      <a class="btn" href="/leaderboard/">See the full 29-model leaderboard →</a>
+    </p>
+
+    <h2 id="citation">Citation</h2>
+    <div class="bibtex-wrap">
+      <button id="copy-bib" type="button">Copy</button>
+      <pre><code id="bibtex">{bibtex}</code></pre>
+    </div>
+  </main>
+
+  <script>
+    const btn = document.getElementById('copy-bib');
+    btn?.addEventListener('click', async () => {
+      const text = document.getElementById('bibtex')?.textContent ?? '';
+      await navigator.clipboard.writeText(text);
+      btn.textContent = 'Copied!';
+      setTimeout(() => (btn.textContent = 'Copy'), 1500);
+    });
+  </script>
+</Base>

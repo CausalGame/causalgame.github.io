@@ -1,0 +1,4964 @@
+{
+  "meta": {
+    "title": "CausalGame: Benchmarking Causal Thinking of LLM Agents in Games",
+    "venue": "ICML 2026 (Oral)",
+    "source": "camera-ready tex, appendix_results.tex",
+    "trials_per_cell": 3,
+    "metric": "Stage-2 fleet survival rate (%), mean over 3 trials",
+    "ci_note": "95% CI half-width (Student's t, n=3, ±2.484·s); missing std/CI = fewer than 3 distinct values reported",
+    "scenarios": [
+      {
+        "id": "antenna_trap",
+        "abbr": "ant_trap",
+        "family": "Antenna Trap",
+        "threshold": 75,
+        "selection_bias": true,
+        "hidden_confounder": false
+      },
+      {
+        "id": "antenna_trap_high_def",
+        "abbr": "ant_high",
+        "family": "Antenna Trap",
+        "threshold": 75,
+        "selection_bias": true,
+        "hidden_confounder": true
+      },
+      {
+        "id": "antenna_trap_local_optima",
+        "abbr": "ant_local",
+        "family": "Antenna Trap",
+        "threshold": 75,
+        "selection_bias": true,
+        "hidden_confounder": false
+      },
+      {
+        "id": "antenna_trap_no_history",
+        "abbr": "ant_nohist",
+        "family": "Antenna Trap",
+        "threshold": 75,
+        "selection_bias": true,
+        "hidden_confounder": false
+      },
+      {
+        "id": "antenna_trap_no_selection_bias",
+        "abbr": "ant_noselbias",
+        "family": "Antenna Trap",
+        "threshold": 75,
+        "selection_bias": false,
+        "hidden_confounder": false
+      },
+      {
+        "id": "antenna_trap_simpsons_paradox",
+        "abbr": "ant_simpson",
+        "family": "Antenna Trap",
+        "threshold": 75,
+        "selection_bias": true,
+        "hidden_confounder": true
+      },
+      {
+        "id": "deployment_zone_trap_categorical",
+        "abbr": "dep_cat",
+        "family": "Deployment Zone Trap",
+        "threshold": 75,
+        "selection_bias": true,
+        "hidden_confounder": false
+      },
+      {
+        "id": "deployment_zone_trap_categorical_high_def",
+        "abbr": "dep_high",
+        "family": "Deployment Zone Trap",
+        "threshold": 75,
+        "selection_bias": true,
+        "hidden_confounder": true
+      },
+      {
+        "id": "deployment_zone_trap_categorical_local_optima",
+        "abbr": "dep_local",
+        "family": "Deployment Zone Trap",
+        "threshold": 75,
+        "selection_bias": true,
+        "hidden_confounder": false
+      },
+      {
+        "id": "deployment_zone_trap_categorical_no_history",
+        "abbr": "dep_nohist",
+        "family": "Deployment Zone Trap",
+        "threshold": 75,
+        "selection_bias": true,
+        "hidden_confounder": false
+      },
+      {
+        "id": "deployment_zone_trap_categorical_no_selection_bias",
+        "abbr": "dep_noselbias",
+        "family": "Deployment Zone Trap",
+        "threshold": 75,
+        "selection_bias": false,
+        "hidden_confounder": false
+      },
+      {
+        "id": "deployment_zone_trap_categorical_simpsons_paradox",
+        "abbr": "dep_simpson",
+        "family": "Deployment Zone Trap",
+        "threshold": 75,
+        "selection_bias": true,
+        "hidden_confounder": true
+      },
+      {
+        "id": "deployment_zone_trap_env_shift",
+        "abbr": "dep_envshift",
+        "family": "Deployment Zone Trap",
+        "threshold": 75,
+        "selection_bias": true,
+        "hidden_confounder": false
+      },
+      {
+        "id": "weather_noise",
+        "abbr": "wea_noise",
+        "family": "Weather",
+        "threshold": 55,
+        "selection_bias": true,
+        "hidden_confounder": false
+      }
+    ],
+    "families": {
+      "Antenna Trap": {
+        "optimal": 82,
+        "threshold": 75,
+        "optimal_intervention": "antenna_def = 0 (stealth)"
+      },
+      "Deployment Zone Trap": {
+        "optimal": 80,
+        "threshold": 75,
+        "optimal_intervention": "shield_def = 25 + signal_filter"
+      },
+      "Weather": {
+        "optimal": 78,
+        "threshold": 55,
+        "optimal_intervention": "antenna_def ≈ 8 with Stage 2 tuning"
+      }
+    },
+    "baselines": [
+      {
+        "name": "Default",
+        "description": "Submit the initial design unchanged",
+        "survival": 49.0
+      },
+      {
+        "name": "Random",
+        "description": "Uniformly sample each DEF value from [0, 50]",
+        "survival": 52.0
+      },
+      {
+        "name": "Uniform High",
+        "description": "Set all components to DEF = 50",
+        "survival": 52.7
+      },
+      {
+        "name": "No-Explore LLM",
+        "description": "10 random deploys, then LLM analyzes and submits",
+        "survival_min": 52.0,
+        "survival_max": 63.0
+      }
+    ],
+    "opencode": {
+      "note": "OpenCode coding-agent framework, 5 models × 14 scenarios × 3 trials",
+      "avg": {
+        "opencode": 67.4,
+        "prompting": 61.3,
+        "react": 60.5
+      },
+      "delta_vs_react": [
+        {
+          "display": "GPT-5.2",
+          "delta": 13.9
+        },
+        {
+          "display": "GPT-5.2 High",
+          "delta": 9.3
+        },
+        {
+          "display": "GPT-5 Mini",
+          "delta": 6.3
+        },
+        {
+          "display": "Grok 4.1 Fast",
+          "delta": 2.7
+        },
+        {
+          "display": "Kimi K2.5",
+          "delta": 2.2
+        }
+      ]
+    }
+  },
+  "modes": {
+    "agentic": {
+      "label": "Agentic (ReAct)",
+      "description": "Structured tool calling over multiple turns with mandatory reasoning and an exploration guard.",
+      "rows": [
+        {
+          "model": "deepseek-v4-pro",
+          "display": "DeepSeek V4 Pro",
+          "provider": "DeepSeek",
+          "avg": {
+            "mean": 70.9,
+            "std": 5.4,
+            "ci95": 13.4
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 86.8,
+              "std": 7.8,
+              "ci95": 19.4
+            },
+            "antenna_trap_high_def": {
+              "mean": 87.8,
+              "std": 14.2,
+              "ci95": 35.3
+            },
+            "antenna_trap_local_optima": {
+              "mean": 93.5,
+              "std": 3.2,
+              "ci95": 7.9
+            },
+            "antenna_trap_no_history": {
+              "mean": 88.5,
+              "std": 6.4,
+              "ci95": 15.9
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 89.1,
+              "std": 2.0,
+              "ci95": 5.0
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 86.5,
+              "std": 6.7,
+              "ci95": 16.6
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 69.7,
+              "std": 0.3,
+              "ci95": 0.7
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 71.3,
+              "std": 4.1,
+              "ci95": 10.2
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 69.1,
+              "std": 0.3,
+              "ci95": 0.7
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 63.7,
+              "std": 11.9,
+              "ci95": 29.6
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 70.5,
+              "std": 1.7,
+              "ci95": 4.2
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 62.7,
+              "std": 11.4,
+              "ci95": 28.3
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.9,
+              "std": 1.0,
+              "ci95": 2.5
+            },
+            "weather_noise": {
+              "mean": 20.0,
+              "std": 4.4,
+              "ci95": 10.9
+            }
+          }
+        },
+        {
+          "model": "claude-opus-4-5",
+          "display": "Claude Opus 4.5",
+          "provider": "Anthropic",
+          "avg": {
+            "mean": 69.1,
+            "std": 5.4,
+            "ci95": 13.4
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 78.2,
+              "std": 8.8,
+              "ci95": 21.9
+            },
+            "antenna_trap_high_def": {
+              "mean": 84.9,
+              "std": 5.6,
+              "ci95": 13.9
+            },
+            "antenna_trap_local_optima": {
+              "mean": 75.6,
+              "std": 10.1,
+              "ci95": 25.1
+            },
+            "antenna_trap_no_history": {
+              "mean": 83.4,
+              "std": 1.3,
+              "ci95": 3.2
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 80.4,
+              "std": 12.2,
+              "ci95": 30.3
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 81.5,
+              "std": 10.1,
+              "ci95": 25.1
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 69.6,
+              "std": 0.8,
+              "ci95": 2.0
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 68.4,
+              "std": 1.9,
+              "ci95": 4.7
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 66.3,
+              "std": 13.3,
+              "ci95": 33.0
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 70.2,
+              "std": 3.0,
+              "ci95": 7.5
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.1,
+              "std": 0.5,
+              "ci95": 1.2
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 75.6,
+              "std": 4.9,
+              "ci95": 12.2
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.7,
+              "std": 2.2,
+              "ci95": 5.5
+            },
+            "weather_noise": {
+              "mean": 29.8,
+              "std": 0.7,
+              "ci95": 1.7
+            }
+          }
+        },
+        {
+          "model": "claude-opus-4.7",
+          "display": "Claude Opus 4.7",
+          "provider": "Anthropic",
+          "avg": {
+            "mean": 69.1,
+            "std": 7.1,
+            "ci95": 17.6
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 89.1,
+              "std": 4.6,
+              "ci95": 11.4
+            },
+            "antenna_trap_high_def": {
+              "mean": 84.3,
+              "std": 16.0,
+              "ci95": 39.7
+            },
+            "antenna_trap_local_optima": {
+              "mean": 92.8,
+              "std": 5.1,
+              "ci95": 12.7
+            },
+            "antenna_trap_no_history": {
+              "mean": 80.6,
+              "std": 10.2,
+              "ci95": 25.3
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 88.2,
+              "std": 5.8,
+              "ci95": 14.4
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 90.6,
+              "std": 7.1,
+              "ci95": 17.6
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 57.5,
+              "std": 13.6,
+              "ci95": 33.8
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 54.1,
+              "std": 3.0,
+              "ci95": 7.5
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 56.8,
+              "std": 14.3,
+              "ci95": 35.5
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 71.2,
+              "std": 2.3,
+              "ci95": 5.7
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.8,
+              "std": 1.9,
+              "ci95": 4.7
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 72.5,
+              "std": 7.1,
+              "ci95": 17.6
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 34.2,
+              "std": 0.9,
+              "ci95": 2.2
+            },
+            "weather_noise": {
+              "mean": 23.4,
+              "std": 7.1,
+              "ci95": 17.6
+            }
+          }
+        },
+        {
+          "model": "glm-5.1",
+          "display": "GLM-5.1",
+          "provider": "Zhipu",
+          "avg": {
+            "mean": 68.9,
+            "std": 8.1,
+            "ci95": 20.1
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 81.6,
+              "std": 6.1,
+              "ci95": 15.2
+            },
+            "antenna_trap_high_def": {
+              "mean": 79.7,
+              "std": 9.5,
+              "ci95": 23.6
+            },
+            "antenna_trap_local_optima": {
+              "mean": 89.6,
+              "std": 4.3,
+              "ci95": 10.7
+            },
+            "antenna_trap_no_history": {
+              "mean": 73.8,
+              "std": 14.2,
+              "ci95": 35.3
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 81.0,
+              "std": 7.6,
+              "ci95": 18.9
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 85.6,
+              "std": 3.9,
+              "ci95": 9.7
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 60.8,
+              "std": 15.6,
+              "ci95": 38.8
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 72.8,
+              "std": 4.7,
+              "ci95": 11.7
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 74.7,
+              "std": 5.7,
+              "ci95": 14.2
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 71.0,
+              "std": 16.8,
+              "ci95": 41.7
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.6,
+              "std": 2.0,
+              "ci95": 5.0
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 65.5,
+              "std": 13.1,
+              "ci95": 32.5
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 31.9,
+              "std": 1.0,
+              "ci95": 2.5
+            },
+            "weather_noise": {
+              "mean": 24.5,
+              "std": 8.8,
+              "ci95": 21.9
+            }
+          }
+        },
+        {
+          "model": "gpt-5.5-high",
+          "display": "GPT-5.5 High",
+          "provider": "OpenAI",
+          "avg": {
+            "mean": 68.5,
+            "std": 4.0,
+            "ci95": 9.9
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 72.1,
+              "std": 4.6,
+              "ci95": 11.4
+            },
+            "antenna_trap_high_def": {
+              "mean": 82.9,
+              "std": 0.8,
+              "ci95": 2.0
+            },
+            "antenna_trap_local_optima": {
+              "mean": 93.7,
+              "std": 1.0,
+              "ci95": 2.5
+            },
+            "antenna_trap_no_history": {
+              "mean": 76.7,
+              "std": 10.5,
+              "ci95": 26.1
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 87.3,
+              "std": 0.8,
+              "ci95": 2.0
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 81.8,
+              "std": 2.8,
+              "ci95": 7.0
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 69.7,
+              "std": 1.7,
+              "ci95": 4.2
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 63.3,
+              "std": 10.8,
+              "ci95": 26.8
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 70.7,
+              "std": 1.1,
+              "ci95": 2.7
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 63.6,
+              "std": 10.6,
+              "ci95": 26.3
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 70.7,
+              "std": 0.2,
+              "ci95": 0.5
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 69.0,
+              "std": 0.6,
+              "ci95": 1.5
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.6,
+              "std": 1.1,
+              "ci95": 2.7
+            },
+            "weather_noise": {
+              "mean": 24.3,
+              "std": 9.8,
+              "ci95": 24.3
+            }
+          }
+        },
+        {
+          "model": "gpt-5.5",
+          "display": "GPT-5.5",
+          "provider": "OpenAI",
+          "avg": {
+            "mean": 68.4,
+            "std": 4.3,
+            "ci95": 10.7
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 78.9,
+              "std": 7.0,
+              "ci95": 17.4
+            },
+            "antenna_trap_high_def": {
+              "mean": 80.3,
+              "std": 4.4,
+              "ci95": 10.9
+            },
+            "antenna_trap_local_optima": {
+              "mean": 88.1,
+              "std": 5.3,
+              "ci95": 13.2
+            },
+            "antenna_trap_no_history": {
+              "mean": 83.1,
+              "std": 0.7,
+              "ci95": 1.7
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 84.0,
+              "std": 1.0,
+              "ci95": 2.5
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 84.4,
+              "std": 3.1,
+              "ci95": 7.7
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 69.6,
+              "std": 0.7,
+              "ci95": 1.7
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 69.4,
+              "std": 1.8,
+              "ci95": 4.5
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 61.7,
+              "std": 9.6,
+              "ci95": 23.8
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 61.6,
+              "std": 8.7,
+              "ci95": 21.6
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.4,
+              "std": 1.6,
+              "ci95": 4.0
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 63.4,
+              "std": 11.2,
+              "ci95": 27.8
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.6,
+              "std": 1.3,
+              "ci95": 3.2
+            },
+            "weather_noise": {
+              "mean": 28.4,
+              "std": 3.7,
+              "ci95": 9.2
+            }
+          }
+        },
+        {
+          "model": "qwen3.7-max",
+          "display": "Qwen3.7 Max",
+          "provider": "Alibaba Qwen",
+          "avg": {
+            "mean": 68.4,
+            "std": 5.9,
+            "ci95": 14.7
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 73.7,
+              "std": 11.4,
+              "ci95": 28.3
+            },
+            "antenna_trap_high_def": {
+              "mean": 74.6,
+              "std": 12.5,
+              "ci95": 31.1
+            },
+            "antenna_trap_local_optima": {
+              "mean": 79.5,
+              "std": 7.2,
+              "ci95": 17.9
+            },
+            "antenna_trap_no_history": {
+              "mean": 76.7,
+              "std": 10.3,
+              "ci95": 25.6
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 88.1,
+              "std": 6.0,
+              "ci95": 14.9
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 81.4,
+              "std": 7.9,
+              "ci95": 19.6
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 56.7,
+              "std": 13.8,
+              "ci95": 34.3
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 75.5,
+              "std": 5.0,
+              "ci95": 12.4
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 68.0,
+              "std": 0.7,
+              "ci95": 1.7
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 78.4,
+              "std": 1.0,
+              "ci95": 2.5
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 72.6,
+              "std": 0.5,
+              "ci95": 1.2
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 71.4,
+              "std": 3.2,
+              "ci95": 7.9
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.0,
+              "std": 2.2,
+              "ci95": 5.5
+            },
+            "weather_noise": {
+              "mean": 29.1,
+              "std": 1.3,
+              "ci95": 3.2
+            }
+          }
+        },
+        {
+          "model": "claude-sonnet-4-5",
+          "display": "Claude Sonnet 4.5",
+          "provider": "Anthropic",
+          "avg": {
+            "mean": 67.3,
+            "std": 7.3,
+            "ci95": 18.1
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 88.8,
+              "std": 5.8,
+              "ci95": 14.4
+            },
+            "antenna_trap_high_def": {
+              "mean": 87.2,
+              "std": 9.9,
+              "ci95": 24.6
+            },
+            "antenna_trap_local_optima": {
+              "mean": 88.1,
+              "std": 7.2,
+              "ci95": 17.9
+            },
+            "antenna_trap_no_history": {
+              "mean": 80.3,
+              "std": 9.5,
+              "ci95": 23.6
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 87.9,
+              "std": 7.8,
+              "ci95": 19.4
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 56.5,
+              "std": 25.2,
+              "ci95": 62.6
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 55.8,
+              "std": 8.6,
+              "ci95": 21.4
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 69.2,
+              "std": 0.7,
+              "ci95": 1.7
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 70.5,
+              "std": 2.3,
+              "ci95": 5.7
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 59.9,
+              "std": 11.5,
+              "ci95": 28.6
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 73.5,
+              "std": 1.4,
+              "ci95": 3.5
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 62.5,
+              "std": 10.6,
+              "ci95": 26.3
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 31.6,
+              "std": 1.6,
+              "ci95": 4.0
+            },
+            "weather_noise": {
+              "mean": 30.4,
+              "std": 0.6,
+              "ci95": 1.5
+            }
+          }
+        },
+        {
+          "model": "mimo-v2.5-pro",
+          "display": "MIMO V2.5 Pro",
+          "provider": "MIMO",
+          "avg": {
+            "mean": 66.5,
+            "std": 5.1,
+            "ci95": 12.7
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 74.1,
+              "std": 7.4,
+              "ci95": 18.4
+            },
+            "antenna_trap_high_def": {
+              "mean": 83.7,
+              "std": 0.4,
+              "ci95": 1.0
+            },
+            "antenna_trap_local_optima": {
+              "mean": 86.4,
+              "std": 1.7,
+              "ci95": 4.2
+            },
+            "antenna_trap_no_history": {
+              "mean": 78.2,
+              "std": 13.4,
+              "ci95": 33.3
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 84.3,
+              "std": 3.6,
+              "ci95": 8.9
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 72.0,
+              "std": 12.0,
+              "ci95": 29.8
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 56.9,
+              "std": 6.6,
+              "ci95": 16.4
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 69.2,
+              "std": 1.6,
+              "ci95": 4.0
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 68.9,
+              "std": 0.9,
+              "ci95": 2.2
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 69.4,
+              "std": 2.2,
+              "ci95": 5.5
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 70.9,
+              "std": 2.1,
+              "ci95": 5.2
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 57.3,
+              "std": 13.5,
+              "ci95": 33.5
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.7,
+              "std": 1.0,
+              "ci95": 2.5
+            },
+            "weather_noise": {
+              "mean": 26.9,
+              "std": 4.9,
+              "ci95": 12.2
+            }
+          }
+        },
+        {
+          "model": "gpt-5.5-xhigh",
+          "display": "GPT-5.5 XHigh",
+          "provider": "OpenAI",
+          "avg": {
+            "mean": 65.1,
+            "std": 7.1,
+            "ci95": 17.6
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 78.4,
+              "std": 7.7,
+              "ci95": 19.1
+            },
+            "antenna_trap_high_def": {
+              "mean": 77.9,
+              "std": 4.0,
+              "ci95": 9.9
+            },
+            "antenna_trap_local_optima": {
+              "mean": 83.4,
+              "std": 11.1,
+              "ci95": 27.6
+            },
+            "antenna_trap_no_history": {
+              "mean": 77.5,
+              "std": 10.5,
+              "ci95": 26.1
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 81.7,
+              "std": 1.3,
+              "ci95": 3.2
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 74.6,
+              "std": 4.1,
+              "ci95": 10.2
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 60.8,
+              "std": 12.2,
+              "ci95": 30.3
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 59.6,
+              "std": 12.3,
+              "ci95": 30.6
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 63.0,
+              "std": 10.4,
+              "ci95": 25.8
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 57.7,
+              "std": 10.3,
+              "ci95": 25.6
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.5,
+              "std": 0.1,
+              "ci95": 0.2
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 71.3,
+              "std": 0.4,
+              "ci95": 1.0
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.8,
+              "std": 2.0,
+              "ci95": 5.0
+            },
+            "weather_noise": {
+              "mean": 20.7,
+              "std": 12.8,
+              "ci95": 31.8
+            }
+          }
+        },
+        {
+          "model": "grok-4-1-fast",
+          "display": "Grok 4.1 Fast",
+          "provider": "xAI",
+          "avg": {
+            "mean": 65.1,
+            "std": 6.5,
+            "ci95": 16.1
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 70.3,
+              "std": 5.8,
+              "ci95": 14.4
+            },
+            "antenna_trap_high_def": {
+              "mean": 89.2,
+              "std": 7.8,
+              "ci95": 19.4
+            },
+            "antenna_trap_local_optima": {
+              "mean": 85.0,
+              "std": 6.8,
+              "ci95": 16.9
+            },
+            "antenna_trap_no_history": {
+              "mean": 78.0,
+              "std": 8.5,
+              "ci95": 21.1
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 73.4,
+              "std": 9.9,
+              "ci95": 24.6
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 81.5,
+              "std": 2.5,
+              "ci95": 6.2
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 62.2,
+              "std": 10.0,
+              "ci95": 24.8
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 62.6,
+              "std": 9.3,
+              "ci95": 23.1
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 69.0,
+              "std": 0.6,
+              "ci95": 1.5
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 56.2,
+              "std": 11.7,
+              "ci95": 29.1
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 70.8,
+              "std": 1.9,
+              "ci95": 4.7
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 61.1,
+              "std": 11.8,
+              "ci95": 29.3
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.5,
+              "std": 0.8,
+              "ci95": 2.0
+            },
+            "weather_noise": {
+              "mean": 19.5,
+              "std": 3.2,
+              "ci95": 7.9
+            }
+          }
+        },
+        {
+          "model": "minimax-m2-1",
+          "display": "MiniMax M2.1",
+          "provider": "MiniMax",
+          "avg": {
+            "mean": 65.0,
+            "std": 5.7,
+            "ci95": 14.2
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 79.7,
+              "std": 5.7,
+              "ci95": 14.2
+            },
+            "antenna_trap_high_def": {
+              "mean": 83.6,
+              "std": 1.1,
+              "ci95": 2.7
+            },
+            "antenna_trap_local_optima": {
+              "mean": 74.1,
+              "std": 9.6,
+              "ci95": 23.8
+            },
+            "antenna_trap_no_history": {
+              "mean": 71.6,
+              "std": 9.1,
+              "ci95": 22.6
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 83.3,
+              "std": 2.2,
+              "ci95": 5.5
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 59.5,
+              "std": 16.0,
+              "ci95": 39.7
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 65.5,
+              "std": 6.8,
+              "ci95": 16.9
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 68.0,
+              "std": 1.6,
+              "ci95": 4.0
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 56.6,
+              "std": 11.5,
+              "ci95": 28.6
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 69.4,
+              "std": 1.6,
+              "ci95": 4.0
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.5,
+              "std": 3.1,
+              "ci95": 7.7
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 68.5,
+              "std": 1.9,
+              "ci95": 4.7
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 33.3,
+              "std": 1.0,
+              "ci95": 2.5
+            },
+            "weather_noise": {
+              "mean": 25.8,
+              "std": 8.4,
+              "ci95": 20.9
+            }
+          }
+        },
+        {
+          "model": "minimax-m2",
+          "display": "MiniMax M2",
+          "provider": "MiniMax",
+          "avg": {
+            "mean": 64.4,
+            "std": 6.1,
+            "ci95": 15.2
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 67.2,
+              "std": 5.3,
+              "ci95": 13.2
+            },
+            "antenna_trap_high_def": {
+              "mean": 63.9,
+              "std": 9.6,
+              "ci95": 23.8
+            },
+            "antenna_trap_local_optima": {
+              "mean": 78.3,
+              "std": 3.2,
+              "ci95": 7.9
+            },
+            "antenna_trap_no_history": {
+              "mean": 76.4,
+              "std": 6.8,
+              "ci95": 16.9
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 77.8,
+              "std": 10.0,
+              "ci95": 24.8
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 79.4,
+              "std": 8.3,
+              "ci95": 20.6
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 61.6,
+              "std": 9.4,
+              "ci95": 23.4
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 63.3,
+              "std": 9.8,
+              "ci95": 24.3
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 63.9,
+              "std": 10.1,
+              "ci95": 25.1
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 70.2,
+              "std": 3.1,
+              "ci95": 7.7
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.8,
+              "std": 0.5,
+              "ci95": 1.2
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 69.8,
+              "std": 0.2,
+              "ci95": 0.5
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.2,
+              "std": 1.0,
+              "ci95": 2.5
+            },
+            "weather_noise": {
+              "mean": 25.8,
+              "std": 8.6,
+              "ci95": 21.4
+            }
+          }
+        },
+        {
+          "model": "hy3-preview",
+          "display": "HY3 Preview",
+          "provider": "Hunyuan",
+          "avg": {
+            "mean": 63.6,
+            "std": 10.4,
+            "ci95": 25.8
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 80.0,
+              "std": 13.8,
+              "ci95": 34.3
+            },
+            "antenna_trap_high_def": {
+              "mean": 77.1,
+              "std": 7.3,
+              "ci95": 18.1
+            },
+            "antenna_trap_local_optima": {
+              "mean": 86.8,
+              "std": 5.5,
+              "ci95": 13.7
+            },
+            "antenna_trap_no_history": {
+              "mean": 82.3,
+              "std": 11.0,
+              "ci95": 27.3
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 71.9,
+              "std": 19.8,
+              "ci95": 49.2
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 56.8,
+              "std": 28.4,
+              "ci95": 70.5
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 60.9,
+              "std": 12.0,
+              "ci95": 29.8
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 66.3,
+              "std": 12.3,
+              "ci95": 30.6
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 58.2,
+              "std": 13.4,
+              "ci95": 33.3
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 67.9,
+              "std": 3.0,
+              "ci95": 7.5
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.7,
+              "std": 1.7,
+              "ci95": 4.2
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 56.6,
+              "std": 11.5,
+              "ci95": 28.6
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.5,
+              "std": 0.9,
+              "ci95": 2.2
+            },
+            "weather_noise": {
+              "mean": 21.3,
+              "std": 5.3,
+              "ci95": 13.2
+            }
+          }
+        },
+        {
+          "model": "deepseek-v4-flash",
+          "display": "DeepSeek V4 Flash",
+          "provider": "DeepSeek",
+          "avg": {
+            "mean": 63.4,
+            "std": 8.7,
+            "ci95": 21.6
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 51.7,
+              "std": 16.0,
+              "ci95": 39.7
+            },
+            "antenna_trap_high_def": {
+              "mean": 70.6,
+              "std": 13.6,
+              "ci95": 33.8
+            },
+            "antenna_trap_local_optima": {
+              "mean": 91.4,
+              "std": 7.3,
+              "ci95": 18.1
+            },
+            "antenna_trap_no_history": {
+              "mean": 80.7,
+              "std": 7.0,
+              "ci95": 17.4
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 80.5,
+              "std": 16.9,
+              "ci95": 42.0
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 85.2,
+              "std": 3.0,
+              "ci95": 7.5
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 51.0,
+              "std": 1.4,
+              "ci95": 3.5
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 62.1,
+              "std": 12.2,
+              "ci95": 30.3
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 63.4,
+              "std": 10.9,
+              "ci95": 27.1
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 68.2,
+              "std": 12.0,
+              "ci95": 29.8
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 70.7,
+              "std": 1.1,
+              "ci95": 2.7
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 57.0,
+              "std": 10.2,
+              "ci95": 25.3
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.8,
+              "std": 1.8,
+              "ci95": 4.5
+            },
+            "weather_noise": {
+              "mean": 22.8,
+              "std": 8.7,
+              "ci95": 21.6
+            }
+          }
+        },
+        {
+          "model": "gemini-3.5-flash",
+          "display": "Gemini 3.5 Flash",
+          "provider": "Google",
+          "avg": {
+            "mean": 63.0,
+            "std": 9.5,
+            "ci95": 23.6
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 67.4,
+              "std": 11.8,
+              "ci95": 29.3
+            },
+            "antenna_trap_high_def": {
+              "mean": 76.8,
+              "std": 8.8,
+              "ci95": 21.9
+            },
+            "antenna_trap_local_optima": {
+              "mean": 77.0,
+              "std": 9.2,
+              "ci95": 22.9
+            },
+            "antenna_trap_no_history": {
+              "mean": 76.8,
+              "std": 11.0,
+              "ci95": 27.3
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 83.4,
+              "std": 12.7,
+              "ci95": 31.5
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 73.4,
+              "std": 14.7,
+              "ci95": 36.5
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 61.5,
+              "std": 11.1,
+              "ci95": 27.6
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 67.1,
+              "std": 12.7,
+              "ci95": 31.5
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 54.7,
+              "std": 9.2,
+              "ci95": 22.9
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 55.8,
+              "std": 9.9,
+              "ci95": 24.6
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 70.7,
+              "std": 0.8,
+              "ci95": 2.0
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 59.6,
+              "std": 13.8,
+              "ci95": 34.3
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 33.1,
+              "std": 1.8,
+              "ci95": 4.5
+            },
+            "weather_noise": {
+              "mean": 25.3,
+              "std": 5.8,
+              "ci95": 14.4
+            }
+          }
+        },
+        {
+          "model": "kimi-k2.6",
+          "display": "Kimi K2.6",
+          "provider": "Moonshot AI",
+          "avg": {
+            "mean": 62.6,
+            "std": 9.6,
+            "ci95": 23.8
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 77.0,
+              "std": 14.7,
+              "ci95": 36.5
+            },
+            "antenna_trap_high_def": {
+              "mean": 84.2,
+              "std": 13.0,
+              "ci95": 32.3
+            },
+            "antenna_trap_local_optima": {
+              "mean": 90.2,
+              "std": 5.3,
+              "ci95": 13.2
+            },
+            "antenna_trap_no_history": {
+              "mean": 76.5,
+              "std": 5.3,
+              "ci95": 13.2
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 72.7,
+              "std": 17.4,
+              "ci95": 43.2
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 61.0,
+              "std": 8.7,
+              "ci95": 21.6
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 65.8,
+              "std": 13.9,
+              "ci95": 34.5
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 58.2,
+              "std": 12.8,
+              "ci95": 31.8
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 57.1,
+              "std": 9.4,
+              "ci95": 23.4
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 57.3,
+              "std": 11.8,
+              "ci95": 29.3
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.0,
+              "std": 2.5,
+              "ci95": 6.2
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 52.1,
+              "std": 0.6,
+              "ci95": 1.5
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.6,
+              "std": 1.8,
+              "ci95": 4.5
+            },
+            "weather_noise": {
+              "mean": 20.8,
+              "std": 16.7,
+              "ci95": 41.5
+            }
+          }
+        },
+        {
+          "model": "deepseek-v3.2",
+          "display": "DeepSeek V3.2",
+          "provider": "DeepSeek",
+          "avg": {
+            "mean": 61.6,
+            "std": 6.7,
+            "ci95": 16.6
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 53.4,
+              "std": 14.7,
+              "ci95": 36.5
+            },
+            "antenna_trap_high_def": {
+              "mean": 74.4,
+              "std": 11.2,
+              "ci95": 27.8
+            },
+            "antenna_trap_local_optima": {
+              "mean": 87.2,
+              "std": 2.6,
+              "ci95": 6.5
+            },
+            "antenna_trap_no_history": {
+              "mean": 79.9,
+              "std": 9.2,
+              "ci95": 22.9
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 76.7,
+              "std": 7.1,
+              "ci95": 17.6
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 57.9,
+              "std": 12.3,
+              "ci95": 30.6
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 63.9,
+              "std": 11.9,
+              "ci95": 29.6
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 64.4,
+              "std": 12.6,
+              "ci95": 31.3
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 51.5,
+              "std": 1.7,
+              "ci95": 4.2
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 70.4,
+              "std": 4.1,
+              "ci95": 10.2
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.8,
+              "std": 0.8,
+              "ci95": 2.0
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 50.3,
+              "std": 2.0,
+              "ci95": 5.0
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.0,
+              "std": 0.6,
+              "ci95": 1.5
+            },
+            "weather_noise": {
+              "mean": 29.2,
+              "std": 2.9,
+              "ci95": 7.2
+            }
+          }
+        },
+        {
+          "model": "gpt-oss-120b",
+          "display": "GPT-OSS-120B",
+          "provider": "OpenAI",
+          "avg": {
+            "mean": 61.1,
+            "std": 9.4,
+            "ci95": 23.4
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 65.2,
+              "std": 16.9,
+              "ci95": 42.0
+            },
+            "antenna_trap_high_def": {
+              "mean": 79.0,
+              "std": 5.0,
+              "ci95": 12.4
+            },
+            "antenna_trap_local_optima": {
+              "mean": 76.9,
+              "std": 4.1,
+              "ci95": 10.2
+            },
+            "antenna_trap_no_history": {
+              "mean": 75.6,
+              "std": 4.9,
+              "ci95": 12.2
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 77.3,
+              "std": 4.3,
+              "ci95": 10.7
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 72.2,
+              "std": 19.7,
+              "ci95": 48.9
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 57.2,
+              "std": 12.8,
+              "ci95": 31.8
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 57.9,
+              "std": 10.6,
+              "ci95": 26.3
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 61.8,
+              "std": 11.2,
+              "ci95": 27.8
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 63.8,
+              "std": 11.7,
+              "ci95": 29.1
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 64.2,
+              "std": 10.4,
+              "ci95": 25.8
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 44.0,
+              "std": 8.4,
+              "ci95": 20.9
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.5,
+              "std": 3.2,
+              "ci95": 7.9
+            },
+            "weather_noise": {
+              "mean": 27.2,
+              "std": 8.7,
+              "ci95": 21.6
+            }
+          }
+        },
+        {
+          "model": "mimo-v2-flash",
+          "display": "MIMO V2 Flash",
+          "provider": "MIMO",
+          "avg": {
+            "mean": 60.9,
+            "std": 9.3,
+            "ci95": 23.1
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 64.8,
+              "std": 19.1,
+              "ci95": 47.4
+            },
+            "antenna_trap_high_def": {
+              "mean": 78.5,
+              "std": 8.4,
+              "ci95": 20.9
+            },
+            "antenna_trap_local_optima": {
+              "mean": 78.6,
+              "std": 13.8,
+              "ci95": 34.3
+            },
+            "antenna_trap_no_history": {
+              "mean": 82.7,
+              "std": 1.8,
+              "ci95": 4.5
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 73.9,
+              "std": 6.9,
+              "ci95": 17.1
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 67.9,
+              "std": 31.9,
+              "ci95": 79.2
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 51.7,
+              "std": 2.8,
+              "ci95": 7.0
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 62.8,
+              "std": 11.4,
+              "ci95": 28.3
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 49.1,
+              "std": 2.9,
+              "ci95": 7.2
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 62.3,
+              "std": 10.8,
+              "ci95": 26.8
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 72.7,
+              "std": 1.2,
+              "ci95": 3.0
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 58.9,
+              "std": 11.7,
+              "ci95": 29.1
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.5,
+              "std": 1.4,
+              "ci95": 3.5
+            },
+            "weather_noise": {
+              "mean": 16.2,
+              "std": 6.4,
+              "ci95": 15.9
+            }
+          }
+        },
+        {
+          "model": "gpt-5.2-high",
+          "display": "GPT-5.2 High",
+          "provider": "OpenAI",
+          "avg": {
+            "mean": 60.7,
+            "std": 6.7,
+            "ci95": 16.6
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 68.9,
+              "std": 25.9,
+              "ci95": 64.3
+            },
+            "antenna_trap_high_def": {
+              "mean": 73.3,
+              "std": 20.2,
+              "ci95": 50.2
+            },
+            "antenna_trap_local_optima": {
+              "mean": 82.9,
+              "std": 9.5,
+              "ci95": 23.6
+            },
+            "antenna_trap_no_history": {
+              "mean": 84.2,
+              "std": 9.5,
+              "ci95": 23.6
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 74.5,
+              "std": 0.7,
+              "ci95": 1.7
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 81.9,
+              "std": 10.5,
+              "ci95": 26.1
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 48.8,
+              "std": 0.5,
+              "ci95": 1.2
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 50.7,
+              "std": 2.5,
+              "ci95": 6.2
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 51.1,
+              "std": 3.1,
+              "ci95": 7.7
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 51.4,
+              "std": 1.6,
+              "ci95": 4.0
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 70.8,
+              "std": 0.8,
+              "ci95": 2.0
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 51.2,
+              "std": 2.1,
+              "ci95": 5.2
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 33.3,
+              "std": 0.3,
+              "ci95": 0.7
+            },
+            "weather_noise": {
+              "mean": 26.3,
+              "std": 6.4,
+              "ci95": 15.9
+            }
+          }
+        },
+        {
+          "model": "gpt-5-mini",
+          "display": "GPT-5 Mini",
+          "provider": "OpenAI",
+          "avg": {
+            "mean": 60.4,
+            "std": 7.6,
+            "ci95": 18.9
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 75.6,
+              "std": 5.4,
+              "ci95": 13.4
+            },
+            "antenna_trap_high_def": {
+              "mean": 74.8,
+              "std": 2.5,
+              "ci95": 6.2
+            },
+            "antenna_trap_local_optima": {
+              "mean": 71.4,
+              "std": 18.8,
+              "ci95": 46.7
+            },
+            "antenna_trap_no_history": {
+              "mean": 76.3,
+              "std": 4.6,
+              "ci95": 11.4
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 76.1,
+              "std": 6.8,
+              "ci95": 16.9
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 80.0,
+              "std": 7.4,
+              "ci95": 18.4
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 61.7,
+              "std": 14.3,
+              "ci95": 35.5
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 53.2,
+              "std": 5.0,
+              "ci95": 12.4
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 53.6,
+              "std": 4.3,
+              "ci95": 10.7
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 64.8,
+              "std": 13.7,
+              "ci95": 34.0
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 57.9,
+              "std": 12.0,
+              "ci95": 29.8
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 38.4,
+              "std": 10.3,
+              "ci95": 25.6
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.4,
+              "std": 0.8,
+              "ci95": 2.0
+            },
+            "weather_noise": {
+              "mean": 29.2,
+              "std": 0.5,
+              "ci95": 1.2
+            }
+          }
+        },
+        {
+          "model": "deepseek-v3.2-think",
+          "display": "DeepSeek V3.2 Think",
+          "provider": "DeepSeek",
+          "avg": {
+            "mean": 59.9,
+            "std": 8.5,
+            "ci95": 21.1
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 67.4,
+              "std": 3.3,
+              "ci95": 8.2
+            },
+            "antenna_trap_high_def": {
+              "mean": 63.9,
+              "std": 18.4,
+              "ci95": 45.7
+            },
+            "antenna_trap_local_optima": {
+              "mean": 75.3,
+              "std": 12.9,
+              "ci95": 32.0
+            },
+            "antenna_trap_no_history": {
+              "mean": 82.9,
+              "std": 8.2,
+              "ci95": 20.4
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 73.3,
+              "std": 8.8,
+              "ci95": 21.9
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 49.5,
+              "std": 21.2,
+              "ci95": 52.7
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 51.6,
+              "std": 3.7,
+              "ci95": 9.2
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 72.1,
+              "std": 1.2,
+              "ci95": 3.0
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 58.3,
+              "std": 11.0,
+              "ci95": 27.3
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 58.9,
+              "std": 13.0,
+              "ci95": 32.3
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.8,
+              "std": 1.9,
+              "ci95": 4.7
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 56.8,
+              "std": 10.5,
+              "ci95": 26.1
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.0,
+              "std": 1.6,
+              "ci95": 4.0
+            },
+            "weather_noise": {
+              "mean": 25.0,
+              "std": 3.8,
+              "ci95": 9.4
+            }
+          }
+        },
+        {
+          "model": "kimi-k2.5",
+          "display": "Kimi K2.5",
+          "provider": "Moonshot AI",
+          "avg": {
+            "mean": 58.9,
+            "std": 9.8,
+            "ci95": 24.3
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 62.2,
+              "std": 6.5,
+              "ci95": 16.1
+            },
+            "antenna_trap_high_def": {
+              "mean": 58.4,
+              "std": 15.0,
+              "ci95": 37.3
+            },
+            "antenna_trap_local_optima": {
+              "mean": 82.8,
+              "std": 1.4,
+              "ci95": 3.5
+            },
+            "antenna_trap_no_history": {
+              "mean": 69.0,
+              "std": 15.8,
+              "ci95": 39.2
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 62.3,
+              "std": 32.9,
+              "ci95": 81.7
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 67.8,
+              "std": 11.1,
+              "ci95": 27.6
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 55.8,
+              "std": 8.4,
+              "ci95": 20.9
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 50.0,
+              "std": 2.1,
+              "ci95": 5.2
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 63.8,
+              "std": 12.8,
+              "ci95": 31.8
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 56.1,
+              "std": 9.9,
+              "ci95": 24.6
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.1,
+              "std": 1.2,
+              "ci95": 3.0
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 61.6,
+              "std": 17.7,
+              "ci95": 44.0
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 33.3,
+              "std": 1.3,
+              "ci95": 3.2
+            },
+            "weather_noise": {
+              "mean": 30.3,
+              "std": 1.6,
+              "ci95": 4.0
+            }
+          }
+        },
+        {
+          "model": "glm-4.7",
+          "display": "GLM-4.7",
+          "provider": "Zhipu",
+          "avg": {
+            "mean": 58.1,
+            "std": 7.0,
+            "ci95": 17.4
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 58.5,
+              "std": 16.8,
+              "ci95": 41.7
+            },
+            "antenna_trap_high_def": {
+              "mean": 58.8,
+              "std": 8.2,
+              "ci95": 20.4
+            },
+            "antenna_trap_local_optima": {
+              "mean": 82.5,
+              "std": 10.8,
+              "ci95": 26.8
+            },
+            "antenna_trap_no_history": {
+              "mean": 67.9,
+              "std": 1.2,
+              "ci95": 3.0
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 66.8,
+              "std": 9.4,
+              "ci95": 23.4
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 63.3,
+              "std": 32.3,
+              "ci95": 80.2
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 50.9,
+              "std": 3.3,
+              "ci95": 8.2
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 49.9,
+              "std": 1.5,
+              "ci95": 3.7
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 50.8,
+              "std": 2.5,
+              "ci95": 6.2
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 70.0,
+              "std": 1.2,
+              "ci95": 3.0
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.0,
+              "std": 0.6,
+              "ci95": 1.5
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 70.1,
+              "std": 1.8,
+              "ci95": 4.5
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.8,
+              "std": 3.7,
+              "ci95": 9.2
+            },
+            "weather_noise": {
+              "mean": 20.1,
+              "std": 4.3,
+              "ci95": 10.7
+            }
+          }
+        },
+        {
+          "model": "gpt-5.2",
+          "display": "GPT-5.2",
+          "provider": "OpenAI",
+          "avg": {
+            "mean": 57.9,
+            "std": 6.7,
+            "ci95": 16.6
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 67.0,
+              "std": 13.3,
+              "ci95": 33.0
+            },
+            "antenna_trap_high_def": {
+              "mean": 79.6,
+              "std": 12.6,
+              "ci95": 31.3
+            },
+            "antenna_trap_local_optima": {
+              "mean": 60.6,
+              "std": 29.5,
+              "ci95": 73.3
+            },
+            "antenna_trap_no_history": {
+              "mean": 77.5,
+              "std": 19.5,
+              "ci95": 48.4
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 75.0,
+              "std": 0.9,
+              "ci95": 2.2
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 73.5,
+              "std": 1.3,
+              "ci95": 3.2
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 51.7,
+              "std": 1.5,
+              "ci95": 3.7
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 49.7,
+              "std": 1.4,
+              "ci95": 3.5
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 50.7,
+              "std": 1.6,
+              "ci95": 4.0
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 49.3,
+              "std": 1.2,
+              "ci95": 3.0
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.5,
+              "std": 1.4,
+              "ci95": 3.5
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 50.3,
+              "std": 2.1,
+              "ci95": 5.2
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 33.1,
+              "std": 3.3,
+              "ci95": 8.2
+            },
+            "weather_noise": {
+              "mean": 20.7,
+              "std": 4.3,
+              "ci95": 10.7
+            }
+          }
+        },
+        {
+          "model": "minimax-m2-7",
+          "display": "MiniMax M2.7",
+          "provider": "MiniMax",
+          "avg": {
+            "mean": 57.6,
+            "std": 11.7,
+            "ci95": 29.1
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 52.7,
+              "std": 16.2,
+              "ci95": 40.2
+            },
+            "antenna_trap_high_def": {
+              "mean": 60.5,
+              "std": 9.6,
+              "ci95": 23.8
+            },
+            "antenna_trap_local_optima": {
+              "mean": 50.4,
+              "std": 29.3,
+              "ci95": 72.8
+            },
+            "antenna_trap_no_history": {
+              "mean": 64.8,
+              "std": 28.4,
+              "ci95": 70.5
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 78.6,
+              "std": 7.7,
+              "ci95": 19.1
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 69.7,
+              "std": 13.9,
+              "ci95": 34.5
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 55.3,
+              "std": 12.3,
+              "ci95": 30.6
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 60.6,
+              "std": 17.0,
+              "ci95": 42.2
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 50.2,
+              "std": 1.1,
+              "ci95": 2.7
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 62.0,
+              "std": 10.4,
+              "ci95": 25.8
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.4,
+              "std": 0.6,
+              "ci95": 1.5
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 65.9,
+              "std": 14.4,
+              "ci95": 35.8
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 33.1,
+              "std": 2.0,
+              "ci95": 5.0
+            },
+            "weather_noise": {
+              "mean": 31.0,
+              "std": 0.5,
+              "ci95": 1.2
+            }
+          }
+        },
+        {
+          "model": "grok-4.20",
+          "display": "Grok 4.20",
+          "provider": "xAI",
+          "avg": {
+            "mean": 54.7,
+            "std": 6.5,
+            "ci95": 16.1
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 54.0,
+              "std": 15.8,
+              "ci95": 39.2
+            },
+            "antenna_trap_high_def": {
+              "mean": 71.1,
+              "std": 2.8,
+              "ci95": 7.0
+            },
+            "antenna_trap_local_optima": {
+              "mean": 54.9,
+              "std": 16.4,
+              "ci95": 40.7
+            },
+            "antenna_trap_no_history": {
+              "mean": 72.7,
+              "std": 8.1,
+              "ci95": 20.1
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 72.3,
+              "std": 2.6,
+              "ci95": 6.5
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 64.3,
+              "std": 29.2,
+              "ci95": 72.5
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 50.2,
+              "std": 2.5,
+              "ci95": 6.2
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 50.7,
+              "std": 2.4,
+              "ci95": 6.0
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 49.6,
+              "std": 0.3,
+              "ci95": 0.7
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 51.0,
+              "std": 0.3,
+              "ci95": 0.7
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.1,
+              "std": 0.3,
+              "ci95": 0.7
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 50.4,
+              "std": 0.8,
+              "ci95": 2.0
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.3,
+              "std": 1.6,
+              "ci95": 4.0
+            },
+            "weather_noise": {
+              "mean": 21.5,
+              "std": 8.5,
+              "ci95": 21.1
+            }
+          }
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "display": "Gemini 3.1 Flash Lite",
+          "provider": "Google",
+          "avg": {
+            "mean": 49.5,
+            "std": 10.3,
+            "ci95": 25.6
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 50.0,
+              "std": 28.9,
+              "ci95": 71.8
+            },
+            "antenna_trap_high_def": {
+              "mean": 41.4,
+              "std": 6.2,
+              "ci95": 15.4
+            },
+            "antenna_trap_local_optima": {
+              "mean": 48.0,
+              "std": 16.6,
+              "ci95": 41.2
+            },
+            "antenna_trap_no_history": {
+              "mean": 47.1,
+              "std": 28.7,
+              "ci95": 71.3
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 64.8,
+              "std": 19.2,
+              "ci95": 47.7
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 56.0,
+              "std": 16.3,
+              "ci95": 40.5
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 52.5,
+              "std": 4.3,
+              "ci95": 10.7
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 52.3,
+              "std": 2.3,
+              "ci95": 5.7
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 51.9,
+              "std": 1.7,
+              "ci95": 4.2
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 56.8,
+              "std": 11.3,
+              "ci95": 28.1
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 70.5,
+              "std": 3.3,
+              "ci95": 8.2
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 50.5,
+              "std": 1.2,
+              "ci95": 3.0
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 33.4,
+              "std": 1.0,
+              "ci95": 2.5
+            },
+            "weather_noise": {
+              "mean": 18.1,
+              "std": 2.9,
+              "ci95": 7.2
+            }
+          }
+        }
+      ]
+    },
+    "prompting": {
+      "label": "Prompting",
+      "description": "All available data in a single context; the agent submits a design in one turn via code execution.",
+      "rows": [
+        {
+          "model": "claude-opus-4.7",
+          "display": "Claude Opus 4.7",
+          "provider": "Anthropic",
+          "avg": {
+            "mean": 68.6,
+            "std": 5.9,
+            "ci95": 14.7
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 72.5,
+              "std": 18.9,
+              "ci95": 47.0
+            },
+            "antenna_trap_high_def": {
+              "mean": 84.5,
+              "std": 1.2,
+              "ci95": 3.0
+            },
+            "antenna_trap_local_optima": {
+              "mean": 68.5,
+              "std": 17.8,
+              "ci95": 44.2
+            },
+            "antenna_trap_no_history": {
+              "mean": 83.3,
+              "std": 1.4,
+              "ci95": 3.5
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 82.6,
+              "std": 1.3,
+              "ci95": 3.2
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 80.9,
+              "std": 2.3,
+              "ci95": 5.7
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 76.1,
+              "std": 2.9,
+              "ci95": 7.2
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 60.9,
+              "std": 13.7,
+              "ci95": 34.0
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 70.9,
+              "std": 2.8,
+              "ci95": 7.0
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 73.7,
+              "std": 5.9,
+              "ci95": 14.7
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.1,
+              "std": 1.8,
+              "ci95": 4.5
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 75.5,
+              "std": 7.3,
+              "ci95": 18.1
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.0,
+              "std": 1.8,
+              "ci95": 4.5
+            },
+            "weather_noise": {
+              "mean": 27.7,
+              "std": 3.0,
+              "ci95": 7.5
+            }
+          }
+        },
+        {
+          "model": "claude-opus-4-5",
+          "display": "Claude Opus 4.5",
+          "provider": "Anthropic",
+          "avg": {
+            "mean": 67.6,
+            "std": 5.9,
+            "ci95": 14.7
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 77.5,
+              "std": 9.5,
+              "ci95": 23.6
+            },
+            "antenna_trap_high_def": {
+              "mean": 78.9,
+              "std": 5.6,
+              "ci95": 13.9
+            },
+            "antenna_trap_local_optima": {
+              "mean": 85.7,
+              "std": 3.1,
+              "ci95": 7.7
+            },
+            "antenna_trap_no_history": {
+              "mean": 72.3,
+              "std": 5.9,
+              "ci95": 14.7
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 74.7,
+              "std": 5.7,
+              "ci95": 14.2
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 64.1,
+              "std": 7.8,
+              "ci95": 19.4
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 75.9,
+              "std": 4.2,
+              "ci95": 10.4
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 72.6,
+              "std": 4.9,
+              "ci95": 12.2
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 66.0,
+              "std": 14.4,
+              "ci95": 35.8
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 71.2,
+              "std": 6.9,
+              "ci95": 17.1
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 72.2,
+              "std": 2.3,
+              "ci95": 5.7
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 77.8,
+              "std": 2.8,
+              "ci95": 7.0
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.1,
+              "std": 0.6,
+              "ci95": 1.5
+            },
+            "weather_noise": {
+              "mean": 25.4,
+              "std": 9.5,
+              "ci95": 23.6
+            }
+          }
+        },
+        {
+          "model": "qwen3.7-max",
+          "display": "Qwen3.7 Max",
+          "provider": "Alibaba Qwen",
+          "avg": {
+            "mean": 67.4,
+            "std": 8.0,
+            "ci95": 19.9
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 76.9,
+              "std": 8.5,
+              "ci95": 21.1
+            },
+            "antenna_trap_high_def": {
+              "mean": 69.6,
+              "std": 15.0,
+              "ci95": 37.3
+            },
+            "antenna_trap_local_optima": {
+              "mean": 78.3,
+              "std": 9.8,
+              "ci95": 24.3
+            },
+            "antenna_trap_no_history": {
+              "mean": 81.0,
+              "std": 5.1,
+              "ci95": 12.7
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 75.2,
+              "std": 7.3,
+              "ci95": 18.1
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 76.3,
+              "std": 7.8,
+              "ci95": 19.4
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 75.2,
+              "std": 6.8,
+              "ci95": 16.9
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 66.8,
+              "std": 16.1,
+              "ci95": 40.0
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 76.5,
+              "std": 5.0,
+              "ci95": 12.4
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 67.7,
+              "std": 16.1,
+              "ci95": 40.0
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 70.7,
+              "std": 1.3,
+              "ci95": 3.2
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 77.9,
+              "std": 1.5,
+              "ci95": 3.7
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.4,
+              "std": 1.1,
+              "ci95": 2.7
+            },
+            "weather_noise": {
+              "mean": 19.5,
+              "std": 10.1,
+              "ci95": 25.1
+            }
+          }
+        },
+        {
+          "model": "grok-4-1-fast",
+          "display": "Grok 4.1 Fast",
+          "provider": "xAI",
+          "avg": {
+            "mean": 66.3,
+            "std": 6.2,
+            "ci95": 15.4
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 68.7,
+              "std": 14.7,
+              "ci95": 36.5
+            },
+            "antenna_trap_high_def": {
+              "mean": 83.2,
+              "std": 0.8,
+              "ci95": 2.0
+            },
+            "antenna_trap_local_optima": {
+              "mean": 80.4,
+              "std": 10.2,
+              "ci95": 25.3
+            },
+            "antenna_trap_no_history": {
+              "mean": 68.6,
+              "std": 0.9,
+              "ci95": 2.2
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 83.2,
+              "std": 1.8,
+              "ci95": 4.5
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 68.3,
+              "std": 13.8,
+              "ci95": 34.3
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 70.9,
+              "std": 1.4,
+              "ci95": 3.5
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 62.3,
+              "std": 15.3,
+              "ci95": 38.0
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 72.0,
+              "std": 3.8,
+              "ci95": 9.4
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 73.7,
+              "std": 6.2,
+              "ci95": 15.4
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 70.6,
+              "std": 1.2,
+              "ci95": 3.0
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 66.8,
+              "std": 13.7,
+              "ci95": 34.0
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.4,
+              "std": 0.8,
+              "ci95": 2.0
+            },
+            "weather_noise": {
+              "mean": 27.0,
+              "std": 2.4,
+              "ci95": 6.0
+            }
+          }
+        },
+        {
+          "model": "kimi-k2.6",
+          "display": "Kimi K2.6",
+          "provider": "Moonshot AI",
+          "avg": {
+            "mean": 65.5,
+            "std": 6.5,
+            "ci95": 16.1
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 71.8,
+              "std": 18.2,
+              "ci95": 45.2
+            },
+            "antenna_trap_high_def": {
+              "mean": 75.3,
+              "std": 8.9,
+              "ci95": 22.1
+            },
+            "antenna_trap_local_optima": {
+              "mean": 83.2,
+              "std": 3.9,
+              "ci95": 9.7
+            },
+            "antenna_trap_no_history": {
+              "mean": 63.7,
+              "std": 2.7,
+              "ci95": 6.7
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 77.7,
+              "std": 1.5,
+              "ci95": 3.7
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 70.8,
+              "std": 8.9,
+              "ci95": 22.1
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 68.9,
+              "std": 16.5,
+              "ci95": 41.0
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 59.4,
+              "std": 14.5,
+              "ci95": 36.0
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 70.6,
+              "std": 0.7,
+              "ci95": 1.7
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 67.4,
+              "std": 5.6,
+              "ci95": 13.9
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 72.3,
+              "std": 2.5,
+              "ci95": 6.2
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 70.4,
+              "std": 4.7,
+              "ci95": 11.7
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 33.5,
+              "std": 0.9,
+              "ci95": 2.2
+            },
+            "weather_noise": {
+              "mean": 31.8,
+              "std": 1.5,
+              "ci95": 3.7
+            }
+          }
+        },
+        {
+          "model": "deepseek-v4-pro",
+          "display": "DeepSeek V4 Pro",
+          "provider": "DeepSeek",
+          "avg": {
+            "mean": 65.2,
+            "std": 8.2,
+            "ci95": 20.4
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 68.1,
+              "std": 15.2,
+              "ci95": 37.8
+            },
+            "antenna_trap_high_def": {
+              "mean": 80.7,
+              "std": 2.7,
+              "ci95": 6.7
+            },
+            "antenna_trap_local_optima": {
+              "mean": 83.7,
+              "std": 12.9,
+              "ci95": 32.0
+            },
+            "antenna_trap_no_history": {
+              "mean": 77.5,
+              "std": 6.3,
+              "ci95": 15.7
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 72.4,
+              "std": 8.9,
+              "ci95": 22.1
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 72.5,
+              "std": 17.3,
+              "ci95": 43.0
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 65.2,
+              "std": 14.3,
+              "ci95": 35.5
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 64.5,
+              "std": 11.6,
+              "ci95": 28.8
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 72.3,
+              "std": 3.6,
+              "ci95": 8.9
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 73.1,
+              "std": 3.2,
+              "ci95": 7.9
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.6,
+              "std": 0.6,
+              "ci95": 1.5
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 62.2,
+              "std": 15.0,
+              "ci95": 37.3
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 33.0,
+              "std": 1.3,
+              "ci95": 3.2
+            },
+            "weather_noise": {
+              "mean": 15.6,
+              "std": 1.4,
+              "ci95": 3.5
+            }
+          }
+        },
+        {
+          "model": "kimi-k2.5",
+          "display": "Kimi K2.5",
+          "provider": "Moonshot AI",
+          "avg": {
+            "mean": 64.5,
+            "std": 7.0,
+            "ci95": 17.4
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 77.0,
+              "std": 7.6,
+              "ci95": 18.9
+            },
+            "antenna_trap_high_def": {
+              "mean": 73.1,
+              "std": 7.4,
+              "ci95": 18.4
+            },
+            "antenna_trap_local_optima": {
+              "mean": 77.5,
+              "std": 4.0,
+              "ci95": 9.9
+            },
+            "antenna_trap_no_history": {
+              "mean": 76.9,
+              "std": 7.2,
+              "ci95": 17.9
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 75.0,
+              "std": 6.6,
+              "ci95": 16.4
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 55.3,
+              "std": 14.0,
+              "ci95": 34.8
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 56.9,
+              "std": 11.9,
+              "ci95": 29.6
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 62.6,
+              "std": 10.5,
+              "ci95": 26.1
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 72.2,
+              "std": 4.0,
+              "ci95": 9.9
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 67.7,
+              "std": 16.0,
+              "ci95": 39.7
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.8,
+              "std": 1.4,
+              "ci95": 3.5
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 72.5,
+              "std": 4.5,
+              "ci95": 11.2
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 33.7,
+              "std": 1.3,
+              "ci95": 3.2
+            },
+            "weather_noise": {
+              "mean": 31.3,
+              "std": 1.7,
+              "ci95": 4.2
+            }
+          }
+        },
+        {
+          "model": "glm-5.1",
+          "display": "GLM-5.1",
+          "provider": "Zhipu",
+          "avg": {
+            "mean": 64.2,
+            "std": 8.8,
+            "ci95": 21.9
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 72.0,
+              "std": 6.6,
+              "ci95": 16.4
+            },
+            "antenna_trap_high_def": {
+              "mean": 67.1,
+              "std": 11.8,
+              "ci95": 29.3
+            },
+            "antenna_trap_local_optima": {
+              "mean": 81.5,
+              "std": 10.0,
+              "ci95": 24.8
+            },
+            "antenna_trap_no_history": {
+              "mean": 74.5,
+              "std": 6.5,
+              "ci95": 16.1
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 75.6,
+              "std": 14.5,
+              "ci95": 36.0
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 65.8,
+              "std": 7.3,
+              "ci95": 18.1
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 70.7,
+              "std": 3.2,
+              "ci95": 7.9
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 63.3,
+              "std": 16.8,
+              "ci95": 41.7
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 65.2,
+              "std": 13.7,
+              "ci95": 34.0
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 75.4,
+              "std": 8.4,
+              "ci95": 20.9
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.0,
+              "std": 1.3,
+              "ci95": 3.2
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 65.3,
+              "std": 10.3,
+              "ci95": 25.6
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 33.1,
+              "std": 1.0,
+              "ci95": 2.5
+            },
+            "weather_noise": {
+              "mean": 17.8,
+              "std": 12.4,
+              "ci95": 30.8
+            }
+          }
+        },
+        {
+          "model": "claude-sonnet-4-5",
+          "display": "Claude Sonnet 4.5",
+          "provider": "Anthropic",
+          "avg": {
+            "mean": 63.7,
+            "std": 7.5,
+            "ci95": 18.6
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 65.3,
+              "std": 3.3,
+              "ci95": 8.2
+            },
+            "antenna_trap_high_def": {
+              "mean": 80.2,
+              "std": 6.7,
+              "ci95": 16.6
+            },
+            "antenna_trap_local_optima": {
+              "mean": 80.8,
+              "std": 9.4,
+              "ci95": 23.4
+            },
+            "antenna_trap_no_history": {
+              "mean": 61.2,
+              "std": 14.0,
+              "ci95": 34.8
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 76.1,
+              "std": 10.4,
+              "ci95": 25.8
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 66.4,
+              "std": 15.1,
+              "ci95": 37.5
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 66.0,
+              "std": 14.3,
+              "ci95": 35.5
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 68.0,
+              "std": 1.5,
+              "ci95": 3.7
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 67.5,
+              "std": 7.1,
+              "ci95": 17.6
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 74.0,
+              "std": 6.9,
+              "ci95": 17.1
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.5,
+              "std": 1.7,
+              "ci95": 4.2
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 65.8,
+              "std": 10.3,
+              "ci95": 25.6
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.3,
+              "std": 1.0,
+              "ci95": 2.5
+            },
+            "weather_noise": {
+              "mean": 17.1,
+              "std": 3.7,
+              "ci95": 9.2
+            }
+          }
+        },
+        {
+          "model": "gemini-3.5-flash",
+          "display": "Gemini 3.5 Flash",
+          "provider": "Google",
+          "avg": {
+            "mean": 63.0,
+            "std": 8.9,
+            "ci95": 22.1
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 74.5,
+              "std": 8.1,
+              "ci95": 20.1
+            },
+            "antenna_trap_high_def": {
+              "mean": 71.0,
+              "std": 6.9,
+              "ci95": 17.1
+            },
+            "antenna_trap_local_optima": {
+              "mean": 77.5,
+              "std": 9.3,
+              "ci95": 23.1
+            },
+            "antenna_trap_no_history": {
+              "mean": 68.9,
+              "std": 27.0,
+              "ci95": 67.1
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 73.5,
+              "std": 8.7,
+              "ci95": 21.6
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 63.2,
+              "std": 20.0,
+              "ci95": 49.7
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 51.9,
+              "std": 2.2,
+              "ci95": 5.5
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 69.2,
+              "std": 1.1,
+              "ci95": 2.7
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 66.3,
+              "std": 13.6,
+              "ci95": 33.8
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 62.8,
+              "std": 10.5,
+              "ci95": 26.1
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 70.7,
+              "std": 2.1,
+              "ci95": 5.2
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 75.2,
+              "std": 5.2,
+              "ci95": 12.9
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.6,
+              "std": 2.1,
+              "ci95": 5.2
+            },
+            "weather_noise": {
+              "mean": 24.0,
+              "std": 8.2,
+              "ci95": 20.4
+            }
+          }
+        },
+        {
+          "model": "hy3-preview",
+          "display": "HY3 Preview",
+          "provider": "Hunyuan",
+          "avg": {
+            "mean": 60.8,
+            "std": 9.5,
+            "ci95": 23.6
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 54.9,
+              "std": 20.4,
+              "ci95": 50.7
+            },
+            "antenna_trap_high_def": {
+              "mean": 73.3,
+              "std": 13.6,
+              "ci95": 33.8
+            },
+            "antenna_trap_local_optima": {
+              "mean": 80.5,
+              "std": 4.1,
+              "ci95": 10.2
+            },
+            "antenna_trap_no_history": {
+              "mean": 73.5,
+              "std": 2.8,
+              "ci95": 7.0
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 72.8,
+              "std": 9.1,
+              "ci95": 22.6
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 59.8,
+              "std": 11.7,
+              "ci95": 29.1
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 64.6,
+              "std": 13.4,
+              "ci95": 33.3
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 64.8,
+              "std": 12.4,
+              "ci95": 30.8
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 57.3,
+              "std": 10.8,
+              "ci95": 26.8
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 60.1,
+              "std": 13.0,
+              "ci95": 32.3
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.0,
+              "std": 1.8,
+              "ci95": 4.5
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 62.7,
+              "std": 8.6,
+              "ci95": 21.4
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.1,
+              "std": 2.4,
+              "ci95": 6.0
+            },
+            "weather_noise": {
+              "mean": 23.8,
+              "std": 8.4,
+              "ci95": 20.9
+            }
+          }
+        },
+        {
+          "model": "minimax-m2-1",
+          "display": "MiniMax M2.1",
+          "provider": "MiniMax",
+          "avg": {
+            "mean": 60.4,
+            "std": 8.9,
+            "ci95": 22.1
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 62.0,
+              "std": 12.2,
+              "ci95": 30.3
+            },
+            "antenna_trap_high_def": {
+              "mean": 77.7,
+              "std": 9.5,
+              "ci95": 23.6
+            },
+            "antenna_trap_local_optima": {
+              "mean": 80.2,
+              "std": 10.0,
+              "ci95": 24.8
+            },
+            "antenna_trap_no_history": {
+              "mean": 67.7,
+              "std": 17.1,
+              "ci95": 42.5
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 77.2,
+              "std": 7.8,
+              "ci95": 19.4
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 67.8,
+              "std": 33.3,
+              "ci95": 82.7
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 51.8,
+              "std": 1.5,
+              "ci95": 3.7
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 63.4,
+              "std": 11.1,
+              "ci95": 27.6
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 49.9,
+              "std": 1.2,
+              "ci95": 3.0
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 64.4,
+              "std": 13.2,
+              "ci95": 32.8
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 73.2,
+              "std": 0.1,
+              "ci95": 0.2
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 49.5,
+              "std": 1.9,
+              "ci95": 4.7
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 33.0,
+              "std": 0.3,
+              "ci95": 0.7
+            },
+            "weather_noise": {
+              "mean": 28.5,
+              "std": 4.8,
+              "ci95": 11.9
+            }
+          }
+        },
+        {
+          "model": "mimo-v2.5-pro",
+          "display": "MIMO V2.5 Pro",
+          "provider": "MIMO",
+          "avg": {
+            "mean": 60.3,
+            "std": 9.5,
+            "ci95": 23.6
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 67.4,
+              "std": 16.7,
+              "ci95": 41.5
+            },
+            "antenna_trap_high_def": {
+              "mean": 72.5,
+              "std": 10.9,
+              "ci95": 27.1
+            },
+            "antenna_trap_local_optima": {
+              "mean": 82.3,
+              "std": 11.1,
+              "ci95": 27.6
+            },
+            "antenna_trap_no_history": {
+              "mean": 65.7,
+              "std": 17.3,
+              "ci95": 43.0
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 70.5,
+              "std": 6.7,
+              "ci95": 16.6
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 67.0,
+              "std": 20.6,
+              "ci95": 51.2
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 64.0,
+              "std": 6.6,
+              "ci95": 16.4
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 59.1,
+              "std": 12.6,
+              "ci95": 31.3
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 62.7,
+              "std": 11.1,
+              "ci95": 27.6
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 59.3,
+              "std": 10.8,
+              "ci95": 26.8
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 70.3,
+              "std": 0.3,
+              "ci95": 0.7
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 51.3,
+              "std": 3.7,
+              "ci95": 9.2
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.0,
+              "std": 1.3,
+              "ci95": 3.2
+            },
+            "weather_noise": {
+              "mean": 20.1,
+              "std": 3.9,
+              "ci95": 9.7
+            }
+          }
+        },
+        {
+          "model": "gpt-5.5",
+          "display": "GPT-5.5",
+          "provider": "OpenAI",
+          "avg": {
+            "mean": 60.1,
+            "std": 6.7,
+            "ci95": 16.6
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 79.8,
+              "std": 6.8,
+              "ci95": 16.9
+            },
+            "antenna_trap_high_def": {
+              "mean": 75.6,
+              "std": 8.3,
+              "ci95": 20.6
+            },
+            "antenna_trap_local_optima": {
+              "mean": 62.9,
+              "std": 8.6,
+              "ci95": 21.4
+            },
+            "antenna_trap_no_history": {
+              "mean": 72.2,
+              "std": 18.3,
+              "ci95": 45.5
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 83.9,
+              "std": 0.5,
+              "ci95": 1.2
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 66.3,
+              "std": 14.1,
+              "ci95": 35.0
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 60.4,
+              "std": 14.0,
+              "ci95": 34.8
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 53.2,
+              "std": 2.7,
+              "ci95": 6.7
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 51.7,
+              "std": 1.4,
+              "ci95": 3.5
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 51.2,
+              "std": 1.4,
+              "ci95": 3.5
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.3,
+              "std": 2.0,
+              "ci95": 5.0
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 62.9,
+              "std": 11.5,
+              "ci95": 28.6
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 33.3,
+              "std": 1.2,
+              "ci95": 3.0
+            },
+            "weather_noise": {
+              "mean": 17.3,
+              "std": 2.5,
+              "ci95": 6.2
+            }
+          }
+        },
+        {
+          "model": "gpt-5.2-high",
+          "display": "GPT-5.2 High",
+          "provider": "OpenAI",
+          "avg": {
+            "mean": 60.0,
+            "std": 6.4,
+            "ci95": 15.9
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 76.2,
+              "std": 6.6,
+              "ci95": 16.4
+            },
+            "antenna_trap_high_def": {
+              "mean": 72.6,
+              "std": 9.3,
+              "ci95": 23.1
+            },
+            "antenna_trap_local_optima": {
+              "mean": 75.6,
+              "std": 6.2,
+              "ci95": 15.4
+            },
+            "antenna_trap_no_history": {
+              "mean": 68.8,
+              "std": 0.9,
+              "ci95": 2.2
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 51.3,
+              "std": 14.4,
+              "ci95": 35.8
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 63.4,
+              "std": 12.0,
+              "ci95": 29.8
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 60.0,
+              "std": 11.1,
+              "ci95": 27.6
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 56.2,
+              "std": 12.2,
+              "ci95": 30.3
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 72.6,
+              "std": 2.6,
+              "ci95": 6.5
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 58.1,
+              "std": 9.6,
+              "ci95": 23.8
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.9,
+              "std": 1.3,
+              "ci95": 3.2
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 50.4,
+              "std": 1.5,
+              "ci95": 3.7
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.3,
+              "std": 0.8,
+              "ci95": 2.0
+            },
+            "weather_noise": {
+              "mean": 30.6,
+              "std": 1.5,
+              "ci95": 3.7
+            }
+          }
+        },
+        {
+          "model": "minimax-m2",
+          "display": "MiniMax M2",
+          "provider": "MiniMax",
+          "avg": {
+            "mean": 60.0,
+            "std": 7.6,
+            "ci95": 18.9
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 77.9,
+              "std": 6.5,
+              "ci95": 16.1
+            },
+            "antenna_trap_high_def": {
+              "mean": 70.0,
+              "std": 19.8,
+              "ci95": 49.2
+            },
+            "antenna_trap_local_optima": {
+              "mean": 75.1,
+              "std": 7.0,
+              "ci95": 17.4
+            },
+            "antenna_trap_no_history": {
+              "mean": 72.6,
+              "std": 9.8,
+              "ci95": 24.3
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 73.1,
+              "std": 6.6,
+              "ci95": 16.4
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 49.7,
+              "std": 28.2,
+              "ci95": 70.1
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 57.5,
+              "std": 10.8,
+              "ci95": 26.8
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 69.3,
+              "std": 1.1,
+              "ci95": 2.7
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 51.5,
+              "std": 2.6,
+              "ci95": 6.5
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 57.2,
+              "std": 10.3,
+              "ci95": 25.6
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 72.4,
+              "std": 1.1,
+              "ci95": 2.7
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 49.7,
+              "std": 0.3,
+              "ci95": 0.7
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 33.0,
+              "std": 1.5,
+              "ci95": 3.7
+            },
+            "weather_noise": {
+              "mean": 30.3,
+              "std": 0.9,
+              "ci95": 2.2
+            }
+          }
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "display": "Gemini 3.1 Flash Lite",
+          "provider": "Google",
+          "avg": {
+            "mean": 59.9,
+            "std": 3.8,
+            "ci95": 9.4
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 64.5,
+              "std": 9.0,
+              "ci95": 22.4
+            },
+            "antenna_trap_high_def": {
+              "mean": 83.0,
+              "std": 1.5,
+              "ci95": 3.7
+            },
+            "antenna_trap_local_optima": {
+              "mean": 77.6,
+              "std": 9.9,
+              "ci95": 24.6
+            },
+            "antenna_trap_no_history": {
+              "mean": 68.7,
+              "std": 2.4,
+              "ci95": 6.0
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 81.7,
+              "std": 2.0,
+              "ci95": 5.0
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 83.3,
+              "std": 0.3,
+              "ci95": 0.7
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 49.8,
+              "std": 0.8,
+              "ci95": 2.0
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 53.2,
+              "std": 6.4,
+              "ci95": 15.9
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 51.7,
+              "std": 2.7,
+              "ci95": 6.7
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 51.0,
+              "std": 3.3,
+              "ci95": 8.2
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.5,
+              "std": 2.9,
+              "ci95": 7.2
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 53.3,
+              "std": 3.0,
+              "ci95": 7.5
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.7,
+              "std": 1.6,
+              "ci95": 4.0
+            },
+            "weather_noise": {
+              "mean": 16.0,
+              "std": 8.0,
+              "ci95": 19.9
+            }
+          }
+        },
+        {
+          "model": "minimax-m2-7",
+          "display": "MiniMax M2.7",
+          "provider": "MiniMax",
+          "avg": {
+            "mean": 59.2,
+            "std": 10.3,
+            "ci95": 25.6
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 78.6,
+              "std": 7.3,
+              "ci95": 18.1
+            },
+            "antenna_trap_high_def": {
+              "mean": 56.9,
+              "std": 13.5,
+              "ci95": 33.5
+            },
+            "antenna_trap_local_optima": {
+              "mean": 65.2,
+              "std": 33.3,
+              "ci95": 82.7
+            },
+            "antenna_trap_no_history": {
+              "mean": 61.2,
+              "std": 8.2,
+              "ci95": 20.4
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 78.4,
+              "std": 9.6,
+              "ci95": 23.8
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 66.0,
+              "std": 16.7,
+              "ci95": 41.5
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 55.7,
+              "std": 11.6,
+              "ci95": 28.8
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 50.0,
+              "std": 0.7,
+              "ci95": 1.7
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 56.7,
+              "std": 12.3,
+              "ci95": 30.6
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 64.2,
+              "std": 13.9,
+              "ci95": 34.5
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.4,
+              "std": 0.6,
+              "ci95": 1.5
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 63.0,
+              "std": 12.4,
+              "ci95": 30.8
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 34.0,
+              "std": 1.4,
+              "ci95": 3.5
+            },
+            "weather_noise": {
+              "mean": 27.6,
+              "std": 2.3,
+              "ci95": 5.7
+            }
+          }
+        },
+        {
+          "model": "gpt-5.5-high",
+          "display": "GPT-5.5 High",
+          "provider": "OpenAI",
+          "avg": {
+            "mean": 58.4,
+            "std": 12.2,
+            "ci95": 30.3
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 72.1,
+              "std": 9.7,
+              "ci95": 24.1
+            },
+            "antenna_trap_high_def": {
+              "mean": 74.1,
+              "std": 7.9,
+              "ci95": 19.6
+            },
+            "antenna_trap_local_optima": {
+              "mean": 78.3,
+              "std": 9.1,
+              "ci95": 22.6
+            },
+            "antenna_trap_no_history": {
+              "mean": 56.1,
+              "std": 23.4,
+              "ci95": 58.1
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 72.8,
+              "std": 16.9,
+              "ci95": 42.0
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 51.6,
+              "std": 32.4,
+              "ci95": 80.5
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 61.3,
+              "std": 15.8,
+              "ci95": 39.2
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 60.8,
+              "std": 12.7,
+              "ci95": 31.5
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 58.6,
+              "std": 10.6,
+              "ci95": 26.3
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 57.8,
+              "std": 11.9,
+              "ci95": 29.6
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.2,
+              "std": 2.2,
+              "ci95": 5.5
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 51.2,
+              "std": 1.3,
+              "ci95": 3.2
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 31.0,
+              "std": 1.3,
+              "ci95": 3.2
+            },
+            "weather_noise": {
+              "mean": 20.0,
+              "std": 16.0,
+              "ci95": 39.7
+            }
+          }
+        },
+        {
+          "model": "gpt-5.5-xhigh",
+          "display": "GPT-5.5 XHigh",
+          "provider": "OpenAI",
+          "avg": {
+            "mean": 58.4,
+            "std": 8.5,
+            "ci95": 21.1
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 82.1,
+              "std": 2.2,
+              "ci95": 5.5
+            },
+            "antenna_trap_high_def": {
+              "mean": 72.4,
+              "std": 3.1,
+              "ci95": 7.7
+            },
+            "antenna_trap_local_optima": {
+              "mean": 64.3,
+              "std": 12.6,
+              "ci95": 31.3
+            },
+            "antenna_trap_no_history": {
+              "mean": 72.9,
+              "std": 19.4,
+              "ci95": 48.2
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 77.5,
+              "std": 9.0,
+              "ci95": 22.4
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 48.8,
+              "std": 28.1,
+              "ci95": 69.8
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 50.9,
+              "std": 0.4,
+              "ci95": 1.0
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 52.9,
+              "std": 5.5,
+              "ci95": 13.7
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 64.0,
+              "std": 11.7,
+              "ci95": 29.1
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 52.0,
+              "std": 2.3,
+              "ci95": 5.7
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.7,
+              "std": 2.6,
+              "ci95": 6.5
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 58.3,
+              "std": 9.6,
+              "ci95": 23.8
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.0,
+              "std": 2.6,
+              "ci95": 6.5
+            },
+            "weather_noise": {
+              "mean": 18.5,
+              "std": 9.9,
+              "ci95": 24.6
+            }
+          }
+        },
+        {
+          "model": "gpt-5-mini",
+          "display": "GPT-5 Mini",
+          "provider": "OpenAI",
+          "avg": {
+            "mean": 58.3,
+            "std": 11.4,
+            "ci95": 28.3
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 68.9,
+              "std": 15.0,
+              "ci95": 37.3
+            },
+            "antenna_trap_high_def": {
+              "mean": 57.5,
+              "std": 20.7,
+              "ci95": 51.4
+            },
+            "antenna_trap_local_optima": {
+              "mean": 69.8,
+              "std": 30.4,
+              "ci95": 75.5
+            },
+            "antenna_trap_no_history": {
+              "mean": 73.6,
+              "std": 8.2,
+              "ci95": 20.4
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 72.9,
+              "std": 11.5,
+              "ci95": 28.6
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 74.0,
+              "std": 9.0,
+              "ci95": 22.4
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 52.1,
+              "std": 5.8,
+              "ci95": 14.4
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 60.8,
+              "std": 16.0,
+              "ci95": 39.7
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 56.8,
+              "std": 10.8,
+              "ci95": 26.8
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 56.2,
+              "std": 11.3,
+              "ci95": 28.1
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 72.0,
+              "std": 1.4,
+              "ci95": 3.5
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 49.7,
+              "std": 1.5,
+              "ci95": 3.7
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 31.3,
+              "std": 0.9,
+              "ci95": 2.2
+            },
+            "weather_noise": {
+              "mean": 20.9,
+              "std": 17.1,
+              "ci95": 42.5
+            }
+          }
+        },
+        {
+          "model": "deepseek-v3.2",
+          "display": "DeepSeek V3.2",
+          "provider": "DeepSeek",
+          "avg": {
+            "mean": 58.2,
+            "std": 7.7,
+            "ci95": 19.1
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 61.4,
+              "std": 4.1,
+              "ci95": 10.2
+            },
+            "antenna_trap_high_def": {
+              "mean": 48.7,
+              "std": 24.7,
+              "ci95": 61.4
+            },
+            "antenna_trap_local_optima": {
+              "mean": 79.8,
+              "std": 5.5,
+              "ci95": 13.7
+            },
+            "antenna_trap_no_history": {
+              "mean": 75.7,
+              "std": 7.3,
+              "ci95": 18.1
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 80.3,
+              "std": 13.3,
+              "ci95": 33.0
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 30.6,
+              "std": 1.4,
+              "ci95": 3.5
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 57.7,
+              "std": 10.1,
+              "ci95": 25.1
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 56.7,
+              "std": 12.4,
+              "ci95": 30.8
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 62.9,
+              "std": 9.6,
+              "ci95": 23.8
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 66.0,
+              "std": 2.5,
+              "ci95": 6.2
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.5,
+              "std": 1.7,
+              "ci95": 4.2
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 64.5,
+              "std": 10.6,
+              "ci95": 26.3
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 31.6,
+              "std": 1.0,
+              "ci95": 2.5
+            },
+            "weather_noise": {
+              "mean": 27.5,
+              "std": 3.7,
+              "ci95": 9.2
+            }
+          }
+        },
+        {
+          "model": "grok-4.20",
+          "display": "Grok 4.20",
+          "provider": "xAI",
+          "avg": {
+            "mean": 58.1,
+            "std": 7.1,
+            "ci95": 17.6
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 79.1,
+              "std": 8.8,
+              "ci95": 21.9
+            },
+            "antenna_trap_high_def": {
+              "mean": 70.7,
+              "std": 7.1,
+              "ci95": 17.6
+            },
+            "antenna_trap_local_optima": {
+              "mean": 57.6,
+              "std": 13.8,
+              "ci95": 34.3
+            },
+            "antenna_trap_no_history": {
+              "mean": 69.1,
+              "std": 11.7,
+              "ci95": 29.1
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 73.7,
+              "std": 6.2,
+              "ci95": 15.4
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 58.4,
+              "std": 8.3,
+              "ci95": 20.6
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 56.9,
+              "std": 12.6,
+              "ci95": 31.3
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 61.9,
+              "std": 10.6,
+              "ci95": 26.3
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 50.2,
+              "std": 0.5,
+              "ci95": 1.2
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 50.7,
+              "std": 2.4,
+              "ci95": 6.0
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.6,
+              "std": 1.0,
+              "ci95": 2.5
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 58.2,
+              "std": 9.7,
+              "ci95": 24.1
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 30.9,
+              "std": 1.3,
+              "ci95": 3.2
+            },
+            "weather_noise": {
+              "mean": 24.2,
+              "std": 5.4,
+              "ci95": 13.4
+            }
+          }
+        },
+        {
+          "model": "gpt-oss-120b",
+          "display": "GPT-OSS-120B",
+          "provider": "OpenAI",
+          "avg": {
+            "mean": 57.9,
+            "std": 7.7,
+            "ci95": 19.1
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 61.3,
+              "std": 19.2,
+              "ci95": 47.7
+            },
+            "antenna_trap_high_def": {
+              "mean": 73.5,
+              "std": 10.0,
+              "ci95": 24.8
+            },
+            "antenna_trap_local_optima": {
+              "mean": 82.4,
+              "std": 10.9,
+              "ci95": 27.1
+            },
+            "antenna_trap_no_history": {
+              "mean": 66.2,
+              "std": 17.7,
+              "ci95": 44.0
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 62.6,
+              "std": 22.0,
+              "ci95": 54.7
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 52.7,
+              "std": 1.0,
+              "ci95": 2.5
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 50.1,
+              "std": 0.9,
+              "ci95": 2.2
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 49.7,
+              "std": 0.5,
+              "ci95": 1.2
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 55.1,
+              "std": 5.6,
+              "ci95": 13.9
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 70.9,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 65.1,
+              "std": 12.3,
+              "ci95": 30.6
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 73.4,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 34.0,
+              "std": 3.2,
+              "ci95": 7.9
+            },
+            "weather_noise": {
+              "mean": 13.1,
+              "std": 4.9,
+              "ci95": 12.2
+            }
+          }
+        },
+        {
+          "model": "deepseek-v4-flash",
+          "display": "DeepSeek V4 Flash",
+          "provider": "DeepSeek",
+          "avg": {
+            "mean": 57.6,
+            "std": 12.2,
+            "ci95": 30.3
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 62.8,
+              "std": 6.9,
+              "ci95": 17.1
+            },
+            "antenna_trap_high_def": {
+              "mean": 63.3,
+              "std": 21.1,
+              "ci95": 52.4
+            },
+            "antenna_trap_local_optima": {
+              "mean": 62.4,
+              "std": 23.0,
+              "ci95": 57.1
+            },
+            "antenna_trap_no_history": {
+              "mean": 71.2,
+              "std": 4.1,
+              "ci95": 10.2
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 57.8,
+              "std": 19.0,
+              "ci95": 47.2
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 66.1,
+              "std": 34.4,
+              "ci95": 85.5
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 61.9,
+              "std": 14.2,
+              "ci95": 35.3
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 50.9,
+              "std": 1.5,
+              "ci95": 3.7
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 66.5,
+              "std": 15.3,
+              "ci95": 38.0
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 51.9,
+              "std": 4.1,
+              "ci95": 10.2
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.9,
+              "std": 1.8,
+              "ci95": 4.5
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 66.7,
+              "std": 12.5,
+              "ci95": 31.1
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.1,
+              "std": 1.4,
+              "ci95": 3.5
+            },
+            "weather_noise": {
+              "mean": 20.8,
+              "std": 11.2,
+              "ci95": 27.8
+            }
+          }
+        },
+        {
+          "model": "gpt-5.2",
+          "display": "GPT-5.2",
+          "provider": "OpenAI",
+          "avg": {
+            "mean": 57.2,
+            "std": 10.0,
+            "ci95": 24.8
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 61.8,
+              "std": 24.3,
+              "ci95": 60.4
+            },
+            "antenna_trap_high_def": {
+              "mean": 63.1,
+              "std": 13.7,
+              "ci95": 34.0
+            },
+            "antenna_trap_local_optima": {
+              "mean": 77.0,
+              "std": 7.5,
+              "ci95": 18.6
+            },
+            "antenna_trap_no_history": {
+              "mean": 60.8,
+              "std": 22.9,
+              "ci95": 56.9
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 74.5,
+              "std": 13.2,
+              "ci95": 32.8
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 48.3,
+              "std": 20.2,
+              "ci95": 50.2
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 50.4,
+              "std": 1.5,
+              "ci95": 3.7
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 57.6,
+              "std": 9.5,
+              "ci95": 23.6
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 51.6,
+              "std": 2.6,
+              "ci95": 6.5
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 64.7,
+              "std": 11.8,
+              "ci95": 29.3
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.5,
+              "std": 1.8,
+              "ci95": 4.5
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 57.1,
+              "std": 9.2,
+              "ci95": 22.9
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 33.2,
+              "std": 1.5,
+              "ci95": 3.7
+            },
+            "weather_noise": {
+              "mean": 29.8,
+              "std": 0.6,
+              "ci95": 1.5
+            }
+          }
+        },
+        {
+          "model": "glm-4.7",
+          "display": "GLM-4.7",
+          "provider": "Zhipu",
+          "avg": {
+            "mean": 57.0,
+            "std": 7.1,
+            "ci95": 17.6
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 67.1,
+              "std": 4.2,
+              "ci95": 10.4
+            },
+            "antenna_trap_high_def": {
+              "mean": 75.3,
+              "std": 8.8,
+              "ci95": 21.9
+            },
+            "antenna_trap_local_optima": {
+              "mean": 65.8,
+              "std": 30.8,
+              "ci95": 76.5
+            },
+            "antenna_trap_no_history": {
+              "mean": 54.6,
+              "std": 10.3,
+              "ci95": 25.6
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 59.6,
+              "std": 6.2,
+              "ci95": 15.4
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 79.0,
+              "std": 7.8,
+              "ci95": 19.4
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 49.9,
+              "std": 2.5,
+              "ci95": 6.2
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 55.6,
+              "std": 10.4,
+              "ci95": 25.8
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 56.9,
+              "std": 10.8,
+              "ci95": 26.8
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 50.5,
+              "std": 2.6,
+              "ci95": 6.5
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 72.1,
+              "std": 0.9,
+              "ci95": 2.2
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 49.4,
+              "std": 0.4,
+              "ci95": 1.0
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.1,
+              "std": 0.7,
+              "ci95": 1.7
+            },
+            "weather_noise": {
+              "mean": 30.4,
+              "std": 2.5,
+              "ci95": 6.2
+            }
+          }
+        },
+        {
+          "model": "mimo-v2-flash",
+          "display": "MIMO V2 Flash",
+          "provider": "MIMO",
+          "avg": {
+            "mean": 56.1,
+            "std": 8.6,
+            "ci95": 21.4
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 53.7,
+              "std": 13.0,
+              "ci95": 32.3
+            },
+            "antenna_trap_high_def": {
+              "mean": 60.9,
+              "std": 21.0,
+              "ci95": 52.2
+            },
+            "antenna_trap_local_optima": {
+              "mean": 83.7,
+              "std": 2.6,
+              "ci95": 6.5
+            },
+            "antenna_trap_no_history": {
+              "mean": 74.8,
+              "std": 7.7,
+              "ci95": 19.1
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 65.4,
+              "std": 12.4,
+              "ci95": 30.8
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 47.1,
+              "std": 21.3,
+              "ci95": 52.9
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 49.8,
+              "std": 2.2,
+              "ci95": 5.5
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 53.4,
+              "std": 3.7,
+              "ci95": 9.2
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 56.5,
+              "std": 11.4,
+              "ci95": 28.3
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 54.7,
+              "std": 8.3,
+              "ci95": 20.6
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 72.3,
+              "std": 1.0,
+              "ci95": 2.5
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 56.7,
+              "std": 11.7,
+              "ci95": 29.1
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 33.5,
+              "std": 1.6,
+              "ci95": 4.0
+            },
+            "weather_noise": {
+              "mean": 22.8,
+              "std": 1.9,
+              "ci95": 4.7
+            }
+          }
+        },
+        {
+          "model": "deepseek-v3.2-think",
+          "display": "DeepSeek V3.2 Think",
+          "provider": "DeepSeek",
+          "avg": {
+            "mean": 55.7,
+            "std": 7.8,
+            "ci95": 19.4
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 64.8,
+              "std": 11.5,
+              "ci95": 28.6
+            },
+            "antenna_trap_high_def": {
+              "mean": 45.7,
+              "std": 9.4,
+              "ci95": 23.4
+            },
+            "antenna_trap_local_optima": {
+              "mean": 71.2,
+              "std": 1.0,
+              "ci95": 2.5
+            },
+            "antenna_trap_no_history": {
+              "mean": 59.5,
+              "std": 9.9,
+              "ci95": 24.6
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 78.1,
+              "std": 8.2,
+              "ci95": 20.4
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 55.4,
+              "std": 17.9,
+              "ci95": 44.5
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 63.2,
+              "std": 11.3,
+              "ci95": 28.1
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 57.1,
+              "std": 11.2,
+              "ci95": 27.8
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 50.6,
+              "std": 1.9,
+              "ci95": 4.7
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 58.3,
+              "std": 14.2,
+              "ci95": 35.3
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 71.8,
+              "std": 1.1,
+              "ci95": 2.7
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 51.2,
+              "std": 2.6,
+              "ci95": 6.5
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 32.9,
+              "std": 1.9,
+              "ci95": 4.7
+            },
+            "weather_noise": {
+              "mean": 20.6,
+              "std": 7.8,
+              "ci95": 19.4
+            }
+          }
+        }
+      ]
+    }
+  }
+}

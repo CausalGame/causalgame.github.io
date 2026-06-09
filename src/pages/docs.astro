@@ -1,0 +1,224 @@
+---
+import Base from '../layouts/Base.astro';
+import data from '../data/leaderboard.json';
+
+const CODE_URL = 'https://github.com/viewsetting/CausalGame';
+const scenarios = data.meta.scenarios;
+---
+
+<Base title="Docs — CausalGame">
+  <main class="container">
+    <h1 style="margin-top:2rem">Documentation</h1>
+
+    <h2 id="overview">What is CausalGame?</h2>
+    <p>
+      CausalGame evaluates the <em>causal thinking</em> of LLM agents through interactive
+      games. The agent acts as a drone designer who must figure out the hidden causal
+      mechanism behind drone survival through a limited budget of experiments — under
+      observations that are <strong>censored by survivorship</strong>,
+      <strong>confounded by hidden variables</strong>, and
+      <strong>corrupted by noise</strong>.
+    </p>
+    <p>
+      The agent allocates defense values (DEF) across seven components —
+      <code>engine</code>, <code>wing</code>, <code>body</code>, <code>cockpit</code>,
+      <code>antenna</code>, <code>camera</code>, <code>gun</code> — and can only observe
+      the damaged conditions of <em>surviving</em> drones. Every scenario is governed by an
+      underlying <strong>structural causal model (SCM)</strong>: the agent can only win by
+      recovering the true causal mechanism rather than fitting surface-level correlations.
+    </p>
+
+    <h3>Game protocol</h3>
+    <table class="simple">
+      <tbody>
+        <tr>
+          <th>Stage 1 — Exploration</th>
+          <td>
+            Budget of <strong>200 drones</strong> and up to <strong>10 deployment
+            calls</strong>. Each call deploys a batch with a chosen design and returns
+            survival outcomes plus partial observations. Historical observations are
+            optionally available at the start.
+          </td>
+        </tr>
+        <tr>
+          <th>Stage 2 — Evaluation</th>
+          <td>
+            The agent submits a <strong>single final design</strong>, evaluated on a fleet
+            of <strong>1,000 drones</strong>. A <em>win</em> means exceeding the
+            scenario-specific threshold, set ~5–8% below the theoretical optimum.
+          </td>
+        </tr>
+        <tr>
+          <th>Report</th>
+          <td>
+            The agent also submits a natural-language report explaining its design based on
+            collected evidence; the report is scored against the true SCM with a rubric.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="scenarios">The 14 scenarios</h2>
+    <table class="simple">
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>Family</th>
+          <th>Selection bias</th>
+          <th>Hidden confounder</th>
+          <th>Threshold</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          scenarios.map((s: any) => (
+            <tr>
+              <td><code>{s.id}</code></td>
+              <td>{s.family}</td>
+              <td>{s.selection_bias ? <span class="check">✓</span> : '—'}</td>
+              <td>{s.hidden_confounder ? <span class="check">✓</span> : '—'}</td>
+              <td class="num">{s.threshold}%</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+
+    <h3>Antenna Trap family</h3>
+    <p>
+      A latent weather pattern affects both antenna damage and detection risk. Historical
+      data shows drones with higher antenna DEF survive better — a spurious correlation.
+      The true mechanism: a <em>functional</em> antenna emits signals that increase enemy
+      detection, leading to combat and destruction. The optimal strategy is
+      <code>antenna_def = 0</code>: storms destroy the antenna early, activating "stealth
+      mode" and dramatically reducing detection (~82% survival). Variants add DEF-allocation
+      pressure, local optima, no history, a no-selection-bias control, and Simpson's
+      paradox.
+    </p>
+
+    <h3>Deployment Zone Trap family</h3>
+    <p>
+      Inspired by <em>Farr's Cholera Paradox</em>: altitude appeared protective against
+      cholera when the true cause was water contamination at low elevations. Here an
+      unobserved mission zone jointly determines a visible altitude band and a hidden EMI
+      level that actually drives communication failure. Agents who chase the
+      altitude–survival correlation upgrade engines in vain; the optimal strategy is
+      <code>shield_def = 25</code> plus the <code>signal_filter</code> enhancement module
+      (~80% survival). The categorical variant requires choosing 1 of 5 modules — only
+      <code>signal_filter</code> provides EMI protection.
+    </p>
+
+    <h3>Weather family</h3>
+    <p>
+      <code>weather_noise</code> adds weather-dependent observation noise (20% in rain, 5%
+      in clear conditions) and an environment shift between exploration and evaluation:
+      the Stage-1 optimum reverses under the Stage-2 weather distribution. Agents must
+      separate genuine causal structure from measurement artifacts (~78% optimal, 55%
+      threshold).
+    </p>
+
+    <h2 id="modes">Execution modes</h2>
+    <table class="simple">
+      <thead>
+        <tr>
+          <th>Aspect</th>
+          <th>Agentic (ReAct)</th>
+          <th>Prompting</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>API operations</td>
+          <td>Structured tool calling</td>
+          <td>Python code with <code>client.xxx()</code></td>
+        </tr>
+        <tr>
+          <td>Data analysis</td>
+          <td>Sandboxed Python execution</td>
+          <td>Full code execution</td>
+        </tr>
+        <tr>
+          <td>Reasoning</td>
+          <td>Mandatory ReAct pattern (thought → action → observation)</td>
+          <td>Optional</td>
+        </tr>
+        <tr>
+          <td>Exploration guard</td>
+          <td>Must deploy before submitting</td>
+          <td>None</td>
+        </tr>
+        <tr>
+          <td>Tool limit</td>
+          <td>Max 5 tools per turn</td>
+          <td>Unlimited API calls</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note">
+      A third mode evaluated in the paper, <strong>OpenCode</strong>, runs a full
+      coding-agent framework against the same environment — see the
+      <a href="/leaderboard/">leaderboard</a> for the comparison.
+    </p>
+
+    <h2 id="rubric">Rubric-based evaluation</h2>
+    <p>
+      Beyond survival rate, every session is scored by an LLM judge panel along four
+      dimensions (16 points total):
+    </p>
+    <table class="simple">
+      <thead>
+        <tr><th>Dimension</th><th>Points</th><th>What it measures</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Causal reasoning</td>
+          <td class="num">11</td>
+          <td>Identifies the true mechanism, avoids traps, articulates explicit causal chains</td>
+        </tr>
+        <tr>
+          <td>Experimental design</td>
+          <td class="num">2</td>
+          <td>Backs conclusions with concrete experimental evidence</td>
+        </tr>
+        <tr>
+          <td>Reflection quality</td>
+          <td class="num">2</td>
+          <td>Identifies concrete errors, blind spots, unverified assumptions</td>
+        </tr>
+        <tr>
+          <td>Data usage</td>
+          <td class="num">1</td>
+          <td>Links specific observed data to each claim</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note">
+      Three independent judge models score each session; inter-rater agreement is high
+      (mean ICC(2,3) = 0.75).
+    </p>
+
+    <h2 id="getting-started">Getting started</h2>
+    <p>
+      The benchmark code (simulation engine, agent harness, all 14 scenario configs) lives
+      at <a href={CODE_URL} target="_blank" rel="noopener">{CODE_URL}</a>.
+    </p>
+    <pre><code>git clone {CODE_URL}.git
+cd CausalGame
+pip install -r requirements.txt
+
+# start the simulation backend
+uvicorn api.app:app --port 8000
+
+# run one agent on one scenario
+python run_agent.py --model &lt;model-name&gt; --experiment antenna_trap</code></pre>
+    <p class="note">
+      You will need API keys for the model providers you want to evaluate (see the
+      repository README for configuration details).
+    </p>
+
+    <h2 id="cite">Citing CausalGame</h2>
+    <p>
+      See the <a href="/#citation">citation block on the home page</a> for BibTeX.
+    </p>
+  </main>
+</Base>
