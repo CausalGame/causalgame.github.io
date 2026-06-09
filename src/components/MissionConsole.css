@@ -9,6 +9,37 @@
   box-shadow: 0 10px 30px rgba(13, 17, 23, 0.25);
 }
 
+.mc-tabs {
+  display: flex;
+  gap: 0;
+  background: #010409;
+  border-bottom: 1px solid #30363d;
+  overflow-x: auto;
+}
+
+.mc-tabs button {
+  background: none;
+  border: none;
+  border-right: 1px solid #21262d;
+  color: #8b949e;
+  font-family: inherit;
+  font-size: 0.76rem;
+  padding: 0.55rem 1rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s, background 0.2s;
+}
+
+.mc-tabs button:hover {
+  color: #c9d1d9;
+}
+
+.mc-tabs button.active {
+  color: #fbbf24;
+  background: #161b22;
+  box-shadow: inset 0 -2px 0 #fbbf24;
+}
+
 .mc-bar {
   display: flex;
   align-items: center;

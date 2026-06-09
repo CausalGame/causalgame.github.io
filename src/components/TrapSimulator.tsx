@@ -21,6 +21,8 @@ function simulateDrone(antennaDef: number, otherDef: number): boolean {
     : 0.3 * baseDetect;
 
   if (Math.random() < pDetect) {
+    // combat only happens when detected; armor on the other components
+    // mitigates it slightly — the antenna is what decides your fate
     const intensity = storm ? 4.0 : 0.3;
     let pKilled = Math.min(0.92, 0.22 + 0.15 * intensity);
     pKilled *= 1 - (0.18 * otherDef) / 50;
@@ -138,7 +140,11 @@ export default function TrapSimulator() {
             </span>
           ))}
           <span style={{ marginLeft: 'auto' }}>
-            hint: what happens at <b>antenna_def = 0</b>?
+            {antennaDef > 10 ? (
+              <>hint: what happens at <b>antenna_def = 0</b>?</>
+            ) : (
+              <>that's the causal mechanism: a dead antenna can't be detected 🎉 — notice how little the other armor matters.</>
+            )}
           </span>
         </div>
       )}
