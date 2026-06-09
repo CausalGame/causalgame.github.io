@@ -3,6 +3,7 @@ import './TrapSimulator.css';
 
 const N = 200;
 const THRESHOLD = 75;
+const OPTIMAL = 82;
 
 /**
  * Simplified, illustrative version of the antenna_trap SCM (the real engine
@@ -120,6 +121,11 @@ export default function TrapSimulator() {
                 style={{ width: `${rate ?? 0}%` }}
               />
               <div className="mark" style={{ left: `${THRESHOLD}%` }} title="75% win threshold" />
+              <div className="mark opt" style={{ left: `${OPTIMAL}%` }} title="~82% optimal (antenna_def = 0)" />
+            </div>
+            <div className="ts-legend">
+              <span><i className="sw thr" /> win threshold {THRESHOLD}%</span>
+              <span><i className="sw opt" /> optimal ~{OPTIMAL}%</span>
             </div>
           </div>
         </div>

@@ -154,6 +154,35 @@
   background: #b4232c;
 }
 
+.ts-thresh .mark.opt {
+  background: #1a7f37;
+}
+
+.ts-legend {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.45rem;
+  font-size: 0.74rem;
+  color: var(--text-soft);
+}
+
+.ts-legend .sw {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  margin-right: 0.3rem;
+  vertical-align: -1px;
+}
+
+.ts-legend .sw.thr {
+  background: #b4232c;
+}
+
+.ts-legend .sw.opt {
+  background: #1a7f37;
+}
+
 .ts-log {
   margin: 0 1.1rem 1.1rem;
   border-top: 1px dashed var(--border);
