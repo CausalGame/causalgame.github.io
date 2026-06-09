@@ -188,36 +188,7 @@
           "display": "Kimi K2.5",
           "delta": 2.2
         }
-      ],
-      "recent_sweep": {
-        "note": "Post-paper results: 14 scenarios × 3 rounds per model, scenario-mean over ≤3 valid runs",
-        "rows": [
-          {
-            "display": "GPT-5.5",
-            "opencode": 75.7,
-            "agentic": 68.4,
-            "prompting": 60.1
-          },
-          {
-            "display": "DeepSeek V4 Pro",
-            "opencode": 75.0,
-            "agentic": 70.9,
-            "prompting": 65.2
-          },
-          {
-            "display": "Claude Opus 4.7",
-            "opencode": 74.9,
-            "agentic": 69.1,
-            "prompting": 68.6
-          },
-          {
-            "display": "Qwen3.7 Max",
-            "opencode": 73.0,
-            "agentic": 68.4,
-            "prompting": 67.4
-          }
-        ]
-      }
+      ]
     }
   },
   "modes": {
@@ -4984,6 +4955,340 @@
               "mean": 20.6,
               "std": 7.8,
               "ci95": 19.4
+            }
+          }
+        }
+      ]
+    },
+    "opencode": {
+      "label": "OpenCode (Coding Agent)",
+      "description": "Full coding-agent framework with shell access and autonomous code execution; 4 models evaluated so far.",
+      "rows": [
+        {
+          "model": "gpt-5.5",
+          "display": "GPT-5.5",
+          "provider": "OpenAI",
+          "avg": {
+            "mean": 75.7,
+            "std": null,
+            "ci95": null
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 76.8,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_high_def": {
+              "mean": 76.3,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_local_optima": {
+              "mean": 87.4,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_no_history": {
+              "mean": 80.3,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 78.7,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 82.7,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 75.0,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 80.8,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 84.3,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 77.5,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 88.0,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 85.7,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 33.9,
+              "std": null,
+              "ci95": null
+            },
+            "weather_noise": {
+              "mean": 51.8,
+              "std": null,
+              "ci95": null
+            }
+          }
+        },
+        {
+          "model": "deepseek-v4-pro",
+          "display": "DeepSeek V4 Pro",
+          "provider": "DeepSeek",
+          "avg": {
+            "mean": 75.0,
+            "std": null,
+            "ci95": null
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 83.5,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_high_def": {
+              "mean": 83.1,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_local_optima": {
+              "mean": 82.7,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_no_history": {
+              "mean": 86.9,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 86.3,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 90.3,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 64.2,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 74.3,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 82.6,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 78.9,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 76.9,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 79.7,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 34.6,
+              "std": null,
+              "ci95": null
+            },
+            "weather_noise": {
+              "mean": 46.5,
+              "std": null,
+              "ci95": null
+            }
+          }
+        },
+        {
+          "model": "claude-opus-4.7",
+          "display": "Claude Opus 4.7",
+          "provider": "Anthropic",
+          "avg": {
+            "mean": 74.9,
+            "std": null,
+            "ci95": null
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 85.1,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_high_def": {
+              "mean": 85.9,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_local_optima": {
+              "mean": 84.1,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_no_history": {
+              "mean": 72.4,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 88.5,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 92.7,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 84.0,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 80.0,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 78.8,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 71.0,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 72.0,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 83.2,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 33.3,
+              "std": null,
+              "ci95": null
+            },
+            "weather_noise": {
+              "mean": 37.7,
+              "std": null,
+              "ci95": null
+            }
+          }
+        },
+        {
+          "model": "qwen3.7-max",
+          "display": "Qwen3.7 Max",
+          "provider": "Alibaba Qwen",
+          "avg": {
+            "mean": 73.0,
+            "std": null,
+            "ci95": null
+          },
+          "scenarios": {
+            "antenna_trap": {
+              "mean": 77.8,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_high_def": {
+              "mean": 94.9,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_local_optima": {
+              "mean": 94.1,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_no_history": {
+              "mean": 72.3,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": 74.8,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": 81.8,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": 70.2,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": 81.3,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": 80.2,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": 77.5,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": 70.3,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": 71.7,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": 33.1,
+              "std": null,
+              "ci95": null
+            },
+            "weather_noise": {
+              "mean": 41.5,
+              "std": null,
+              "ci95": null
             }
           }
         }

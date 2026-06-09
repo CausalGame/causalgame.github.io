@@ -12,9 +12,9 @@ const families = Object.entries(data.meta.families);
   <main class="container">
     <h1 style="margin-top:2rem">Leaderboard</h1>
     <p class="note">
-      {data.meta.metric}. Numbers are taken verbatim from the ICML 2026 camera-ready
-      paper ({data.meta.trials_per_cell} independent trials per model × scenario;
-      {data.meta.ci_note}).
+      {data.meta.metric} ({data.meta.trials_per_cell} independent trials per model ×
+      scenario; {data.meta.ci_note}). The leaderboard is updated as new models and
+      execution modes are evaluated.
     </p>
 
     <LeaderboardTable client:load />
@@ -80,13 +80,15 @@ const families = Object.entries(data.meta.families);
       shortcuts are not enough.
     </p>
 
-    <h2>OpenCode (coding-agent) comparison</h2>
+    <h2>OpenCode vs other modes</h2>
     <p>
-      To test whether a more capable agentic framework helps, the paper additionally
-      evaluates the OpenCode coding-agent framework on 5 models × 14 scenarios × 3 trials.
-      OpenCode outperforms ReAct on all five models (average
-      <strong>{opencode.avg.opencode}%</strong> vs {opencode.avg.react}% ReAct /
-      {opencode.avg.prompting}% Prompting) — yet remains far below the win threshold.
+      Full per-scenario OpenCode results are in the <strong>OpenCode (Coding Agent)</strong>
+      tab of the leaderboard above. Across every model evaluated, the coding-agent
+      framework outperforms the model's own ReAct and Prompting scores, yet the average
+      still falls short of the 75% win threshold — the causal thinking gap persists even
+      with a full coding agent. An additional 5-model comparison (average
+      <strong>{opencode.avg.opencode}%</strong> OpenCode vs {opencode.avg.react}% ReAct /
+      {opencode.avg.prompting}% Prompting):
     </p>
     <table class="simple">
       <thead>
@@ -106,41 +108,5 @@ const families = Object.entries(data.meta.families);
         }
       </tbody>
     </table>
-
-    <h3>New: OpenCode sweep on 4 frontier models <span class="note">(post-paper results)</span></h3>
-    <p>
-      We additionally ran the OpenCode harness on four of the strongest models
-      ({opencode.recent_sweep.note.toLowerCase()}). All four beat their own Agentic and
-      Prompting scores, yet none clears the 75% win threshold on average — the causal
-      thinking gap persists even with a full coding agent.
-    </p>
-    <table class="simple">
-      <thead>
-        <tr>
-          <th>Model</th>
-          <th>OpenCode</th>
-          <th>Agentic (ReAct)</th>
-          <th>Prompting</th>
-          <th>Δ vs best other mode</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          opencode.recent_sweep.rows.map((m: any) => (
-            <tr>
-              <td>{m.display}</td>
-              <td class="num"><strong>{m.opencode.toFixed(1)}%</strong></td>
-              <td class="num">{m.agentic.toFixed(1)}%</td>
-              <td class="num">{m.prompting.toFixed(1)}%</td>
-              <td class="num">+{(m.opencode - Math.max(m.agentic, m.prompting)).toFixed(1)}</td>
-            </tr>
-          ))
-        }
-      </tbody>
-    </table>
-    <p class="note">
-      These four runs are newer than the camera-ready paper; Agentic/Prompting reference
-      numbers are the paper values. Same protocol as the paper's OpenCode comparison.
-    </p>
   </main>
 </Base>

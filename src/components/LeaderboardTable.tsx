@@ -33,8 +33,9 @@ interface Database {
 const db = rawData as unknown as Database;
 const SCENARIOS = db.meta.scenarios;
 const FAMILIES = [...new Set(SCENARIOS.map((s) => s.family))];
+const MODE_KEYS = Object.keys(db.modes);
 
-type ModeKey = 'agentic' | 'prompting';
+type ModeKey = string;
 type View = 'summary' | 'full';
 
 function familyMean(row: Row, family: string): number {
@@ -90,7 +91,7 @@ export default function LeaderboardTable() {
     <div>
       <div className="lb-controls">
         <span className="lb-seg" role="tablist" aria-label="Execution mode">
-          {(['agentic', 'prompting'] as ModeKey[]).map((m) => (
+          {MODE_KEYS.map((m) => (
             <button
               key={m}
               className={mode === m ? 'active' : ''}
@@ -204,10 +205,10 @@ export default function LeaderboardTable() {
       </div>
 
       <p className="lb-foot">
-        Survival rate (%), mean of 3 independent trials per model × scenario, from the
-        ICML 2026 camera-ready tables. Hover a cell for std and 95% CI. Green cells
-        meet the scenario win threshold (75%, or 55% for weather_noise). Family columns
-        are means over per-scenario paper numbers; rank (#) is always by overall average.
+        Survival rate (%), mean of 3 independent trials per model × scenario. Hover a
+        cell for std and 95% CI where available. Green cells meet the scenario win
+        threshold (75%, or 55% for weather_noise). Family columns are means over
+        per-scenario results; rank (#) is always by overall average within the mode.
       </p>
     </div>
   );
