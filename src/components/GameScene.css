@@ -1,0 +1,284 @@
+.gs-wrap {
+  border: 1px solid #30363d;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0d1117;
+  margin: 1.6rem 0;
+  box-shadow: 0 10px 30px rgba(13, 17, 23, 0.25);
+}
+
+.gs-tabs {
+  display: flex;
+  background: #010409;
+  border-bottom: 1px solid #30363d;
+}
+
+.gs-tabs button {
+  background: none;
+  border: none;
+  border-right: 1px solid #21262d;
+  color: #8b949e;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem;
+  padding: 0.55rem 1.1rem;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+
+.gs-tabs button:hover {
+  color: #c9d1d9;
+}
+
+.gs-tabs button.active {
+  color: #7dd3fc;
+  background: #161b22;
+  box-shadow: inset 0 -2px 0 #7dd3fc;
+}
+
+.gs-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.gs-cap {
+  border-top: 1px solid #30363d;
+  padding: 0.55rem 1rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.74rem;
+  color: #8b949e;
+}
+
+.gs-cap b {
+  color: #c9d1d9;
+}
+
+/* ---------- shared svg bits ---------- */
+.gs-svg text {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.gs-svg .lbl {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+.gs-svg .rotor {
+  animation: gs-rotor 0.25s linear infinite;
+}
+
+@keyframes gs-rotor {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 0.25; }
+}
+
+.gs-svg .bob {
+  animation: gs-bob 2.4s ease-in-out infinite;
+}
+
+@keyframes gs-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* ---------- antenna trap scene (12s narrative loop) ---------- */
+.at-lightning {
+  animation: at-flash 5s linear infinite;
+}
+
+@keyframes at-flash {
+  0%, 7%, 100% { opacity: 0; }
+  8%, 9.5% { opacity: 1; }
+  10.5% { opacity: 0; }
+  11.5%, 12.5% { opacity: 0.8; }
+  13.5% { opacity: 0; }
+}
+
+.at-rain line {
+  animation: at-rain 0.7s linear infinite;
+}
+
+@keyframes at-rain {
+  from { transform: translateY(0); opacity: 0.55; }
+  to { transform: translateY(26px); opacity: 0; }
+}
+
+.at-sweep {
+  transform-box: fill-box;
+  transform-origin: 0% 50%;
+  animation: at-sweep 4s linear infinite;
+}
+
+@keyframes at-sweep {
+  from { transform: rotate(105deg); }
+  to { transform: rotate(465deg); }
+}
+
+.at-d1 {
+  animation: at-d1 12s ease-in-out infinite;
+}
+
+@keyframes at-d1 {
+  0% { transform: translate(0px, 0px) rotate(0deg); opacity: 0; }
+  4% { opacity: 1; }
+  46% { transform: translate(430px, 0px) rotate(0deg); }
+  50% { transform: translate(438px, -3px) rotate(-3deg); }
+  53% { transform: translate(444px, 4px) rotate(5deg); }
+  56% { transform: translate(450px, -2px) rotate(-4deg); }
+  72% { transform: translate(480px, 170px) rotate(50deg); opacity: 1; }
+  76%, 100% { transform: translate(490px, 200px) rotate(60deg); opacity: 0; }
+}
+
+.at-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: at-ring 1.4s ease-out infinite;
+}
+
+@keyframes at-ring {
+  from { transform: scale(0.25); opacity: 0.85; }
+  to { transform: scale(3.2); opacity: 0; }
+}
+
+.at-rings {
+  animation: at-rings-vis 12s linear infinite;
+}
+
+@keyframes at-rings-vis {
+  0%, 55% { opacity: 1; }
+  58%, 100% { opacity: 0; }
+}
+
+.at-lock {
+  animation: at-lock 12s linear infinite;
+}
+
+@keyframes at-lock {
+  0%, 44% { opacity: 0; }
+  47%, 60% { opacity: 1; }
+  64%, 100% { opacity: 0; }
+}
+
+.at-spark {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: at-spark 12s linear infinite;
+}
+
+@keyframes at-spark {
+  0%, 49% { opacity: 0; transform: scale(0.3); }
+  52% { opacity: 1; transform: scale(1.4); }
+  58%, 100% { opacity: 0; transform: scale(0.4); }
+}
+
+.at-detect-lbl {
+  animation: at-lock 12s linear infinite;
+}
+
+.at-d2 {
+  animation: at-d2 12s linear infinite;
+}
+
+@keyframes at-d2 {
+  0% { transform: translateX(0px); opacity: 0; }
+  6% { opacity: 1; }
+  90% { opacity: 1; }
+  98%, 100% { transform: translateX(620px); opacity: 0; }
+}
+
+/* ---------- deployment zone scene (12s loop) ---------- */
+.dz-emi path {
+  stroke-dasharray: 7 5;
+  animation: dz-emi-scroll 0.9s linear infinite;
+}
+
+@keyframes dz-emi-scroll {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -24; }
+}
+
+.dz-emi {
+  animation: dz-emi-pulse 3.2s ease-in-out infinite;
+}
+
+@keyframes dz-emi-pulse {
+  0%, 100% { opacity: 0.28; }
+  50% { opacity: 0.75; }
+}
+
+.dz-hidden-lbl {
+  animation: dz-hidden 3.2s ease-in-out infinite;
+}
+
+@keyframes dz-hidden {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.9; }
+}
+
+.dz-da {
+  animation: dz-da 12s linear infinite;
+}
+
+@keyframes dz-da {
+  0% { transform: translateX(0px); opacity: 0; }
+  5% { opacity: 1; }
+  93% { opacity: 1; }
+  100% { transform: translateX(660px); opacity: 0; }
+}
+
+.dz-db {
+  animation: dz-db 12s ease-in-out infinite;
+}
+
+@keyframes dz-db {
+  0% { transform: translate(0px, 0px) rotate(0deg); opacity: 0; }
+  5% { opacity: 1; }
+  38% { transform: translate(250px, 0px) rotate(0deg); }
+  42% { transform: translate(268px, 3px) rotate(-4deg); }
+  45% { transform: translate(280px, -2px) rotate(5deg); }
+  48% { transform: translate(290px, 4px) rotate(-6deg); }
+  62% { transform: translate(320px, 95px) rotate(45deg); opacity: 1; }
+  66%, 100% { transform: translate(330px, 120px) rotate(55deg); opacity: 0; }
+}
+
+.dz-static {
+  animation: dz-static 12s linear infinite;
+}
+
+@keyframes dz-static {
+  0%, 37% { opacity: 0; }
+  40%, 58% { opacity: 1; }
+  62%, 100% { opacity: 0; }
+}
+
+.dz-dc {
+  animation: dz-dc 12s linear infinite;
+}
+
+@keyframes dz-dc {
+  0%, 30% { transform: translateX(0px); opacity: 0; }
+  36% { opacity: 1; }
+  94% { opacity: 1; }
+  100% { transform: translateX(640px); opacity: 0; }
+}
+
+.dz-shield {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: dz-shield 1.6s ease-in-out infinite;
+}
+
+@keyframes dz-shield {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.12); opacity: 0.5; }
+}
+
+.dz-deflect {
+  animation: dz-deflect 1.6s ease-out infinite;
+}
+
+@keyframes dz-deflect {
+  0% { opacity: 0; }
+  40% { opacity: 0.9; }
+  100% { opacity: 0; }
+}

@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import GameFlow from '../components/GameFlow.tsx';
+import GameScene from '../components/GameScene.tsx';
 import MissionConsole from '../components/MissionConsole.tsx';
 import TrapSimulator from '../components/TrapSimulator.tsx';
 
@@ -29,14 +30,12 @@ const components = [
       budget, before committing to one final design for the whole fleet.
     </p>
 
-    <figure class="figure">
-      <img src="/scene.jpg" alt="Illustration of CausalGame scenarios: drones flying through a hostile canyon under storms and enemy radar." loading="lazy" />
-      <figcaption>
-        The CausalGame world. Weather, enemy detection, and component damage are governed
-        by a hidden structural causal model — and the data you get to see is censored,
-        confounded, and noisy.
-      </figcaption>
-    </figure>
+    <GameScene client:visible />
+    <p class="note">
+      The CausalGame world. Weather, enemy detection, and component damage are governed by
+      a hidden structural causal model — and the data you get to see is censored,
+      confounded, and noisy.
+    </p>
 
     <h2 id="numbers">Your budget</h2>
     <div class="numbers">
