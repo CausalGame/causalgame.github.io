@@ -228,8 +228,6 @@ export default function LeaderboardTable() {
         cell for std and 95% CI where available. Green cells meet the scenario win
         threshold (75%, or 55% for weather_noise). Family columns are means over
         per-scenario results; rank (#) is always by overall average within the mode.
-        † averages derived from the paper's reported Δ vs ReAct — per-scenario
-        breakdowns not published.
       </p>
     </div>
   );
