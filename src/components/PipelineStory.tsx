@@ -6,7 +6,7 @@ import './PipelineStory.css';
 // c6e3ba50 (win, 92.6%) and 290feba3 (loss, 34.4%) — both replayable on
 // the Game page.
 const CAPTIONS = [
-  'Same archive, two agents. The history contains only survivors — selection bias is baked into the data before the first move.',
+  'Two agents, one trap. Each starts from a survivor-censored archive — selection bias is baked into the data before the first move.',
   'The causal agent treats the archive as a hypothesis and runs a control experiment. The naive agent fits the correlation — like 54.8% of real benchmark sessions, it never leaves the trap region.',
   'Intervene, don’t fit: setting antenna_def = 0 reverses the observational trend. The naive agent hill-climbs inside the trap — in the real session, all ten deployments stayed at antenna ≥ 20.',
   'One submission, irreversible — like committing a real-world intervention. Both agents are equally confident.',
@@ -182,9 +182,9 @@ export default function PipelineStory() {
 
       <div className="ps-cap">{CAPTIONS[idx]}</div>
       <div className="ps-foot">
-        Real benchmark sessions <code>c6e3ba50</code> (win) and <code>290feba3</code> (loss) —
-        replay both on <a href="/game/#session">the Game page</a>. Animated counterpart of
-        Fig. 1 in the paper.
+        Real benchmark sessions <code>c6e3ba50</code> (antenna_trap, win) and{' '}
+        <code>290feba3</code> (its Simpson\u2019s-paradox variant, loss) — replay both on{' '}
+        <a href="/game/#session">the Game page</a>. Animated counterpart of Fig. 1 in the paper.
       </div>
     </div>
   );
