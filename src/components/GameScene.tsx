@@ -107,9 +107,40 @@ function AntennaScene() {
       <line className="at-lock" x1="742" y1="114" x2="528" y2="168" stroke={C.red} strokeWidth="2" strokeDasharray="6 4" />
       <text className="at-detect-lbl lbl" x="600" y="135" fill={C.red}>DETECTED ✖</text>
 
-      {/* stealth drone: no antenna, sails through */}
+      {/* survivor drone: unarmored antenna snaps in the storm, then dangles */}
       <g className="at-d2">
-        <Drone color={C.green} x={80} y={300} />
+        <g transform="translate(80,300)">
+          <g className="bob">
+            <line x1="-14" y1="-8" x2="14" y2="8" stroke={C.green} strokeWidth="2" />
+            <line x1="-14" y1="8" x2="14" y2="-8" stroke={C.green} strokeWidth="2" />
+            <ellipse className="rotor" cx="-14" cy="-8" rx="7" ry="2" fill="none" stroke={C.green} strokeWidth="1.4" />
+            <ellipse className="rotor" cx="14" cy="-8" rx="7" ry="2" fill="none" stroke={C.green} strokeWidth="1.4" />
+            <ellipse className="rotor" cx="-14" cy="8" rx="7" ry="2" fill="none" stroke={C.green} strokeWidth="1.4" />
+            <ellipse className="rotor" cx="14" cy="8" rx="7" ry="2" fill="none" stroke={C.green} strokeWidth="1.4" />
+            <rect x="-9" y="-5" width="18" height="10" rx="3" fill={C.green} />
+            {/* antenna stub (survives) */}
+            <line x1="0" y1="-5" x2="0" y2="-11" stroke={C.green} strokeWidth="2" />
+            {/* upper segment: sways in the wind, snaps at the hinge, then dangles */}
+            <g transform="translate(0,-11)">
+              <g className="at-snap">
+                <g className="at-flutter">
+                  <line x1="0" y1="0" x2="0" y2="-13" stroke={C.green} strokeWidth="2" />
+                  <circle cx="0" cy="-15" r="2.2" fill={C.green} />
+                </g>
+              </g>
+            </g>
+            {/* brief emission while the antenna still stands */}
+            <g className="at-d2rings">
+              <circle className="at-ring" cx="0" cy="-24" r="7" fill="none" stroke={C.amber} strokeWidth="1.4" />
+            </g>
+            {/* snap flash */}
+            <g className="at-snapflash" stroke={C.amber} strokeWidth="2">
+              <line x1="-5" y1="-13" x2="-10" y2="-18" />
+              <line x1="5" y1="-13" x2="10" y2="-18" />
+              <line x1="0" y1="-14" x2="0" y2="-21" />
+            </g>
+          </g>
+        </g>
       </g>
 
       {/* captions */}

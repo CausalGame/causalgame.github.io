@@ -185,6 +185,47 @@
   98%, 100% { transform: translateX(620px); opacity: 0; }
 }
 
+.at-snap {
+  transform-origin: 0px 0px;
+  animation: at-snap 12s linear infinite;
+}
+
+@keyframes at-snap {
+  0%, 16% { transform: rotate(0deg); }
+  19% { transform: rotate(138deg); }
+  22% { transform: rotate(112deg); }
+  26%, 100% { transform: rotate(124deg); }
+}
+
+.at-flutter {
+  transform-origin: 0px 0px;
+  animation: at-flutter 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes at-flutter {
+  from { transform: rotate(-7deg); }
+  to { transform: rotate(10deg); }
+}
+
+.at-d2rings {
+  animation: at-d2rings 12s linear infinite;
+}
+
+@keyframes at-d2rings {
+  0%, 15% { opacity: 1; }
+  18%, 100% { opacity: 0; }
+}
+
+.at-snapflash {
+  animation: at-snapflash 12s linear infinite;
+}
+
+@keyframes at-snapflash {
+  0%, 15% { opacity: 0; }
+  17%, 19% { opacity: 1; }
+  22%, 100% { opacity: 0; }
+}
+
 /* ---------- deployment zone scene (12s loop) ---------- */
 .dz-emi path {
   stroke-dasharray: 7 5;
