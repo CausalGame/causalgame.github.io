@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import data from '../data/leaderboard.json';
+import PipelineStory from '../components/PipelineStory.tsx';
 
 const CODE_URL = 'https://github.com/viewsetting/CausalGame';
 
@@ -68,22 +69,15 @@ const bibtex = `@inproceedings{chen2026causalgame,
   </header>
 
   <main class="container">
-    <figure class="figure">
-      <img
-        src="/fig1.png"
-        alt="Why causal thinking matters for AI scientist agents: hidden confounders make observational correlations misleading; a causal agent identifies the mechanism through active experimentation."
-        loading="eager"
-      />
-      <figcaption>
-        <strong>Why causal thinking matters for AI scientist agents.</strong>
-        Observational correlations (left) can be misleading due to hidden confounders. A
-        naive agent that treats correlation as causation arrives at a suboptimal solution
-        (middle), while a causal agent identifies the underlying mechanism through active
-        experimentation and achieves a substantially better outcome (right). CausalGame
-        instantiates such challenges in interactive game scenarios to evaluate whether LLM
-        agents can reason beyond statistical patterns.
-      </figcaption>
-    </figure>
+    <PipelineStory client:load />
+    <p class="note" style="max-width:56rem;margin:0.6rem auto 0">
+      <strong>Why causal thinking matters for AI scientist agents.</strong>
+      Observational correlations can be misleading due to hidden confounders and
+      survivorship-censored data. A naive agent that treats correlation as causation
+      arrives at a suboptimal solution, while a causal agent identifies the underlying
+      mechanism through active experimentation — shown above with two real benchmark
+      runs on the same scenario.
+    </p>
 
     <h2 id="abstract">Abstract</h2>
     <div class="abstract">
