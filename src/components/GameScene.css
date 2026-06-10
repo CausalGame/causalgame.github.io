@@ -231,6 +231,78 @@
   22%, 100% { opacity: 0; }
 }
 
+/* CIWS turret: parked -> slew to the drone bearing (203.7deg => rotate 23.7) on lock */
+.at-gun {
+  transform-origin: 0px 0px;
+  animation: at-gun 12s linear infinite;
+}
+
+@keyframes at-gun {
+  0%, 45% { transform: rotate(-6deg); }
+  48% { transform: rotate(23.7deg); }
+  58% { transform: rotate(23.7deg); }
+  64%, 100% { transform: rotate(-6deg); }
+}
+
+.at-firewin {
+  animation: at-firewin 12s linear infinite;
+}
+
+@keyframes at-firewin {
+  0%, 48.5% { opacity: 0; }
+  49.5%, 57.5% { opacity: 1; }
+  58.5%, 100% { opacity: 0; }
+}
+
+.at-bullets {
+  stroke-dasharray: 5 16;
+  animation: at-bullets 0.28s linear infinite;
+}
+
+@keyframes at-bullets {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -42; }
+}
+
+.at-muzzle {
+  animation: at-muzzle 0.14s steps(2) infinite;
+}
+
+@keyframes at-muzzle {
+  from { opacity: 1; }
+  to { opacity: 0.25; }
+}
+
+/* drone catches fire after the first hits, burns through the fall */
+.at-fire {
+  animation: at-firevis 12s linear infinite;
+}
+
+@keyframes at-firevis {
+  0%, 51% { opacity: 0; }
+  54%, 73% { opacity: 1; }
+  76%, 100% { opacity: 0; }
+}
+
+.at-flame {
+  transform-origin: 0px 0px;
+  animation: at-flame 0.22s ease-in-out infinite alternate;
+}
+
+@keyframes at-flame {
+  from { transform: scale(1) translateY(0); }
+  to { transform: scale(1.18) translateY(-1.5px); }
+}
+
+.at-smoke {
+  animation: at-smoke 0.9s linear infinite;
+}
+
+@keyframes at-smoke {
+  from { transform: translateY(0); opacity: 0.5; }
+  to { transform: translateY(-15px); opacity: 0; }
+}
+
 /* ---------- deployment zone scene (12s loop) ---------- */
 .dz-emi path {
   stroke-dasharray: 7 5;

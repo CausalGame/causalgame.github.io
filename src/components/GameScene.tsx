@@ -87,6 +87,29 @@ function AntennaScene() {
         <text x="742" y="100" textAnchor="middle" className="lbl" fill={C.red}>RADAR</text>
       </g>
 
+      {/* CIWS turret on the cliff slope: slews on lock, fires a tracer stream */}
+      <g transform="translate(703,250)">
+        <rect x="-13" y="3" width="26" height="5" rx="1.5" fill={C.cliffEdge} />
+        <rect x="-8" y="-5" width="16" height="9" rx="2" fill="#2d333b" stroke={C.cliffEdge} strokeWidth="1" />
+        <path d="M-9,-5 a9,8 0 0 1 18,0 z" fill="#3d444d" stroke={C.cliffEdge} strokeWidth="1" />
+        <g transform="translate(0,-5)">
+          <g className="at-gun">
+            <rect x="-24" y="-2.4" width="17" height="4.8" rx="1.6" fill="#4d555e" />
+            <line x1="-24" y1="0" x2="-32" y2="0" stroke="#8b949e" strokeWidth="2.6" />
+          </g>
+        </g>
+        <text y="22" x="0" textAnchor="middle" className="lbl" fill={C.soft}>CIWS</text>
+      </g>
+
+      {/* firing window: muzzle flash + tracer bullet stream */}
+      <g className="at-firewin">
+        <line className="at-bullets" x1="674" y1="232" x2="536" y2="171" stroke={C.amber} strokeWidth="3" strokeLinecap="round" />
+        <g className="at-muzzle" transform="translate(674,232)">
+          <polygon points="0,0 -10,-4 -5,0 -10,4" fill={C.amber} />
+          <polygon points="0,0 -7,-2 -13,0 -7,2" fill="#fff7d6" opacity="0.9" />
+        </g>
+      </g>
+
       {/* doomed drone: live antenna, emits, gets locked, falls */}
       <g className="at-d1">
         <g transform="translate(80,170)">
@@ -96,6 +119,14 @@ function AntennaScene() {
             <circle className="at-ring" style={{ animationDelay: '0.9s' }} cx="0" cy="-22" r="9" fill="none" stroke={C.amber} strokeWidth="1.6" />
           </g>
           <Drone color={C.cyan} antenna />
+          <g className="at-fire">
+            <g className="at-flame">
+              <path d="M-4,-8 q-3,-9 2,-14 q0,6 4,8 q1,-5 5,-7 q-1,7 2,11 q-6,6 -13,2 z" fill="#fb923c" opacity="0.9" />
+              <path d="M-1,-9 q-1,-5 1,-8 q1,4 3,5 q1,-3 3,-3 q0,5 -2,7 q-3,2 -5,-1 z" fill={C.amber} />
+            </g>
+            <circle className="at-smoke" cx="2" cy="-22" r="4" fill="#6b7280" />
+            <circle className="at-smoke" style={{ animationDelay: '0.45s' }} cx="-5" cy="-18" r="3" fill="#6b7280" />
+          </g>
           <g className="at-spark">
             {[[-18, -14], [16, -18], [22, 8], [-20, 12], [4, -26]].map(([x, y], i) => (
               <line key={i} x1={x} y1={y} x2={x * 1.6} y2={y * 1.6} stroke={C.amber} strokeWidth="2" />
