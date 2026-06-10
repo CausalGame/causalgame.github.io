@@ -7,7 +7,7 @@ import './PipelineStory.css';
 // the Game page.
 const CAPTIONS = [
   'Two agents, one trap. Each starts from a survivor-censored archive — selection bias is baked into the data before the first move.',
-  'The causal agent treats the archive as a hypothesis and runs a control experiment. The naive agent fits the correlation — like 54.8% of real benchmark sessions, it never leaves the trap region.',
+  'Same data, two hypotheses. The causal agent treats the archive as a claim to test and runs a control; the naive agent adopts the correlation as a conclusion — like 54.8% of real sessions, it will never leave the trap region.',
   'Intervene, don’t fit: setting antenna_def = 0 reverses the observational trend. The naive agent hill-climbs inside the trap — in the real session, all ten deployments stayed at antenna ≥ 20.',
   'One submission, irreversible — like committing a real-world intervention. Both agents are equally confident.',
   'Verification on 1,000 fresh drones: 92.6% vs 34.4%. Treating correlation as causation is the benchmark’s central failure mode — 87–92% of sessions score zero on causal reasoning.',
@@ -100,11 +100,12 @@ export default function PipelineStory() {
 
         {/* ② test the data */}
         <div className={P(1)} onClick={() => setIdx(1)}>
-          <h4><span className="n">②</span>TEST THE DATA</h4>
+          <h4><span className="n">②</span>HYPOTHESIZE</h4>
           <div className="ps-lane good">
             <span className="who">CAUSAL AGENT</span>
             <span className="desc">
-              Re-flies the <b>default design</b> as a control. Archive said <s>100%</s>…
+              <b>H:</b> the archive may be biased — re-fly the <b>default design</b> as a
+              control. Archive said <s>100%</s>…
             </span>
             <div className="ps-bar good">
               <span className="fill" style={{ '--w': '40%' } as React.CSSProperties} />
@@ -114,7 +115,8 @@ export default function PipelineStory() {
           <div className="ps-lane bad">
             <span className="who">NAIVE AGENT</span>
             <span className="desc">
-              Trusts the archive: <b>antenna ↑ survival ↑</b> → add more antenna armor.
+              <b>H:</b> antenna armor protects (<b>antenna ↑ survival ↑</b>) — accepted as
+              fact, never to be tested.
             </span>
             <DefChip antenna="hot" />
             <span className="desc">fits the correlation, tests nothing</span>
