@@ -855,7 +855,7 @@
         {
           "model": "mimo-v2.5-pro",
           "display": "MIMO V2.5 Pro",
-          "provider": "MIMO",
+          "provider": "Xiaomi MiMo",
           "avg": {
             "mean": 66.5,
             "std": 5.1,
@@ -1265,7 +1265,7 @@
         {
           "model": "hy3-preview",
           "display": "HY3 Preview",
-          "provider": "Hunyuan",
+          "provider": "Tencent Hunyuan",
           "avg": {
             "mean": 63.6,
             "std": 10.4,
@@ -1757,7 +1757,7 @@
         {
           "model": "mimo-v2-flash",
           "display": "MIMO V2 Flash",
-          "provider": "MIMO",
+          "provider": "Xiaomi MiMo",
           "avg": {
             "mean": 60.9,
             "std": 9.3,
@@ -3403,7 +3403,7 @@
         {
           "model": "hy3-preview",
           "display": "HY3 Preview",
-          "provider": "Hunyuan",
+          "provider": "Tencent Hunyuan",
           "avg": {
             "mean": 60.8,
             "std": 9.5,
@@ -3567,7 +3567,7 @@
         {
           "model": "mimo-v2.5-pro",
           "display": "MIMO V2.5 Pro",
-          "provider": "MIMO",
+          "provider": "Xiaomi MiMo",
           "avg": {
             "mean": 60.3,
             "std": 9.5,
@@ -4797,7 +4797,7 @@
         {
           "model": "mimo-v2-flash",
           "display": "MIMO V2 Flash",
-          "provider": "MIMO",
+          "provider": "Xiaomi MiMo",
           "avg": {
             "mean": 56.1,
             "std": 8.6,
