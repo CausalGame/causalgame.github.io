@@ -431,7 +431,7 @@ export default function MissionConsole() {
       <div className="mc-foot">
         <button onClick={() => setShown(1)}>↻ Replay session</button>
         <span className="hint">
-          condensed from real benchmark sessions (25eaeb4c · 4b326f23 · 522b2ce3); auxiliary tool calls omitted, thoughts lightly edited
+          condensed from real benchmark sessions (IDs shown per session); auxiliary tool calls omitted, thoughts lightly edited
         </span>
       </div>
     </div>
