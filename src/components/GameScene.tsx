@@ -98,7 +98,7 @@ function AntennaScene() {
             <line x1="-24" y1="0" x2="-32" y2="0" stroke="#8b949e" strokeWidth="2.6" />
           </g>
         </g>
-        <text y="22" x="0" textAnchor="middle" className="lbl" fill={C.soft}>CIWS</text>
+        <text y="22" x="0" textAnchor="middle" className="lbl" fill={C.soft}>DEFENCE</text>
       </g>
 
       {/* firing window: muzzle flash + tracer bullet stream */}
