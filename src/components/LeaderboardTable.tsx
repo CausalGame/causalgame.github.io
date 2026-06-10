@@ -3,7 +3,7 @@ import rawData from '../data/leaderboard.json';
 import './LeaderboardTable.css';
 
 interface Cell {
-  mean: number;
+  mean: number | null;
   std: number | null;
   ci95: number | null;
 }
@@ -12,7 +12,8 @@ interface Row {
   model: string;
   display: string;
   provider: string;
-  avg: Cell;
+  avg: { mean: number; std: number | null; ci95: number | null };
+  derived?: boolean;
   scenarios: Record<string, Cell>;
 }
 
@@ -38,14 +39,18 @@ const MODE_KEYS = Object.keys(db.modes);
 type ModeKey = string;
 type View = 'summary' | 'full';
 
-function familyMean(row: Row, family: string): number {
-  const ids = SCENARIOS.filter((s) => s.family === family).map((s) => s.id);
-  const sum = ids.reduce((acc, id) => acc + row.scenarios[id].mean, 0);
-  return sum / ids.length;
+function familyMean(row: Row, family: string): number | null {
+  const vals = SCENARIOS.filter((s) => s.family === family)
+    .map((s) => row.scenarios[s.id].mean)
+    .filter((v): v is number => v !== null);
+  if (vals.length === 0) return null;
+  return vals.reduce((a, b) => a + b, 0) / vals.length;
 }
 
-function winCount(row: Row): number {
-  return SCENARIOS.filter((s) => row.scenarios[s.id].mean >= s.threshold).length;
+function winCount(row: Row): number | null {
+  const known = SCENARIOS.filter((s) => row.scenarios[s.id].mean !== null);
+  if (known.length === 0) return null;
+  return known.filter((s) => (row.scenarios[s.id].mean as number) >= s.threshold).length;
 }
 
 function fmt(x: number): string {
@@ -68,9 +73,9 @@ export default function LeaderboardTable() {
   const sorted = useMemo(() => {
     const value = (r: Row): number => {
       if (sortKey === 'avg') return r.avg.mean;
-      if (sortKey === 'wins') return winCount(r);
-      if (sortKey.startsWith('f:')) return familyMean(r, sortKey.slice(2));
-      if (sortKey.startsWith('s:')) return r.scenarios[sortKey.slice(2)].mean;
+      if (sortKey === 'wins') return winCount(r) ?? -Infinity;
+      if (sortKey.startsWith('f:')) return familyMean(r, sortKey.slice(2)) ?? -Infinity;
+      if (sortKey.startsWith('s:')) return r.scenarios[sortKey.slice(2)].mean ?? -Infinity;
       return r.avg.mean;
     };
     return [...rows].sort((a, b) => (desc ? value(b) - value(a) : value(a) - value(b)));
@@ -168,7 +173,11 @@ export default function LeaderboardTable() {
               <tr key={r.model}>
                 <td className="rank">{avgRank.get(r.model)}</td>
                 <td className="model">
-                  {r.display} <span className="provider">{r.provider}</span>
+                  {r.display}
+                  {r.derived && (
+                    <sup title="Average derived from the paper's reported Δ vs ReAct; per-scenario results not published"> †</sup>
+                  )}{' '}
+                  <span className="provider">{r.provider}</span>
                 </td>
                 <td className="num">
                   <strong>{fmt(r.avg.mean)}</strong>
@@ -176,17 +185,27 @@ export default function LeaderboardTable() {
                 </td>
                 {view === 'summary' && (
                   <>
-                    {FAMILIES.map((f) => (
-                      <td key={f} className="num">
-                        {fmt(familyMean(r, f))}
-                      </td>
-                    ))}
-                    <td className="num">{winCount(r)}</td>
+                    {FAMILIES.map((f) => {
+                      const m = familyMean(r, f);
+                      return (
+                        <td key={f} className="num">
+                          {m === null ? '—' : fmt(m)}
+                        </td>
+                      );
+                    })}
+                    <td className="num">{winCount(r) ?? '—'}</td>
                   </>
                 )}
                 {view === 'full' &&
                   SCENARIOS.map((s) => {
                     const c = r.scenarios[s.id];
+                    if (c.mean === null) {
+                      return (
+                        <td key={s.id} className="num" title={`${s.id}: not published`}>
+                          —
+                        </td>
+                      );
+                    }
                     const win = c.mean >= s.threshold;
                     const tip =
                       `${s.id}: ${fmt(c.mean)}%` +
@@ -209,6 +228,8 @@ export default function LeaderboardTable() {
         cell for std and 95% CI where available. Green cells meet the scenario win
         threshold (75%, or 55% for weather_noise). Family columns are means over
         per-scenario results; rank (#) is always by overall average within the mode.
+        † averages derived from the paper's reported Δ vs ReAct — per-scenario
+        breakdowns not published.
       </p>
     </div>
   );

@@ -4962,7 +4962,7 @@
     },
     "opencode": {
       "label": "OpenCode (Coding Agent)",
-      "description": "Full coding-agent framework with shell access and autonomous code execution; 4 models evaluated so far.",
+      "description": "Full coding-agent framework with shell access and autonomous code execution; † = average derived from the paper's Δ vs ReAct (per-scenario results not published).",
       "rows": [
         {
           "model": "gpt-5.5",
@@ -5287,6 +5287,421 @@
             },
             "weather_noise": {
               "mean": 41.5,
+              "std": null,
+              "ci95": null
+            }
+          }
+        },
+        {
+          "model": "gpt-5.2",
+          "display": "GPT-5.2",
+          "provider": "OpenAI",
+          "avg": {
+            "mean": 71.8,
+            "std": null,
+            "ci95": null
+          },
+          "derived": true,
+          "scenarios": {
+            "antenna_trap": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_high_def": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_local_optima": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_no_history": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "weather_noise": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            }
+          }
+        },
+        {
+          "model": "gpt-5.2-high",
+          "display": "GPT-5.2 High",
+          "provider": "OpenAI",
+          "avg": {
+            "mean": 70.0,
+            "std": null,
+            "ci95": null
+          },
+          "derived": true,
+          "scenarios": {
+            "antenna_trap": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_high_def": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_local_optima": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_no_history": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "weather_noise": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            }
+          }
+        },
+        {
+          "model": "grok-4-1-fast",
+          "display": "Grok 4.1 Fast",
+          "provider": "xAI",
+          "avg": {
+            "mean": 67.8,
+            "std": null,
+            "ci95": null
+          },
+          "derived": true,
+          "scenarios": {
+            "antenna_trap": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_high_def": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_local_optima": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_no_history": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "weather_noise": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            }
+          }
+        },
+        {
+          "model": "gpt-5-mini",
+          "display": "GPT-5 Mini",
+          "provider": "OpenAI",
+          "avg": {
+            "mean": 66.7,
+            "std": null,
+            "ci95": null
+          },
+          "derived": true,
+          "scenarios": {
+            "antenna_trap": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_high_def": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_local_optima": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_no_history": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "weather_noise": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            }
+          }
+        },
+        {
+          "model": "kimi-k2.5",
+          "display": "Kimi K2.5",
+          "provider": "Moonshot AI",
+          "avg": {
+            "mean": 61.1,
+            "std": null,
+            "ci95": null
+          },
+          "derived": true,
+          "scenarios": {
+            "antenna_trap": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_high_def": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_local_optima": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_no_history": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_no_selection_bias": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "antenna_trap_simpsons_paradox": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_high_def": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_local_optima": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_no_history": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_no_selection_bias": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_categorical_simpsons_paradox": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "deployment_zone_trap_env_shift": {
+              "mean": null,
+              "std": null,
+              "ci95": null
+            },
+            "weather_noise": {
+              "mean": null,
               "std": null,
               "ci95": null
             }

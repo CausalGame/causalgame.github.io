@@ -13,8 +13,8 @@ const families = Object.entries(data.meta.families);
     <h1 style="margin-top:2rem">Leaderboard</h1>
     <p class="note">
       {data.meta.metric} ({data.meta.trials_per_cell} independent trials per model ×
-      scenario; {data.meta.ci_note}). The leaderboard is updated as new models and
-      execution modes are evaluated.
+      scenario). The leaderboard is updated as new models and execution modes are
+      evaluated.
     </p>
 
     <LeaderboardTable client:load />
