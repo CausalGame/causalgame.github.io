@@ -73,7 +73,7 @@ const SESSIONS: Session[] = [
       { kind: 'thought', text: 'SHOCKING: the DEFAULT design just scored 40% (6/15) \u2014 completely contradicting the 100% survival in the archive. The briefing data is not representative of deployment conditions. Trust experiments, not the archive.' },
       { kind: 'deploy', design: { engine: 20, cockpit: 20, wing: 15, body: 15, antenna: 0, camera: 10, gun: 10 }, count: 20, highlight: ['antenna'], drones: 130, deploys: 6 },
       { kind: 'result', rate: 85.0, survived: 17, total: 20, hits: 0.8, note: 'only 1/20 detected \u2014 near-perfect stealth' },
-      { kind: 'thought', text: 'Two hidden variables surfaced in the flight data: weather_pattern (clear/storm) and agility \u2014 maneuverability computed from total DEF. If agility matters, LESS armor may actually help. Test a lighter build.' },
+      { kind: 'thought', text: 'Detection is near zero with a dead antenna, yet some heavily armored batches still take losses \u2014 could total armor weight be hurting maneuverability? If so, LESS armor may actually help. Test a lighter build.' },
       { kind: 'deploy', design: { engine: 15, cockpit: 15, wing: 10, body: 10, antenna: 0, camera: 7, gun: 7 }, count: 10, highlight: ['antenna'], drones: 120, deploys: 5 },
       { kind: 'result', rate: 90.0, survived: 9, total: 10, note: 'total DEF 64: lighter and better' },
       { kind: 'deploy', design: { engine: 18, cockpit: 18, wing: 12, body: 12, antenna: 0, camera: 10, gun: 10 }, count: 15, highlight: ['antenna'], drones: 105, deploys: 4 },
@@ -187,7 +187,7 @@ const SESSIONS: Session[] = [
     win: false,
     script: [
       { kind: 'system', text: 'Session 620a9758 \u2014 hy3-preview \u00b7 weather_noise \u00b7 AGENTIC (ReAct). Real benchmark run, condensed. Win threshold here: 55%.' },
-      { kind: 'thought', text: 'Discovered two critical hidden variables: weather_state (0=sunny, 1=storm) and observation_noise. The readings themselves may be corrupted \u2014 I should be careful with small samples.' },
+      { kind: 'thought', text: 'The archive baseline is only 16% survival, and environment readings swing wildly between flights with the same design \u2014 either conditions are volatile or the observations themselves are unreliable. Proceed carefully.' },
       { kind: 'deploy', design: { engine: 20, cockpit: 20, wing: 15, body: 15, antenna: 10, camera: 5, gun: 5 }, count: 10, highlight: ['antenna'], drones: 190, deploys: 9 },
       { kind: 'result', rate: 10.0, survived: 1, total: 10, note: 'worse than the 16% historical baseline' },
       { kind: 'deploy', design: { engine: 25, cockpit: 25, wing: 20, body: 20, antenna: 0, camera: 0, gun: 0 }, count: 10, highlight: ['antenna'], drones: 180, deploys: 8 },
@@ -201,7 +201,7 @@ const SESSIONS: Session[] = [
       { kind: 'eval', rate: 24.3, threshold: 55, win: false },
       {
         kind: 'reflect',
-        html: 'I identified the hidden weather and noise variables early, but <mark>identical designs returned 30% and then 0%</mark> \u2014 with batches of 10\u201315 drones the readings never stabilized. <mark>I selected the best-looking configuration rather than a statistically confirmed one</mark>.',
+        html: 'I suspected unreliable observations early, but <mark>identical designs returned 30% and then 0%</mark> \u2014 with batches of 10\u201315 drones the readings never stabilized. <mark>I selected the best-looking configuration rather than a statistically confirmed one</mark>.',
         rubric: { cr: 1, ed: 1, rq: 1, du: 1 },
       },
       { kind: 'system', text: '\u2716 MISSION FAILED \u2014 rain corrupts observations with 20% noise (5% in clear weather), and the Stage-2 weather mix differs from exploration. The agent knew the noise existed yet never sized its batches to defeat it: every conclusion was drawn from \u226415 drones. Knowing a confound exists is not the same as designing around it.' },
