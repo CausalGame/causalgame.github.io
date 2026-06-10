@@ -78,9 +78,11 @@ function AntennaScene() {
         <line x1="742" y1="150" x2="742" y2="120" stroke={C.soft} strokeWidth="3" />
         <circle cx="742" cy="114" r="8" fill="none" stroke={C.red} strokeWidth="2" />
         <circle cx="742" cy="114" r="2.5" fill={C.red} />
-        <g className="at-sweep">
-          <path d="M742,114 L600,84 A150,150 0 0 0 598,140 Z" fill={C.red} opacity="0.12" />
-          <line x1="742" y1="114" x2="598" y2="112" stroke={C.red} strokeWidth="1" opacity="0.45" />
+        <g transform="translate(742,114)">
+          <g className="at-sweep">
+            <path d="M0,0 L-148,-26 A150,150 0 0 0 -148,26 Z" fill={C.red} opacity="0.12" />
+            <line x1="0" y1="0" x2="-149" y2="0" stroke={C.red} strokeWidth="1" opacity="0.45" />
+          </g>
         </g>
         <text x="742" y="100" textAnchor="middle" className="lbl" fill={C.red}>RADAR</text>
       </g>
