@@ -10,7 +10,7 @@ const CAPTIONS = [
   'The causal agent treats the archive as a hypothesis and runs a control experiment. The naive agent fits the correlation — like 54.8% of real benchmark sessions, it never leaves the trap region.',
   'Intervene, don’t fit: setting antenna_def = 0 reverses the observational trend. The naive agent hill-climbs inside the trap — in the real session, all ten deployments stayed at antenna ≥ 20.',
   'One submission, irreversible — like committing a real-world intervention. Both agents are equally confident.',
-  'Stage 2, 1,000 fresh drones: 92.6% vs 34.4%. Treating correlation as causation is the benchmark’s central failure mode — 87–92% of sessions score zero on causal reasoning.',
+  'Verification on 1,000 fresh drones: 92.6% vs 34.4%. Treating correlation as causation is the benchmark’s central failure mode — 87–92% of sessions score zero on causal reasoning.',
 ];
 
 const HIST_ROWS = [
@@ -166,7 +166,7 @@ export default function PipelineStory() {
 
         {/* ⑤ stage 2 */}
         <div className={P(4)} onClick={() => setIdx(4)}>
-          <h4><span className="n">⑤</span>STAGE 2 — 1,000 DRONES</h4>
+          <h4><span className="n">⑤</span>VERIFY — 1,000 DRONES</h4>
           <div className="ps-lane good">
             <span className="who">926 / 1000 SURVIVED</span>
             <Fleet kind="good" filled={26} />
