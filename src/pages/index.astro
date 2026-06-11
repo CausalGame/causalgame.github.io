@@ -37,9 +37,22 @@ const bibtex = `@inproceedings{chen2026causalgame,
   year      = {2026},
   note      = {Oral presentation}
 }`;
+
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'ScholarlyArticle',
+  headline: 'CausalGame: Benchmarking Causal Thinking of LLM Agents in Games',
+  author: authors.map((a) => ({ '@type': 'Person', name: a.name })),
+  publisher: { '@type': 'Organization', name: 'International Conference on Machine Learning (ICML)' },
+  datePublished: '2026',
+  url: 'https://causalgame.github.io/',
+  sameAs: ['https://github.com/CausalGame/CausalGame'],
+  about: ['causal reasoning', 'LLM agents', 'benchmark', 'AI scientist'],
+});
 ---
 
 <Base title="CausalGame — Benchmarking Causal Thinking of LLM Agents in Games">
+  <script type="application/ld+json" set:html={jsonLd} />
   <header class="hero container">
     <span class="badge">ICML 2026 · Oral</span>
     <h1>CausalGame: Benchmarking Causal Thinking of LLM Agents in Games</h1>
