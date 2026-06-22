@@ -1,16 +1,28 @@
 import { useEffect, useRef, useState } from 'react';
+import rubric from '../data/rubric.json';
 import './PipelineStory.css';
 
 // Animated counterpart of the paper's Fig. 1: the same survivor-censored
 // archive, two agents. Numbers are from real benchmark sessions
 // c6e3ba50 (win, 92.6%) and 290feba3 (loss, 34.4%) — both replayable on
 // the Game page.
+//
+// Failure stats below are computed from src/data/rubric.json so they stay in
+// sync with the /rubric/ page. "Score zero on causal reasoning" = pattern A
+// (No Engagement: no causal reasoning AND no good experimental design),
+// pooled across agentic + prompting sessions.
+const _dist = rubric.distribution;
+const _classified = (_dist.agentic?.total ?? 0) + (_dist.prompting?.total ?? 0);
+const _noEngageCount =
+  (_dist.agentic?.patterns.A?.count ?? 0) + (_dist.prompting?.patterns.A?.count ?? 0);
+const _pctNoEngage = _classified ? Math.round((_noEngageCount / _classified) * 100) : 0;
+
 const CAPTIONS = [
   'Two agents, one trap. Each starts from a survivor-censored archive — selection bias is baked into the data before the first move.',
   'Same data, two hypotheses. The causal agent treats the archive as a claim to test and runs a control; the naive agent adopts the correlation as a conclusion — like 54.8% of real sessions, it will never leave the trap region.',
   'Intervene, don’t fit: setting antenna_def = 0 reverses the observational trend. The naive agent hill-climbs inside the trap — in the real session, all ten deployments stayed at antenna ≥ 20.',
   'One submission, irreversible — like committing a real-world intervention. Both agents are equally confident.',
-  'Verification on 1,000 fresh drones: 92.6% vs 34.4%. Treating correlation as causation is the benchmark’s central failure mode — 87–92% of sessions score zero on causal reasoning.',
+  `Verification on 1,000 fresh drones: 92.6% vs 34.4%. Treating correlation as causation is the benchmark’s central failure mode — ${_pctNoEngage}% of sessions show no causal engagement at all (pattern A).`,
 ];
 
 const HIST_ROWS = [

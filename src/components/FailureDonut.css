@@ -1,0 +1,99 @@
+.fd {
+  display: grid;
+  grid-template-columns: minmax(0, 360px) 1fr;
+  gap: 1.6rem;
+  align-items: center;
+  margin: 1.4rem 0;
+}
+
+.fd-svg {
+  width: 100%;
+  height: auto;
+  max-width: 360px;
+  display: block;
+}
+
+.fd-lbl {
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.fd-center-top {
+  font-size: 30px;
+  font-weight: 800;
+  fill: var(--accent);
+}
+
+.fd-center-bot {
+  font-size: 11px;
+  fill: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.fd-side {
+  min-width: 0;
+}
+
+.fd-ringkey {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+
+.fd-dot {
+  width: 18px;
+  height: 8px;
+  border-radius: 2px;
+  display: inline-block;
+  background: var(--text-soft);
+}
+
+.fd-dot-out {
+  background: var(--accent);
+}
+
+.fd-dot-in {
+  background: var(--accent);
+  opacity: 0.55;
+}
+
+.fd-legend {
+  list-style: none;
+  margin: 0.8rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.fd-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.fd-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  flex: 0 0 14px;
+}
+
+.fd-pname {
+  flex: 1 1 auto;
+}
+
+.fd-pct {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--text-soft);
+}
+
+@media (max-width: 720px) {
+  .fd {
+    grid-template-columns: 1fr;
+  }
+}

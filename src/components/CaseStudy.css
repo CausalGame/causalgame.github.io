@@ -1,0 +1,258 @@
+.cs {
+  margin: 1.4rem 0;
+}
+
+.cs-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.cs-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-soft);
+  transition: color 0.15s, background 0.15s, transform 0.12s;
+}
+
+.cs-tab:hover {
+  background: var(--bg-soft);
+}
+
+.cs-tab.active {
+  color: var(--text);
+  background: var(--bg-soft);
+  border-width: 2px;
+}
+
+.cs-tab-code {
+  display: inline-block;
+  min-width: 20px;
+  padding: 0.05rem 0.35rem;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.cs-panel {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.1rem 1.2rem;
+  background: #fff;
+}
+
+.cs-head {
+  display: grid;
+  grid-template-columns: 1fr minmax(180px, 240px);
+  gap: 1.2rem;
+  align-items: start;
+}
+
+.cs-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.4rem;
+  font-size: 1.05rem;
+}
+
+.cs-tag {
+  display: inline-block;
+  min-width: 24px;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.cs-summary {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.92rem;
+}
+
+.cs-meta {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.5rem 0.7rem;
+  background: var(--bg-soft);
+  font-size: 0.86rem;
+}
+
+.cs-meta-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.18rem 0;
+}
+
+.cs-k {
+  color: var(--text-soft);
+}
+
+.cs-v {
+  font-weight: 600;
+  text-align: right;
+}
+
+.cs-v.win {
+  color: var(--win);
+}
+
+.cs-v.loss {
+  color: #b4232c;
+}
+
+.cs-thesis {
+  margin: 1rem 0 0.4rem;
+  padding: 0.6rem 0.8rem;
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.cs-thesis em {
+  font-weight: 700;
+  font-style: normal;
+}
+
+.cs-rubric {
+  margin-top: 0.9rem;
+}
+
+.cs-rubric-h {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cs-crit {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 0.4rem;
+  overflow: hidden;
+}
+
+.cs-crit.open {
+  border-color: var(--accent);
+}
+
+.cs-crit-head {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  background: var(--bg-soft);
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.cs-crit-head:hover {
+  background: #eef2f6;
+}
+
+.cs-verdict {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.82rem;
+  flex: 0 0 20px;
+}
+
+.cs-verdict.pass {
+  background: var(--win);
+}
+
+.cs-verdict.fail {
+  background: #b4232c;
+}
+
+.cs-crit-id {
+  flex: 0 0 auto;
+}
+
+.cs-crit-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cs-crit-score {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--text-soft);
+  font-size: 0.84rem;
+}
+
+.cs-chev {
+  color: var(--text-soft);
+}
+
+.cs-crit-body {
+  padding: 0.7rem 0.9rem 0.85rem;
+  border-top: 1px solid var(--border);
+  background: #fff;
+}
+
+.cs-reasoning {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.cs-evidence-h {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.25rem;
+}
+
+.cs-evidence ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.cs-evidence li {
+  font-size: 0.88rem;
+  font-style: italic;
+  color: var(--text-soft);
+  margin-bottom: 0.2rem;
+}
+
+.cs-foot {
+  margin-top: 0.8rem;
+}
+
+@media (max-width: 640px) {
+  .cs-head {
+    grid-template-columns: 1fr;
+  }
+}
