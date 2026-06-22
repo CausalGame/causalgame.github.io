@@ -1,0 +1,137 @@
+.rr-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1.2rem 0 0.9rem;
+}
+
+.rr-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
+  gap: 1.4rem;
+  align-items: start;
+}
+
+.rr-svg {
+  width: 100%;
+  height: auto;
+  max-width: 460px;
+  display: block;
+  margin: 0 auto;
+}
+
+.rr-ring {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.rr-spoke {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.rr-alabel {
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--text);
+}
+
+.rr-scale {
+  font-size: 9px;
+  fill: var(--text-soft);
+}
+
+.rr-poly polygon:hover {
+  fill-opacity: 0.28;
+}
+
+.rr-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  max-height: 420px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.4rem;
+  background: #fff;
+}
+
+.rr-legend-hint {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  padding: 0.2rem 0.4rem 0.4rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.2rem;
+}
+
+.rr-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.45rem;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  text-align: left;
+  color: var(--text);
+  opacity: 0.42;
+  transition: opacity 0.15s, background 0.15s;
+}
+
+.rr-item.on {
+  opacity: 1;
+}
+
+.rr-item:hover {
+  background: var(--bg-soft);
+}
+
+.rr-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex: 0 0 12px;
+}
+
+.rr-name {
+  flex: 1 1 auto;
+}
+
+.rr-val {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.82rem;
+  color: var(--text-soft);
+}
+
+.rr-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.4rem;
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.86rem;
+  color: var(--text-soft);
+}
+
+.rr-key-item em {
+  color: var(--warn);
+  font-style: normal;
+  font-weight: 600;
+}
+
+.rr-note {
+  margin-top: 0.9rem;
+}
+
+@media (max-width: 720px) {
+  .rr-body {
+    grid-template-columns: 1fr;
+  }
+}

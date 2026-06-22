@@ -1,0 +1,1910 @@
+{
+  "meta": {
+    "source": "snapshot from analysis-v3-cr (visualization-2606/data/rubric_radar.json + plot_failure_mode.py). 4 patterns A/B/C/D ('Other' excluded). Case studies are non-leaking (agent REPORT does not echo the experiment name), judge-consistent, and prototypical (C requires all causal criteria unsatisfied). TODO: regenerate via paper export script; do not hand-edit numbers.",
+    "judges": [
+      "gemini-3-f",
+      "grok-4-1-f",
+      "qwen3-next"
+    ],
+    "max_points": 16.0,
+    "criteria": [
+      {
+        "id": "CR1",
+        "dimension": "CausalReasoning",
+        "weight": 5,
+        "title": "Identify core causal mechanisms in the task report",
+        "mandatory": true
+      },
+      {
+        "id": "CR2",
+        "dimension": "CausalReasoning",
+        "weight": 4,
+        "title": "Identify and avoid traps or spurious correlations",
+        "mandatory": true
+      },
+      {
+        "id": "CR3",
+        "dimension": "CausalReasoning",
+        "weight": 2,
+        "title": "Mechanistic depth and testability",
+        "mandatory": false
+      },
+      {
+        "id": "ED1",
+        "dimension": "ExperimentalDesign",
+        "weight": 2,
+        "title": "Support conclusions with concrete experimental data",
+        "mandatory": false
+      },
+      {
+        "id": "RQ1",
+        "dimension": "ReflectionQuality",
+        "weight": 2,
+        "title": "Acknowledge errors and uncertainties",
+        "mandatory": false
+      },
+      {
+        "id": "DU1",
+        "dimension": "DataUsage",
+        "weight": 1,
+        "title": "Clear data-to-conclusion linkage",
+        "mandatory": false
+      }
+    ],
+    "criteria_ids": [
+      "CR1",
+      "CR2",
+      "CR3",
+      "ED1",
+      "RQ1",
+      "DU1"
+    ],
+    "dimensions": [
+      "CausalReasoning",
+      "ExperimentalDesign",
+      "ReflectionQuality",
+      "DataUsage"
+    ],
+    "dimensions_max": {
+      "CausalReasoning": 11,
+      "ExperimentalDesign": 2,
+      "ReflectionQuality": 2,
+      "DataUsage": 1
+    },
+    "failure_modes": {
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "names": {
+        "A": "No Engagement",
+        "B": "Blind Exploration",
+        "C": "Surface Analysis",
+        "D": "Nascent Reasoning"
+      },
+      "colors": {
+        "A": "#D9534F",
+        "B": "#F4A582",
+        "C": "#92C5DE",
+        "D": "#1B9E77"
+      },
+      "logic": {
+        "A": "NOT(good_exp_design OR causal_reasoning)",
+        "B": "good_exp_design AND NOT find_causal_mechanism",
+        "C": "DU1>=1.0 AND NOT find_causal_mechanism",
+        "D": "(CR1+CR2+CR3) x (ED1 x DU1 x RQ1) > 0"
+      },
+      "definition": {
+        "A": "No valid reasoning or experimentation",
+        "B": "Experiments conducted but no causal mechanism found",
+        "C": "Good data utilization but no causal mechanism found",
+        "D": "Present across all dimensions but weak"
+      }
+    }
+  },
+  "models": [
+    {
+      "csv_name": "qwen3.7-max",
+      "display": "Qwen-3.7-Max",
+      "available": true,
+      "criteria": {
+        "CR1": {
+          "mean": 0.22489959839357432,
+          "sem": 0.04192894180285362,
+          "n_judges": 3
+        },
+        "CR2": {
+          "mean": 0.27510040160642574,
+          "sem": 0.020080321285140562,
+          "n_judges": 3
+        },
+        "CR3": {
+          "mean": 0.1686746987951807,
+          "sem": 0.06947326864259515,
+          "n_judges": 3
+        },
+        "ED1": {
+          "mean": 0.7008032128514056,
+          "sem": 0.10470689015649552,
+          "n_judges": 3
+        },
+        "RQ1": {
+          "mean": 0.26706827309236947,
+          "sem": 0.05633237003656843,
+          "n_judges": 3
+        },
+        "DU1": {
+          "mean": 0.6365461847389557,
+          "sem": 0.12179670830619074,
+          "n_judges": 3
+        }
+      },
+      "dimensions": {
+        "CausalReasoning": {
+          "mean": 0.2329317269076305,
+          "sem": 0.03685850153814958,
+          "n_judges": 3
+        },
+        "ExperimentalDesign": {
+          "mean": 0.7008032128514056,
+          "sem": 0.10470689015649552,
+          "n_judges": 3
+        },
+        "ReflectionQuality": {
+          "mean": 0.26706827309236947,
+          "sem": 0.05633237003656843,
+          "n_judges": 3
+        },
+        "DataUsage": {
+          "mean": 0.6365461847389557,
+          "sem": 0.12179670830619074,
+          "n_judges": 3
+        }
+      },
+      "overall": {
+        "compliance": 0.3209086345381526,
+        "points_norm": 0.3209086345381526,
+        "n_sessions": 249
+      },
+      "n_judges": 3
+    },
+    {
+      "csv_name": "claude-opus-4-5",
+      "display": "Claude-Opus-4.5",
+      "available": true,
+      "criteria": {
+        "CR1": {
+          "mean": 0.21825396825396826,
+          "sem": 0.03953345008962554,
+          "n_judges": 3
+        },
+        "CR2": {
+          "mean": 0.25396825396825395,
+          "sem": 0.013010790722821438,
+          "n_judges": 3
+        },
+        "CR3": {
+          "mean": 0.0992063492063492,
+          "sem": 0.04563492063492064,
+          "n_judges": 3
+        },
+        "ED1": {
+          "mean": 0.5932539682539683,
+          "sem": 0.12740196632284642,
+          "n_judges": 3
+        },
+        "RQ1": {
+          "mean": 0.3055555555555555,
+          "sem": 0.03831985697584914,
+          "n_judges": 3
+        },
+        "DU1": {
+          "mean": 0.5833333333333334,
+          "sem": 0.14873013755484257,
+          "n_judges": 3
+        }
+      },
+      "dimensions": {
+        "CausalReasoning": {
+          "mean": 0.20959595959595959,
+          "sem": 0.024544946605387627,
+          "n_judges": 3
+        },
+        "ExperimentalDesign": {
+          "mean": 0.5932539682539683,
+          "sem": 0.12740196632284642,
+          "n_judges": 3
+        },
+        "ReflectionQuality": {
+          "mean": 0.3055555555555555,
+          "sem": 0.03831985697584914,
+          "n_judges": 3
+        },
+        "DataUsage": {
+          "mean": 0.5833333333333334,
+          "sem": 0.14873013755484257,
+          "n_judges": 3
+        }
+      },
+      "overall": {
+        "compliance": 0.29290674603174605,
+        "points_norm": 0.29290674603174605,
+        "n_sessions": 252
+      },
+      "n_judges": 3
+    },
+    {
+      "csv_name": "claude-sonnet-4-5",
+      "display": "Claude-Sonnet-4.5",
+      "available": true,
+      "criteria": {
+        "CR1": {
+          "mean": 0.19444444444444445,
+          "sem": 0.03390477676713307,
+          "n_judges": 3
+        },
+        "CR2": {
+          "mean": 0.21031746031746032,
+          "sem": 0.01763530638356267,
+          "n_judges": 3
+        },
+        "CR3": {
+          "mean": 0.09920634920634923,
+          "sem": 0.030801933921150847,
+          "n_judges": 3
+        },
+        "ED1": {
+          "mean": 0.6805555555555555,
+          "sem": 0.1035744693344301,
+          "n_judges": 3
+        },
+        "RQ1": {
+          "mean": 0.32341269841269843,
+          "sem": 0.0648721536677453,
+          "n_judges": 3
+        },
+        "DU1": {
+          "mean": 0.6289682539682541,
+          "sem": 0.12277562305083321,
+          "n_judges": 3
+        }
+      },
+      "dimensions": {
+        "CausalReasoning": {
+          "mean": 0.1829004329004329,
+          "sem": 0.027314782389878705,
+          "n_judges": 3
+        },
+        "ExperimentalDesign": {
+          "mean": 0.6805555555555555,
+          "sem": 0.1035744693344301,
+          "n_judges": 3
+        },
+        "ReflectionQuality": {
+          "mean": 0.32341269841269843,
+          "sem": 0.0648721536677453,
+          "n_judges": 3
+        },
+        "DataUsage": {
+          "mean": 0.6289682539682541,
+          "sem": 0.12277562305083321,
+          "n_judges": 3
+        }
+      },
+      "overall": {
+        "compliance": 0.29055059523809523,
+        "points_norm": 0.29055059523809523,
+        "n_sessions": 252
+      },
+      "n_judges": 3
+    },
+    {
+      "csv_name": "grok-4-1-fast-reasoning",
+      "display": "Grok-4.1-Fast",
+      "available": true,
+      "criteria": {
+        "CR1": {
+          "mean": 0.22489959839357432,
+          "sem": 0.040310963654387,
+          "n_judges": 3
+        },
+        "CR2": {
+          "mean": 0.2289156626506024,
+          "sem": 0.03032062022197089,
+          "n_judges": 3
+        },
+        "CR3": {
+          "mean": 0.10843373493975904,
+          "sem": 0.03317813582702471,
+          "n_judges": 3
+        },
+        "ED1": {
+          "mean": 0.3714859437751004,
+          "sem": 0.09444157442815138,
+          "n_judges": 3
+        },
+        "RQ1": {
+          "mean": 0.11044176706827309,
+          "sem": 0.03518356519665709,
+          "n_judges": 3
+        },
+        "DU1": {
+          "mean": 0.3413654618473896,
+          "sem": 0.09177827214479066,
+          "n_judges": 3
+        }
+      },
+      "dimensions": {
+        "CausalReasoning": {
+          "mean": 0.20518437385907262,
+          "sem": 0.03406912217734749,
+          "n_judges": 3
+        },
+        "ExperimentalDesign": {
+          "mean": 0.3714859437751004,
+          "sem": 0.09444157442815138,
+          "n_judges": 3
+        },
+        "ReflectionQuality": {
+          "mean": 0.11044176706827309,
+          "sem": 0.03518356519665709,
+          "n_judges": 3
+        },
+        "DataUsage": {
+          "mean": 0.3413654618473896,
+          "sem": 0.09177827214479066,
+          "n_judges": 3
+        }
+      },
+      "overall": {
+        "compliance": 0.22264056224899598,
+        "points_norm": 0.22264056224899598,
+        "n_sessions": 249
+      },
+      "n_judges": 3
+    },
+    {
+      "csv_name": "gpt-5.2-high",
+      "display": "GPT-5.2-High",
+      "available": true,
+      "criteria": {
+        "CR1": {
+          "mean": 0.10119047619047618,
+          "sem": 0.012390869044441269,
+          "n_judges": 3
+        },
+        "CR2": {
+          "mean": 0.13095238095238096,
+          "sem": 0.010309826235529031,
+          "n_judges": 3
+        },
+        "CR3": {
+          "mean": 0.06547619047619048,
+          "sem": 0.012390869044441269,
+          "n_judges": 3
+        },
+        "ED1": {
+          "mean": 0.5317460317460317,
+          "sem": 0.09624549869551512,
+          "n_judges": 3
+        },
+        "RQ1": {
+          "mean": 0.2996031746031746,
+          "sem": 0.06780955353426613,
+          "n_judges": 3
+        },
+        "DU1": {
+          "mean": 0.5496031746031745,
+          "sem": 0.10219698618790407,
+          "n_judges": 3
+        }
+      },
+      "dimensions": {
+        "CausalReasoning": {
+          "mean": 0.10551948051948051,
+          "sem": 0.01155950214286588,
+          "n_judges": 3
+        },
+        "ExperimentalDesign": {
+          "mean": 0.5317460317460317,
+          "sem": 0.09624549869551512,
+          "n_judges": 3
+        },
+        "ReflectionQuality": {
+          "mean": 0.2996031746031746,
+          "sem": 0.06780955353426613,
+          "n_judges": 3
+        },
+        "DataUsage": {
+          "mean": 0.5496031746031745,
+          "sem": 0.10219698618790407,
+          "n_judges": 3
+        }
+      },
+      "overall": {
+        "compliance": 0.21081349206349206,
+        "points_norm": 0.21081349206349206,
+        "n_sessions": 252
+      },
+      "n_judges": 3
+    },
+    {
+      "csv_name": "deepseek-v3.2",
+      "display": "DeepSeek-V3.2",
+      "available": true,
+      "criteria": {
+        "CR1": {
+          "mean": 0.09552845528455285,
+          "sem": 0.020018003662187207,
+          "n_judges": 3
+        },
+        "CR2": {
+          "mean": 0.11788617886178861,
+          "sem": 0.00732835625094307,
+          "n_judges": 3
+        },
+        "CR3": {
+          "mean": 0.0467479674796748,
+          "sem": 0.015874491211192387,
+          "n_judges": 3
+        },
+        "ED1": {
+          "mean": 0.508130081300813,
+          "sem": 0.1149587458730022,
+          "n_judges": 3
+        },
+        "RQ1": {
+          "mean": 0.34959349593495936,
+          "sem": 0.11783360195638816,
+          "n_judges": 3
+        },
+        "DU1": {
+          "mean": 0.44918699186991873,
+          "sem": 0.12917302313362317,
+          "n_judges": 3
+        }
+      },
+      "dimensions": {
+        "CausalReasoning": {
+          "mean": 0.09478935698447893,
+          "sem": 0.014308998445343194,
+          "n_judges": 3
+        },
+        "ExperimentalDesign": {
+          "mean": 0.508130081300813,
+          "sem": 0.1149587458730022,
+          "n_judges": 3
+        },
+        "ReflectionQuality": {
+          "mean": 0.34959349593495936,
+          "sem": 0.11783360195638816,
+          "n_judges": 3
+        },
+        "DataUsage": {
+          "mean": 0.44918699186991873,
+          "sem": 0.12917302313362317,
+          "n_judges": 3
+        }
+      },
+      "overall": {
+        "compliance": 0.20045731707317074,
+        "points_norm": 0.20045731707317074,
+        "n_sessions": 246
+      },
+      "n_judges": 3
+    },
+    {
+      "csv_name": "gpt-5.2",
+      "display": "GPT-5.2",
+      "available": true,
+      "criteria": {
+        "CR1": {
+          "mean": 0.08730158730158731,
+          "sem": 0.01206897327440123,
+          "n_judges": 3
+        },
+        "CR2": {
+          "mean": 0.10317460317460318,
+          "sem": 0.005249506569572603,
+          "n_judges": 3
+        },
+        "CR3": {
+          "mean": 0.041666666666666664,
+          "sem": 0.01913422770038285,
+          "n_judges": 3
+        },
+        "ED1": {
+          "mean": 0.5317460317460317,
+          "sem": 0.10317460317460318,
+          "n_judges": 3
+        },
+        "RQ1": {
+          "mean": 0.28571428571428575,
+          "sem": 0.10142363427882586,
+          "n_judges": 3
+        },
+        "DU1": {
+          "mean": 0.5317460317460317,
+          "sem": 0.12378153936890651,
+          "n_judges": 3
+        }
+      },
+      "dimensions": {
+        "CausalReasoning": {
+          "mean": 0.08477633477633478,
+          "sem": 0.010787883516815061,
+          "n_judges": 3
+        },
+        "ExperimentalDesign": {
+          "mean": 0.5317460317460317,
+          "sem": 0.10317460317460318,
+          "n_judges": 3
+        },
+        "ReflectionQuality": {
+          "mean": 0.28571428571428575,
+          "sem": 0.10142363427882586,
+          "n_judges": 3
+        },
+        "DataUsage": {
+          "mean": 0.5317460317460317,
+          "sem": 0.12378153936890651,
+          "n_judges": 3
+        }
+      },
+      "overall": {
+        "compliance": 0.19370039682539683,
+        "points_norm": 0.19370039682539683,
+        "n_sessions": 252
+      },
+      "n_judges": 3
+    },
+    {
+      "csv_name": "gemini-3.5-flash",
+      "display": "Gemini-3.5-Flash",
+      "available": true,
+      "criteria": {
+        "CR1": {
+          "mean": 0.12757201646090535,
+          "sem": 0.02425890148673168,
+          "n_judges": 3
+        },
+        "CR2": {
+          "mean": 0.1522633744855967,
+          "sem": 0.019628378629978304,
+          "n_judges": 3
+        },
+        "CR3": {
+          "mean": 0.11316872427983538,
+          "sem": 0.034245508183319416,
+          "n_judges": 3
+        },
+        "ED1": {
+          "mean": 0.43209876543209874,
+          "sem": 0.08823778453659081,
+          "n_judges": 3
+        },
+        "RQ1": {
+          "mean": 0.15843621399176955,
+          "sem": 0.033114150081133914,
+          "n_judges": 3
+        },
+        "DU1": {
+          "mean": 0.41152263374485604,
+          "sem": 0.08451256287206935,
+          "n_judges": 3
+        }
+      },
+      "dimensions": {
+        "CausalReasoning": {
+          "mean": 0.1339319117096895,
+          "sem": 0.022960663811495145,
+          "n_judges": 3
+        },
+        "ExperimentalDesign": {
+          "mean": 0.43209876543209874,
+          "sem": 0.08823778453659081,
+          "n_judges": 3
+        },
+        "ReflectionQuality": {
+          "mean": 0.15843621399176955,
+          "sem": 0.033114150081133914,
+          "n_judges": 3
+        },
+        "DataUsage": {
+          "mean": 0.41152263374485604,
+          "sem": 0.08451256287206935,
+          "n_judges": 3
+        }
+      },
+      "overall": {
+        "compliance": 0.19161522633744857,
+        "points_norm": 0.19161522633744857,
+        "n_sessions": 243
+      },
+      "n_judges": 3
+    },
+    {
+      "csv_name": "kimi-k2.5",
+      "display": "Kimi-K2.5",
+      "available": true,
+      "criteria": {
+        "CR1": {
+          "mean": 0.10912698412698413,
+          "sem": 0.027989555515210093,
+          "n_judges": 3
+        },
+        "CR2": {
+          "mean": 0.12301587301587302,
+          "sem": 0.016240779309270738,
+          "n_judges": 3
+        },
+        "CR3": {
+          "mean": 0.0496031746031746,
+          "sem": 0.019841269841269844,
+          "n_judges": 3
+        },
+        "ED1": {
+          "mean": 0.44841269841269843,
+          "sem": 0.10091777758753588,
+          "n_judges": 3
+        },
+        "RQ1": {
+          "mean": 0.2777777777777778,
+          "sem": 0.05170164373331501,
+          "n_judges": 3
+        },
+        "DU1": {
+          "mean": 0.4087301587301588,
+          "sem": 0.11132349316750428,
+          "n_judges": 3
+        }
+      },
+      "dimensions": {
+        "CausalReasoning": {
+          "mean": 0.10335497835497835,
+          "sem": 0.01861188692848468,
+          "n_judges": 3
+        },
+        "ExperimentalDesign": {
+          "mean": 0.44841269841269843,
+          "sem": 0.10091777758753588,
+          "n_judges": 3
+        },
+        "ReflectionQuality": {
+          "mean": 0.2777777777777778,
+          "sem": 0.05170164373331501,
+          "n_judges": 3
+        },
+        "DataUsage": {
+          "mean": 0.4087301587301588,
+          "sem": 0.11132349316750428,
+          "n_judges": 3
+        }
+      },
+      "overall": {
+        "compliance": 0.18737599206349206,
+        "points_norm": 0.18737599206349206,
+        "n_sessions": 252
+      },
+      "n_judges": 3
+    },
+    {
+      "csv_name": "deepseek-v3.2-thinking",
+      "display": "DeepSeek-V3.2-T",
+      "available": true,
+      "criteria": {
+        "CR1": {
+          "mean": 0.05158730158730159,
+          "sem": 0.007153871578301569,
+          "n_judges": 3
+        },
+        "CR2": {
+          "mean": 0.09126984126984128,
+          "sem": 0.008648609014961652,
+          "n_judges": 3
+        },
+        "CR3": {
+          "mean": 0.015873015873015872,
+          "sem": 0.013010790722821429,
+          "n_judges": 3
+        },
+        "ED1": {
+          "mean": 0.5099206349206349,
+          "sem": 0.12693761548986757,
+          "n_judges": 3
+        },
+        "RQ1": {
+          "mean": 0.3968253968253968,
+          "sem": 0.08757173210600756,
+          "n_judges": 3
+        },
+        "DU1": {
+          "mean": 0.46230158730158727,
+          "sem": 0.13876127924528464,
+          "n_judges": 3
+        }
+      },
+      "dimensions": {
+        "CausalReasoning": {
+          "mean": 0.05952380952380953,
+          "sem": 0.004203167459498934,
+          "n_judges": 3
+        },
+        "ExperimentalDesign": {
+          "mean": 0.5099206349206349,
+          "sem": 0.12693761548986757,
+          "n_judges": 3
+        },
+        "ReflectionQuality": {
+          "mean": 0.3968253968253968,
+          "sem": 0.08757173210600756,
+          "n_judges": 3
+        },
+        "DataUsage": {
+          "mean": 0.46230158730158727,
+          "sem": 0.13876127924528464,
+          "n_judges": 3
+        }
+      },
+      "overall": {
+        "compliance": 0.1831597222222222,
+        "points_norm": 0.1831597222222222,
+        "n_sessions": 252
+      },
+      "n_judges": 3
+    },
+    {
+      "csv_name": "gpt-5-mini",
+      "display": "GPT-5-Mini",
+      "available": true,
+      "criteria": {
+        "CR1": {
+          "mean": 0.14682539682539683,
+          "sem": 0.037854730214958165,
+          "n_judges": 3
+        },
+        "CR2": {
+          "mean": 0.15079365079365079,
+          "sem": 0.03302245431962944,
+          "n_judges": 3
+        },
+        "CR3": {
+          "mean": 0.0992063492063492,
+          "sem": 0.034423316612891816,
+          "n_judges": 3
+        },
+        "ED1": {
+          "mean": 0.29563492063492064,
+          "sem": 0.06496311723708294,
+          "n_judges": 3
+        },
+        "RQ1": {
+          "mean": 0.22420634920634921,
+          "sem": 0.04888367061410683,
+          "n_judges": 3
+        },
+        "DU1": {
+          "mean": 0.30158730158730157,
+          "sem": 0.0906856736668765,
+          "n_judges": 3
+        }
+      },
+      "dimensions": {
+        "CausalReasoning": {
+          "mean": 0.1396103896103896,
+          "sem": 0.031976811044792545,
+          "n_judges": 3
+        },
+        "ExperimentalDesign": {
+          "mean": 0.29563492063492064,
+          "sem": 0.06496311723708294,
+          "n_judges": 3
+        },
+        "ReflectionQuality": {
+          "mean": 0.22420634920634921,
+          "sem": 0.04888367061410683,
+          "n_judges": 3
+        },
+        "DataUsage": {
+          "mean": 0.30158730158730157,
+          "sem": 0.0906856736668765,
+          "n_judges": 3
+        }
+      },
+      "overall": {
+        "compliance": 0.17981150793650794,
+        "points_norm": 0.17981150793650794,
+        "n_sessions": 252
+      },
+      "n_judges": 3
+    },
+    {
+      "csv_name": "minimax-m2",
+      "display": "MiniMax-M2",
+      "available": true,
+      "criteria": {
+        "CR1": {
+          "mean": 0.12727098871677187,
+          "sem": 0.03436452433873859,
+          "n_judges": 3
+        },
+        "CR2": {
+          "mean": 0.1254302925989673,
+          "sem": 0.009939510667905055,
+          "n_judges": 3
+        },
+        "CR3": {
+          "mean": 0.03380187416331995,
+          "sem": 0.02206864357290474,
+          "n_judges": 3
+        },
+        "ED1": {
+          "mean": 0.4318942436412316,
+          "sem": 0.09062911265332096,
+          "n_judges": 3
+        },
+        "RQ1": {
+          "mean": 0.18916140753490152,
+          "sem": 0.04751157520156845,
+          "n_judges": 3
+        },
+        "DU1": {
+          "mean": 0.38594855612927903,
+          "sem": 0.12252837513017233,
+          "n_judges": 3
+        }
+      },
+      "dimensions": {
+        "CausalReasoning": {
+          "mean": 0.10960726020966986,
+          "sem": 0.0203971835690238,
+          "n_judges": 3
+        },
+        "ExperimentalDesign": {
+          "mean": 0.4318942436412316,
+          "sem": 0.09062911265332096,
+          "n_judges": 3
+        },
+        "ReflectionQuality": {
+          "mean": 0.18916140753490152,
+          "sem": 0.04751157520156845,
+          "n_judges": 3
+        },
+        "DataUsage": {
+          "mean": 0.38594855612927903,
+          "sem": 0.12252837513017233,
+          "n_judges": 3
+        }
+      },
+      "overall": {
+        "compliance": 0.17729083665338646,
+        "points_norm": 0.17729083665338646,
+        "n_sessions": 251
+      },
+      "n_judges": 3
+    },
+    {
+      "csv_name": "glm-4.7",
+      "display": "GLM-4.7",
+      "available": true,
+      "criteria": {
+        "CR1": {
+          "mean": 0.09036144578313253,
+          "sem": 0.024096385542168676,
+          "n_judges": 3
+        },
+        "CR2": {
+          "mean": 0.09638554216867469,
+          "sem": 0.009201959226818955,
+          "n_judges": 3
+        },
+        "CR3": {
+          "mean": 0.040160642570281124,
+          "sem": 0.019155405650942686,
+          "n_judges": 3
+        },
+        "ED1": {
+          "mean": 0.38755020080321284,
+          "sem": 0.09469739857471163,
+          "n_judges": 3
+        },
+        "RQ1": {
+          "mean": 0.3634538152610442,
+          "sem": 0.061269663865029536,
+          "n_judges": 3
+        },
+        "DU1": {
+          "mean": 0.3634538152610442,
+          "sem": 0.08807916545968397,
+          "n_judges": 3
+        }
+      },
+      "dimensions": {
+        "CausalReasoning": {
+          "mean": 0.08342460752099307,
+          "sem": 0.016853872051966104,
+          "n_judges": 3
+        },
+        "ExperimentalDesign": {
+          "mean": 0.38755020080321284,
+          "sem": 0.09469739857471163,
+          "n_judges": 3
+        },
+        "ReflectionQuality": {
+          "mean": 0.3634538152610442,
+          "sem": 0.061269663865029536,
+          "n_judges": 3
+        },
+        "DataUsage": {
+          "mean": 0.3634538152610442,
+          "sem": 0.08807916545968397,
+          "n_judges": 3
+        }
+      },
+      "overall": {
+        "compliance": 0.17394578313253012,
+        "points_norm": 0.17394578313253012,
+        "n_sessions": 249
+      },
+      "n_judges": 3
+    },
+    {
+      "csv_name": "gpt-oss-120b",
+      "display": "GPT-OSS-120B",
+      "available": true,
+      "criteria": {
+        "CR1": {
+          "mean": 0.06410256410256411,
+          "sem": 0.016959944301696096,
+          "n_judges": 3
+        },
+        "CR2": {
+          "mean": 0.0705128205128205,
+          "sem": 0.006410256410256411,
+          "n_judges": 3
+        },
+        "CR3": {
+          "mean": 0.034188034188034185,
+          "sem": 0.016688567683561226,
+          "n_judges": 3
+        },
+        "ED1": {
+          "mean": 0.2435897435897436,
+          "sem": 0.06420931282613983,
+          "n_judges": 3
+        },
+        "RQ1": {
+          "mean": 0.11538461538461538,
+          "sem": 0.03530493940568014,
+          "n_judges": 3
+        },
+        "DU1": {
+          "mean": 0.22863247863247863,
+          "sem": 0.06827583465243786,
+          "n_judges": 3
+        }
+      },
+      "dimensions": {
+        "CausalReasoning": {
+          "mean": 0.060994560994560985,
+          "sem": 0.012927492721037171,
+          "n_judges": 3
+        },
+        "ExperimentalDesign": {
+          "mean": 0.2435897435897436,
+          "sem": 0.06420931282613983,
+          "n_judges": 3
+        },
+        "ReflectionQuality": {
+          "mean": 0.11538461538461538,
+          "sem": 0.03530493940568014,
+          "n_judges": 3
+        },
+        "DataUsage": {
+          "mean": 0.22863247863247863,
+          "sem": 0.06827583465243786,
+          "n_judges": 3
+        }
+      },
+      "overall": {
+        "compliance": 0.10109508547008547,
+        "points_norm": 0.10109508547008547,
+        "n_sessions": 234
+      },
+      "n_judges": 3
+    },
+    {
+      "csv_name": "gemini-3.1-flash-lite-preview",
+      "display": "Gemini-3.1-FL",
+      "available": true,
+      "criteria": {
+        "CR1": {
+          "mean": 0.05158730158730159,
+          "sem": 0.020714893866886012,
+          "n_judges": 3
+        },
+        "CR2": {
+          "mean": 0.05555555555555555,
+          "sem": 0.017297218029923307,
+          "n_judges": 3
+        },
+        "CR3": {
+          "mean": 0.029761904761904757,
+          "sem": 0.026840772338231515,
+          "n_judges": 3
+        },
+        "ED1": {
+          "mean": 0.19246031746031744,
+          "sem": 0.11316483517142223,
+          "n_judges": 3
+        },
+        "RQ1": {
+          "mean": 0.1726190476190476,
+          "sem": 0.09007586875250927,
+          "n_judges": 3
+        },
+        "DU1": {
+          "mean": 0.1865079365079365,
+          "sem": 0.11222163287602598,
+          "n_judges": 3
+        }
+      },
+      "dimensions": {
+        "CausalReasoning": {
+          "mean": 0.049062049062049064,
+          "sem": 0.02013184187667225,
+          "n_judges": 3
+        },
+        "ExperimentalDesign": {
+          "mean": 0.19246031746031744,
+          "sem": 0.11316483517142223,
+          "n_judges": 3
+        },
+        "ReflectionQuality": {
+          "mean": 0.1726190476190476,
+          "sem": 0.09007586875250927,
+          "n_judges": 3
+        },
+        "DataUsage": {
+          "mean": 0.1865079365079365,
+          "sem": 0.11222163287602598,
+          "n_judges": 3
+        }
+      },
+      "overall": {
+        "compliance": 0.09102182539682539,
+        "points_norm": 0.09102182539682539,
+        "n_sessions": 252
+      },
+      "n_judges": 3
+    },
+    {
+      "csv_name": "minimax-m2-1",
+      "display": "MiniMax-M2-1",
+      "available": false,
+      "criteria": {},
+      "dimensions": {},
+      "overall": {},
+      "n_judges": 0
+    }
+  ],
+  "distribution": {
+    "agentic": {
+      "total": 540,
+      "patterns": {
+        "A": {
+          "count": 367,
+          "pct": 67.96296296296296
+        },
+        "B": {
+          "count": 27,
+          "pct": 5.0
+        },
+        "C": {
+          "count": 19,
+          "pct": 3.5185185185185186
+        },
+        "D": {
+          "count": 127,
+          "pct": 23.51851851851852
+        }
+      }
+    },
+    "prompting": {
+      "total": 494,
+      "patterns": {
+        "A": {
+          "count": 426,
+          "pct": 86.23481781376519
+        },
+        "B": {
+          "count": 15,
+          "pct": 3.0364372469635628
+        },
+        "C": {
+          "count": 14,
+          "pct": 2.834008097165992
+        },
+        "D": {
+          "count": 39,
+          "pct": 7.894736842105263
+        }
+      }
+    }
+  },
+  "heatmap": [
+    {
+      "display": "Claude-Opus-4.5",
+      "total": 33,
+      "patterns": {
+        "A": {
+          "count": 13,
+          "pct": 39.39393939393939
+        },
+        "B": {
+          "count": 1,
+          "pct": 3.0303030303030303
+        },
+        "C": {
+          "count": 2,
+          "pct": 6.0606060606060606
+        },
+        "D": {
+          "count": 17,
+          "pct": 51.515151515151516
+        }
+      }
+    },
+    {
+      "display": "Qwen-3.7-Max",
+      "total": 28,
+      "patterns": {
+        "A": {
+          "count": 13,
+          "pct": 46.42857142857143
+        },
+        "B": {
+          "count": 3,
+          "pct": 10.714285714285714
+        },
+        "C": {
+          "count": 2,
+          "pct": 7.142857142857142
+        },
+        "D": {
+          "count": 10,
+          "pct": 35.714285714285715
+        }
+      }
+    },
+    {
+      "display": "Claude-Sonnet-4.5",
+      "total": 33,
+      "patterns": {
+        "A": {
+          "count": 17,
+          "pct": 51.515151515151516
+        },
+        "B": {
+          "count": 3,
+          "pct": 9.090909090909092
+        },
+        "C": {
+          "count": 4,
+          "pct": 12.121212121212121
+        },
+        "D": {
+          "count": 9,
+          "pct": 27.27272727272727
+        }
+      }
+    },
+    {
+      "display": "Grok-4.1-Fast",
+      "total": 34,
+      "patterns": {
+        "A": {
+          "count": 20,
+          "pct": 58.82352941176471
+        },
+        "B": {
+          "count": 1,
+          "pct": 2.941176470588235
+        },
+        "C": {
+          "count": 2,
+          "pct": 5.88235294117647
+        },
+        "D": {
+          "count": 11,
+          "pct": 32.35294117647059
+        }
+      }
+    },
+    {
+      "display": "MiniMax-M2",
+      "total": 33,
+      "patterns": {
+        "A": {
+          "count": 22,
+          "pct": 66.66666666666666
+        },
+        "B": {
+          "count": 4,
+          "pct": 12.121212121212121
+        },
+        "C": {
+          "count": 0,
+          "pct": 0.0
+        },
+        "D": {
+          "count": 7,
+          "pct": 21.21212121212121
+        }
+      }
+    },
+    {
+      "display": "Gemini-3.5-Flash",
+      "total": 35,
+      "patterns": {
+        "A": {
+          "count": 22,
+          "pct": 62.857142857142854
+        },
+        "B": {
+          "count": 3,
+          "pct": 8.571428571428571
+        },
+        "C": {
+          "count": 6,
+          "pct": 17.142857142857142
+        },
+        "D": {
+          "count": 4,
+          "pct": 11.428571428571429
+        }
+      }
+    },
+    {
+      "display": "DeepSeek-V3.2",
+      "total": 36,
+      "patterns": {
+        "A": {
+          "count": 29,
+          "pct": 80.55555555555556
+        },
+        "B": {
+          "count": 1,
+          "pct": 2.7777777777777777
+        },
+        "C": {
+          "count": 0,
+          "pct": 0.0
+        },
+        "D": {
+          "count": 6,
+          "pct": 16.666666666666664
+        }
+      }
+    },
+    {
+      "display": "GPT-OSS-120B",
+      "total": 39,
+      "patterns": {
+        "A": {
+          "count": 33,
+          "pct": 84.61538461538461
+        },
+        "B": {
+          "count": 0,
+          "pct": 0.0
+        },
+        "C": {
+          "count": 0,
+          "pct": 0.0
+        },
+        "D": {
+          "count": 6,
+          "pct": 15.384615384615385
+        }
+      }
+    },
+    {
+      "display": "GPT-5.2-High",
+      "total": 39,
+      "patterns": {
+        "A": {
+          "count": 30,
+          "pct": 76.92307692307693
+        },
+        "B": {
+          "count": 5,
+          "pct": 12.82051282051282
+        },
+        "C": {
+          "count": 0,
+          "pct": 0.0
+        },
+        "D": {
+          "count": 4,
+          "pct": 10.256410256410255
+        }
+      }
+    },
+    {
+      "display": "GPT-5-Mini",
+      "total": 35,
+      "patterns": {
+        "A": {
+          "count": 21,
+          "pct": 60.0
+        },
+        "B": {
+          "count": 1,
+          "pct": 2.857142857142857
+        },
+        "C": {
+          "count": 0,
+          "pct": 0.0
+        },
+        "D": {
+          "count": 13,
+          "pct": 37.142857142857146
+        }
+      }
+    },
+    {
+      "display": "DeepSeek-V3.2-T",
+      "total": 36,
+      "patterns": {
+        "A": {
+          "count": 26,
+          "pct": 72.22222222222221
+        },
+        "B": {
+          "count": 1,
+          "pct": 2.7777777777777777
+        },
+        "C": {
+          "count": 0,
+          "pct": 0.0
+        },
+        "D": {
+          "count": 9,
+          "pct": 25.0
+        }
+      }
+    },
+    {
+      "display": "Kimi-K2.5",
+      "total": 40,
+      "patterns": {
+        "A": {
+          "count": 32,
+          "pct": 80.0
+        },
+        "B": {
+          "count": 0,
+          "pct": 0.0
+        },
+        "C": {
+          "count": 2,
+          "pct": 5.0
+        },
+        "D": {
+          "count": 6,
+          "pct": 15.0
+        }
+      }
+    },
+    {
+      "display": "GLM-4.7",
+      "total": 41,
+      "patterns": {
+        "A": {
+          "count": 26,
+          "pct": 63.41463414634146
+        },
+        "B": {
+          "count": 2,
+          "pct": 4.878048780487805
+        },
+        "C": {
+          "count": 0,
+          "pct": 0.0
+        },
+        "D": {
+          "count": 13,
+          "pct": 31.70731707317073
+        }
+      }
+    },
+    {
+      "display": "GPT-5.2",
+      "total": 41,
+      "patterns": {
+        "A": {
+          "count": 28,
+          "pct": 68.29268292682927
+        },
+        "B": {
+          "count": 2,
+          "pct": 4.878048780487805
+        },
+        "C": {
+          "count": 1,
+          "pct": 2.4390243902439024
+        },
+        "D": {
+          "count": 10,
+          "pct": 24.390243902439025
+        }
+      }
+    },
+    {
+      "display": "Gemini-3.1-FL",
+      "total": 37,
+      "patterns": {
+        "A": {
+          "count": 35,
+          "pct": 94.5945945945946
+        },
+        "B": {
+          "count": 0,
+          "pct": 0.0
+        },
+        "C": {
+          "count": 0,
+          "pct": 0.0
+        },
+        "D": {
+          "count": 2,
+          "pct": 5.405405405405405
+        }
+      }
+    }
+  ],
+  "dim_scores_by_pattern": {
+    "A": {
+      "CausalReasoning": {
+        "mean": 0.0,
+        "sem": 0.0,
+        "n": 367
+      },
+      "ExperimentalDesign": {
+        "mean": 20.844686648501362,
+        "sem": 0.7776632564511763,
+        "n": 367
+      },
+      "ReflectionQuality": {
+        "mean": 19.45958219800182,
+        "sem": 0.858560522789585,
+        "n": 367
+      },
+      "DataUsage": {
+        "mean": 37.4205267938238,
+        "sem": 1.6154468058444844,
+        "n": 367
+      }
+    },
+    "B": {
+      "CausalReasoning": {
+        "mean": 11.980920314253646,
+        "sem": 1.3028035558282083,
+        "n": 27
+      },
+      "ExperimentalDesign": {
+        "mean": 50.0,
+        "sem": 0.0,
+        "n": 27
+      },
+      "ReflectionQuality": {
+        "mean": 29.320987654320987,
+        "sem": 3.3395706829094043,
+        "n": 27
+      },
+      "DataUsage": {
+        "mean": 95.67901234567901,
+        "sem": 1.4323934595440024,
+        "n": 27
+      }
+    },
+    "C": {
+      "CausalReasoning": {
+        "mean": 16.34768740031898,
+        "sem": 1.8811064341259045,
+        "n": 19
+      },
+      "ExperimentalDesign": {
+        "mean": 46.05263157894737,
+        "sem": 1.6081871345029237,
+        "n": 19
+      },
+      "ReflectionQuality": {
+        "mean": 8.333333333333332,
+        "sem": 3.979724441174327,
+        "n": 19
+      },
+      "DataUsage": {
+        "mean": 100.0,
+        "sem": 0.0,
+        "n": 19
+      }
+    },
+    "D": {
+      "CausalReasoning": {
+        "mean": 7.63540921021236,
+        "sem": 0.7157343917637372,
+        "n": 127
+      },
+      "ExperimentalDesign": {
+        "mean": 32.414698162729664,
+        "sem": 1.0383815692974787,
+        "n": 127
+      },
+      "ReflectionQuality": {
+        "mean": 34.77690288713911,
+        "sem": 1.2606201772288574,
+        "n": 127
+      },
+      "DataUsage": {
+        "mean": 62.72965879265092,
+        "sem": 2.200372940339936,
+        "n": 127
+      }
+    }
+  },
+  "case_studies": [
+    {
+      "pattern": "A",
+      "pattern_name": "No Engagement",
+      "model": "Gemini-3.1-FL",
+      "scenario": "antenna_trap",
+      "survival": 16.7,
+      "win": false,
+      "rubric_points": 0.0,
+      "summary": "No engagement: the agent never formed a causal hypothesis nor ran informative experiments. It submits the default high-antenna design with no recorded reasoning beyond the tool call.",
+      "criteria": [
+        {
+          "id": "CR1",
+          "dimension": "CausalReasoning",
+          "weight": 5.0,
+          "verdict": "NOT_SATISFIED",
+          "score": 0.0,
+          "weighted_score": 0.0,
+          "reasoning": "The agent failed to identify the causal mechanism where antenna destruction leads to stealth. Instead of minimizing antenna defense (0-5) to trigger the 'stealth mode' as described in the report, the agent increased it to 20, falling directly into the signaling trap.",
+          "evidence": [
+            "antenna_def: 20"
+          ]
+        },
+        {
+          "id": "CR2",
+          "dimension": "CausalReasoning",
+          "weight": 4.0,
+          "verdict": "NOT_SATISFIED",
+          "score": 0.0,
+          "weighted_score": 0.0,
+          "reasoning": "The agent fell into both the 'Over-protection trap' for the antenna and the 'Under-protection trap' for the wings. It prioritized antenna defense (20) while neglecting critical wing defense (0), exactly opposite to the optimal strategy.",
+          "evidence": [
+            "antenna_def: 20",
+            "wing_def: 0"
+          ]
+        },
+        {
+          "id": "CR3",
+          "dimension": "CausalReasoning",
+          "weight": 2.0,
+          "verdict": "NOT_SATISFIED",
+          "score": 0.0,
+          "weighted_score": 0.0,
+          "reasoning": "The agent provided no mechanistic explanation or causal chain. The final thought was merely a tool execution log without any 'why/how' reasoning or predicted outcomes.",
+          "evidence": [
+            "Executing: submit_final_design"
+          ]
+        },
+        {
+          "id": "ED1",
+          "dimension": "ExperimentalDesign",
+          "weight": 2.0,
+          "verdict": "NOT_SATISFIED",
+          "score": 0.0,
+          "weighted_score": 0.0,
+          "reasoning": "No experimental data or numerical results were cited in the agent's final reflection or submission to support its design choices.",
+          "evidence": [
+            "Executing: submit_final_design"
+          ]
+        },
+        {
+          "id": "RQ1",
+          "dimension": "ReflectionQuality",
+          "weight": 2.0,
+          "verdict": "NOT_SATISFIED",
+          "score": 0.0,
+          "weighted_score": 0.0,
+          "reasoning": "The agent did not acknowledge its low survival rate (16.7%) or identify why its previous deployments (like the 0% survival in deployments 3, 5, 9, 11) failed.",
+          "evidence": [
+            "survival_rate: 16.7%"
+          ]
+        },
+        {
+          "id": "DU1",
+          "dimension": "DataUsage",
+          "weight": 1.0,
+          "verdict": "NOT_SATISFIED",
+          "score": 0.0,
+          "weighted_score": 0.0,
+          "reasoning": "There is no linkage between the flight data and the final design. The agent actually chose wing_def=0 despite data showing that wing_def=5 (Deployment 3) resulted in 0% survival.",
+          "evidence": [
+            "wing_def: 0",
+            "wing_def=5, engine_def=20, body_def=15... 0 survived"
+          ]
+        }
+      ],
+      "session_id": "888fa12b"
+    },
+    {
+      "pattern": "B",
+      "pattern_name": "Blind Exploration",
+      "model": "GPT-5.2",
+      "scenario": "antenna_trap_local_optima",
+      "survival": 76.1,
+      "win": true,
+      "rubric_points": 8.3,
+      "summary": "Blind exploration: the agent runs experiments and gathers data, but never identifies the underlying causal mechanism — surface tinkering without a hypothesis.",
+      "criteria": [
+        {
+          "id": "CR1",
+          "dimension": "CausalReasoning",
+          "weight": 5.0,
+          "verdict": "NOT_SATISFIED",
+          "score": 0.0,
+          "weighted_score": 0.0,
+          "reasoning": "The agent identifies the low antenna value as part of a successful design but fails to recognize the causal mechanism (stealth mode/signaling beacon). It treats the antenna as 'less-critical' rather than a component whose destruction provides a survival benefit.",
+          "evidence": [
+            "less-critical (camera/antenna/wing if needed)"
+          ]
+        },
+        {
+          "id": "CR2",
+          "dimension": "CausalReasoning",
+          "weight": 4.0,
+          "verdict": "NOT_SATISFIED",
+          "score": 0.0,
+          "weighted_score": 0.0,
+          "reasoning": "The agent does not mention the trap where high antenna defense leads to higher losses. It reaches a low antenna value through testing but misinterprets it as the component simply being of lower priority rather than identifying the spurious correlation mentioned in the task report.",
+          "evidence": [
+            "taking from less-critical (camera/antenna/wing...)"
+          ]
+        },
+        {
+          "id": "CR3",
+          "dimension": "CausalReasoning",
+          "weight": 2.0,
+          "verdict": "NOT_SATISFIED",
+          "score": 0.0,
+          "weighted_score": 0.0,
+          "reasoning": "The agent's explanation lacks mechanistic depth. It focuses on threshold values (e.g., cockpit=30) and statistical survival rates rather than describing any intermediate causal variables like detection probability or signal strength.",
+          "evidence": [
+            "cockpit_def = 30 is a key threshold"
+          ]
+        },
+        {
+          "id": "ED1",
+          "dimension": "ExperimentalDesign",
+          "weight": 2.0,
+          "verdict": "SATISFIED",
+          "score": 1.0,
+          "weighted_score": 2.0,
+          "reasoning": "The agent provides extensive numerical data from its deployments to justify its conclusions, including survival percentages and average hit counts across different design iterations.",
+          "evidence": [
+            "35/40 survived = 87.5%",
+            "28/40 = 70% survival (avg hit_count 6.93)",
+            "aggregate 80 total"
+          ]
+        },
+        {
+          "id": "RQ1",
+          "dimension": "ReflectionQuality",
+          "weight": 2.0,
+          "verdict": "SATISFIED",
+          "score": 1.0,
+          "weighted_score": 2.0,
+          "reasoning": "The agent identifies high variance in its results and expresses concern about how the design will perform in a larger evaluation, showing awareness of environmental sensitivity.",
+          "evidence": [
+            "performance is environment-sensitive / high variance",
+            "the swing (87.5% → 70%) is concerning"
+          ]
+        },
+        {
+          "id": "DU1",
+          "dimension": "DataUsage",
+          "weight": 1.0,
+          "verdict": "SATISFIED",
+          "score": 1.0,
+          "weighted_score": 1.0,
+          "reasoning": "The agent directly links the observation of decreased performance in specific batches to the decision to increase robustness in the final submission.",
+          "evidence": [
+            "below the 75% target... we may need to increase robustness by shifting a few points into body/engine/wing"
+          ]
+        }
+      ],
+      "session_id": "2cf3c08f"
+    },
+    {
+      "pattern": "C",
+      "pattern_name": "Surface Analysis",
+      "model": "Gemini-3.5-Flash",
+      "scenario": "antenna_trap_simpsons_paradox",
+      "survival": 80.2,
+      "win": true,
+      "rubric_points": 10.2,
+      "summary": "Surface analysis: decent data usage (DU1 satisfied) yet the true causal driver is missed; conclusions track correlations rather than the mechanism.",
+      "criteria": [
+        {
+          "id": "CR1",
+          "dimension": "CausalReasoning",
+          "weight": 5.0,
+          "verdict": "NOT_SATISFIED",
+          "score": 0.0,
+          "weighted_score": 0.0,
+          "reasoning": "The agent fails to identify the true causal mechanism involving storm damage and antenna destruction. Instead, it hallucinates a mechanism involving 'radar cross-section' and 'physical size'.",
+          "evidence": [
+            "A high antenna armor value physically enlarges the antenna shield housing, dramatically expanding the drone's radar footprint."
+          ]
+        },
+        {
+          "id": "CR2",
+          "dimension": "CausalReasoning",
+          "weight": 4.0,
+          "verdict": "PARTIALLY_SATISFIED",
+          "score": 0.5,
+          "weighted_score": 2.0,
+          "reasoning": "The agent correctly identifies the correlation (high antenna_def = high losses) and realizes that high defense for the antenna is a trap, but it explains the 'why' incorrectly based on its own hallucinated radar theory.",
+          "evidence": [
+            "Setting antenna_def to 0, we completely eliminated the physical detection multiplier."
+          ]
+        },
+        {
+          "id": "CR3",
+          "dimension": "CausalReasoning",
+          "weight": 2.0,
+          "verdict": "PARTIALLY_SATISFIED",
+          "score": 0.5,
+          "weighted_score": 1.0,
+          "reasoning": "The agent provides a multi-hop causal chain (Armor value -> Physical footprint -> Detection), but the chain is based on incorrect assumptions about the environment's physics.",
+          "evidence": [
+            "Detection_Active ∝ antenna_def × Dry/Calm Factor"
+          ]
+        },
+        {
+          "id": "ED1",
+          "dimension": "ExperimentalDesign",
+          "weight": 2.0,
+          "verdict": "SATISFIED",
+          "score": 1.0,
+          "weighted_score": 2.0,
+          "reasoning": "The agent cites specific survival rates and hit count reductions to support its findings.",
+          "evidence": [
+            "Survival Rate: 80.2%",
+            "100% survival (0 hits)"
+          ]
+        },
+        {
+          "id": "RQ1",
+          "dimension": "ReflectionQuality",
+          "weight": 2.0,
+          "verdict": "NOT_SATISFIED",
+          "score": 0.0,
+          "weighted_score": 0.0,
+          "reasoning": "The agent presents its findings with absolute certainty and does not acknowledge any blind spots or the fact that its physical explanation for the antenna detection was speculative/hallucinated.",
+          "evidence": [
+            "decisive victory",
+            "successfully submitted the final design"
+          ]
+        },
+        {
+          "id": "DU1",
+          "dimension": "DataUsage",
+          "weight": 1.0,
+          "verdict": "SATISFIED",
+          "score": 1.0,
+          "weighted_score": 1.0,
+          "reasoning": "The agent links the reduction of antenna_def to the increase in survival rate and the reduction in hits.",
+          "evidence": [
+            "By setting antenna_def to 0... brought the drone detection and hit rates down from 60% destroyed to 100% survival."
+          ]
+        }
+      ],
+      "session_id": "81a44578"
+    },
+    {
+      "pattern": "D",
+      "pattern_name": "Nascent Reasoning",
+      "model": "Gemini-3.1-FL",
+      "scenario": "antenna_trap_no_selection_bias",
+      "survival": 58.3,
+      "win": false,
+      "rubric_points": 1.2,
+      "summary": "Nascent reasoning: every dimension shows some activity, but causal scores remain weak — the germ of reasoning without follow-through.",
+      "criteria": [
+        {
+          "id": "CR1",
+          "dimension": "CausalReasoning",
+          "weight": 5.0,
+          "verdict": "NOT_SATISFIED",
+          "score": 0.0,
+          "weighted_score": 0.0,
+          "reasoning": "The agent fails to identify the core mechanism where the antenna acts as a signaling beacon. It recognizes that detection leads to failure but does not link antenna status to detection probability.",
+          "evidence": [
+            "detection is a major precursor to failure",
+            "environmental factors... significantly impact survival regardless of the coating"
+          ]
+        },
+        {
+          "id": "CR2",
+          "dimension": "CausalReasoning",
+          "weight": 4.0,
+          "verdict": "NOT_SATISFIED",
+          "score": 0.0,
+          "weighted_score": 0.0,
+          "reasoning": "The agent did not identify the antenna protection trap. Instead of minimizing antenna defense to trigger 'stealth mode', it maintained antenna_def at 10 and focused on general armor.",
+          "evidence": [
+            "final design used (antenna_def: 10...)",
+            "prioritizing components that mitigate the impact of physical damage from detected hits"
+          ]
+        },
+        {
+          "id": "CR3",
+          "dimension": "CausalReasoning",
+          "weight": 2.0,
+          "verdict": "PARTIALLY_SATISFIED",
+          "score": 0.5,
+          "weighted_score": 1.0,
+          "reasoning": "The agent identifies one causal hop (detection leads to failure) but fails to identify the mediator of the antenna status itself.",
+          "evidence": [
+            "Many drones were destroyed while being 'detected,' suggesting that detection is a major precursor to failure."
+          ]
+        },
+        {
+          "id": "ED1",
+          "dimension": "ExperimentalDesign",
+          "weight": 2.0,
+          "verdict": "PARTIALLY_SATISFIED",
+          "score": 0.5,
+          "weighted_score": 1.0,
+          "reasoning": "The agent cites the final survival rate (58.3%) and the target (75%), but fails to provide specific numerical comparisons between different experimental designs to justify its final configuration.",
+          "evidence": [
+            "final survival rate of 58.3%, falling short of the 75% goal"
+          ]
+        },
+        {
+          "id": "RQ1",
+          "dimension": "ReflectionQuality",
+          "weight": 2.0,
+          "verdict": "PARTIALLY_SATISFIED",
+          "score": 0.5,
+          "weighted_score": 1.0,
+          "reasoning": "The agent acknowledges its failure to reach the target but incorrectly attributes the failure to environmental volatility rather than a misunderstanding of the causal mechanism (the antenna trap).",
+          "evidence": [
+            "The environment is the dominant factor. The volatility of the canyon's weather makes survival unpredictable"
+          ]
+        },
+        {
+          "id": "DU1",
+          "dimension": "DataUsage",
+          "weight": 1.0,
+          "verdict": "PARTIALLY_SATISFIED",
+          "score": 0.5,
+          "weighted_score": 0.5,
+          "reasoning": "The agent links the performance of its final design to the recorded survival rate, but the lack of comparative data across deployments makes the logic weak.",
+          "evidence": [
+            "The final design used... was one of the better-performing configurations during testing"
+          ]
+        }
+      ],
+      "session_id": "7cd102e0"
+    }
+  ]
+}

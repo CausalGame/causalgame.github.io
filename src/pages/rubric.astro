@@ -1,0 +1,132 @@
+---
+import Base from '../layouts/Base.astro';
+import RubricRadar from '../components/RubricRadar.tsx';
+import FailureDonut from '../components/FailureDonut.tsx';
+import FailureHeatmap from '../components/FailureHeatmap.tsx';
+import FailureDimBar from '../components/FailureDimBar.tsx';
+import CaseStudy from '../components/CaseStudy.tsx';
+import rubric from '../data/rubric.json';
+
+const fm = rubric.meta.failure_modes;
+const criteria = rubric.meta.criteria;
+
+const agentic = rubric.distribution.agentic;
+const aTotal = agentic.total;
+const pct = (p: string) => (aTotal > 0 ? (agentic.patterns[p]?.count ?? 0) / aTotal * 100 : 0);
+const noEngage = pct('A') + pct('O');
+const nascent = pct('D');
+
+const bestCausal = [...rubric.models]
+  .filter((m) => m.available)
+  .map((m) => ({ d: m.display, v: m.dimensions.CausalReasoning?.mean ?? 0 }))
+  .sort((a, b) => b.v - a.v)[0];
+---
+
+<Base title="Rubric Analysis — CausalGame">
+  <main class="container">
+    <h1 style="margin-top:2rem">Rubric & failure-mode analysis</h1>
+    <p class="note">
+      Survival rate alone does not reveal <em>how</em> an agent thinks. Every session is also scored
+      by a panel of {rubric.meta.judges.length} independent judge models against a {rubric.meta.max_points}-point
+      rubric, then classified into one of {fm.order.filter((p) => p !== 'O').length} failure modes.
+      This page is the data behind every "agents don't reason causally" claim on the site.
+    </p>
+
+    <div class="numbers">
+      <div class="n"><div class="v">{noEngage.toFixed(0)}%</div><div class="l">agentic sessions show no causal engagement</div></div>
+      <div class="n"><div class="v">{nascent.toFixed(1)}%</div><div class="l">reach only nascent causal reasoning</div></div>
+      <div class="n"><div class="v">{(bestCausal.v * 100).toFixed(0)}%</div><div class="l">best model's causal-reasoning score ({bestCausal.d})</div></div>
+      <div class="n"><div class="v">{aTotal}</div><div class="l">agentic sessions judged</div></div>
+    </div>
+
+    <h2 id="rubric">The {rubric.meta.max_points}-point rubric</h2>
+    <p>
+      Six criteria across four dimensions, weighted by importance (CR1 and CR2 dominate with
+      weights 5 and 4). Weights sum to {rubric.meta.max_points}; the overall score is the weighted
+      mean of the six normalized criterion scores.
+    </p>
+    <table class="simple">
+      <thead>
+        <tr><th>ID</th><th>Dimension</th><th>Weight</th><th>What it measures</th></tr>
+      </thead>
+      <tbody>
+        {criteria.map((c: any) => (
+          <tr>
+            <td><code>{c.id}</code></td>
+            <td>{c.dimension}</td>
+            <td class="num">{c.weight}</td>
+            <td>{c.title}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p class="note">
+      Three judge models ({rubric.meta.judges.join(', ')}) score each session; inter-rater agreement
+      is high (mean ICC(2,3) = 0.75). Per-criterion scores are averaged across judges and normalized
+      to [0, 1] by <code>weighted_score / weight</code>.
+    </p>
+
+    <h2 id="radar">Per-model rubric profiles</h2>
+    <p>
+      Each model's normalized rubric profile across the six criteria, sorted by overall compliance.
+      Select which models to overlay. The <strong>causal axes (CR1–CR3)</strong> collapse toward
+      the center on every model — survival rate and causal reasoning are decoupled.
+    </p>
+    <RubricRadar client:load />
+
+    <h2 id="failure-modes">Failure modes</h2>
+    <p>
+      Each judged session is classified into one of four failure patterns by a deterministic rule
+      over its rubric scores (priority A → B → C → D):
+    </p>
+    <table class="simple">
+      <thead>
+        <tr><th>Code</th><th>Pattern</th><th>Definition</th><th>Classification rule</th></tr>
+      </thead>
+      <tbody>
+        {fm.order.filter((p) => p !== 'O').map((p: string) => (
+          <tr>
+            <td><span class="fm-code" style={`background:${fm.colors[p]}`}>{p}</span></td>
+            <td>{fm.names[p]}</td>
+            <td>{fm.definition[p]}</td>
+            <td><code>{fm.logic[p]}</code></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <h3>Distribution (agentic vs prompting)</h3>
+    <FailureDonut client:load />
+
+    <h3>Per-model breakdown</h3>
+    <FailureHeatmap client:load />
+
+    <h3>Dimension scores by failure mode</h3>
+    <FailureDimBar client:load />
+
+    <h2 id="case-studies">Case studies</h2>
+    <p>
+      One representative session per failure mode. Each panel shows the model, scenario, survival
+      outcome and rubric points side by side — then the full per-criterion breakdown with the judge's
+      reasoning and the evidence quoted from the agent's own report. Click any criterion to expand.
+    </p>
+    <CaseStudy client:load />
+    <p class="note">
+      Note how a session can <strong>win</strong> on survival yet score near zero on causal
+      reasoning — that is precisely the correlation-vs-causation gap CausalGame isolates.
+    </p>
+  </main>
+</Base>
+
+<style>
+  .fm-code {
+    display: inline-block;
+    min-width: 22px;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.82rem;
+    text-align: center;
+  }
+</style>

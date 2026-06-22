@@ -1,0 +1,72 @@
+.fdb {
+  margin: 1.4rem 0;
+}
+
+.fdb-svg {
+  width: 100%;
+  height: auto;
+  max-width: 620px;
+  display: block;
+}
+
+.fdb-grid {
+  stroke: var(--border);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+}
+
+.fdb-ytick {
+  font-size: 9px;
+  fill: var(--text-soft);
+}
+
+.fdb-yaxis {
+  font-size: 10px;
+  fill: var(--text-soft);
+}
+
+.fdb-bar {
+  stroke: rgba(0, 0, 0, 0.12);
+  stroke-width: 0.5;
+}
+
+.fdb-err {
+  stroke: rgba(0, 0, 0, 0.55);
+  stroke-width: 1.2;
+}
+
+.fdb-glabel {
+  font-size: 10px;
+  fill: var(--text);
+  font-weight: 600;
+}
+
+.fdb-gcode {
+  font-weight: 800;
+}
+
+.fdb-dimkey {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.3rem;
+  margin: 0.6rem 0 0;
+  font-size: 0.84rem;
+  color: var(--text-soft);
+}
+
+.fdb-dimitem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.fdb-pchip {
+  display: inline-block;
+  min-width: 18px;
+  padding: 0.05rem 0.35rem;
+  border-radius: 3px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.74rem;
+  text-align: center;
+}

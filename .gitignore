@@ -17,3 +17,6 @@ pnpm-debug.log*
 .vscode/
 .idea/
 .DS_Store
+
+# local agent instructions
+AGENTS.md

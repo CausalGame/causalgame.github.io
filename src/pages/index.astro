@@ -1,9 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
 import data from '../data/leaderboard.json';
+import rubric from '../data/rubric.json';
 import PipelineStory from '../components/PipelineStory.tsx';
 
 const CODE_URL = 'https://github.com/viewsetting/CausalGame';
+
+const _agentic = rubric.distribution.agentic;
+const _pctNoEngage = _agentic.patterns.A?.pct ?? 0;
 
 const authors = [
   { name: 'Zhenhao Chen', affil: '1', equal: true },
@@ -156,9 +160,10 @@ const jsonLd = JSON.stringify({
       <div class="card">
         <h3>4 · Agents stop at surface statistics</h3>
         <p>
-          Rubric analysis shows 68% of agent sessions never engage in causal reasoning, and
-          only 3.5% show nascent causal reasoning; causal-reasoning rubric scores are
-          near-zero across all failure patterns.
+          Rubric analysis shows {_pctNoEngage.toFixed(0)}% of agent sessions never engage in causal
+          reasoning, and causal-reasoning rubric scores stay near-zero across all failure
+          patterns.{' '}
+          <a href="/rubric/">See the full rubric analysis →</a>
         </p>
       </div>
     </div>
