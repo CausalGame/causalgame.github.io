@@ -161,34 +161,59 @@
       }
     ],
     "opencode": {
-      "note": "OpenCode coding-agent framework, 5 models × 14 scenarios × 3 trials",
       "avg": {
-        "opencode": 67.4,
-        "prompting": 61.3,
-        "react": 60.5
+        "opencode": 70.0,
+        "react": 62.7,
+        "prompting": 63.1
       },
       "delta_vs_react": [
         {
           "display": "GPT-5.2",
-          "delta": 13.9
+          "model": "gpt-5.2",
+          "delta": 14.5
         },
         {
           "display": "GPT-5.2 High",
-          "delta": 9.3
+          "model": "gpt-5.2-high",
+          "delta": 11.0
+        },
+        {
+          "display": "DeepSeek V4 Pro",
+          "model": "deepseek-v4-pro",
+          "delta": 10.6
+        },
+        {
+          "display": "Claude Opus 4.7",
+          "model": "claude-opus-4.7",
+          "delta": 7.0
+        },
+        {
+          "display": "Qwen3.7 Max",
+          "model": "qwen3.7-max",
+          "delta": 6.6
         },
         {
           "display": "GPT-5 Mini",
+          "model": "gpt-5-mini",
           "delta": 6.3
         },
         {
-          "display": "Grok 4.1 Fast",
-          "delta": 2.7
+          "display": "GPT-5.5",
+          "model": "gpt-5.5",
+          "delta": 4.7
         },
         {
           "display": "Kimi K2.5",
-          "delta": 2.2
+          "model": "kimi-k2.5",
+          "delta": 2.6
+        },
+        {
+          "display": "Grok 4.1 Fast",
+          "model": "grok-4-1-fast",
+          "delta": 2.4
         }
-      ]
+      ],
+      "note": "OpenCode coding-agent framework, 9 models × 14 scenarios × 3 trials (post-leak, post-admin-hack-fix)"
     }
   },
   "modes": {

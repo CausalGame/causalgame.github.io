@@ -84,9 +84,9 @@ const families = Object.entries(data.meta.families);
     <p>
       Full per-scenario OpenCode results are in the <strong>OpenCode (Coding Agent)</strong>
       tab of the leaderboard above. Across every model evaluated, the coding-agent
-      framework outperforms the model's own ReAct and Prompting scores, yet the average
+      framework outperforms the model's own ReAct (Agent) and Prompting scores, yet the average
       still falls short of the 75% win threshold — the causal thinking gap persists even
-      with a full coding agent. An additional 5-model comparison (average
+      with a full coding agent. A {opencode.delta_vs_react.length}-model comparison (average
       <strong>{opencode.avg.opencode}%</strong> OpenCode vs {opencode.avg.react}% ReAct /
       {opencode.avg.prompting}% Prompting):
     </p>
@@ -102,7 +102,7 @@ const families = Object.entries(data.meta.families);
           opencode.delta_vs_react.map((m: any) => (
             <tr>
               <td>{m.display}</td>
-              <td class="num">+{m.delta.toFixed(1)}</td>
+              <td class="num">{m.delta >= 0 ? '+' : ''}{m.delta.toFixed(1)}</td>
             </tr>
           ))
         }
