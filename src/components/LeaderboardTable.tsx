@@ -181,7 +181,9 @@ export default function LeaderboardTable() {
                 </td>
                 <td className="num">
                   <strong>{fmt(r.avg.mean)}</strong>
-                  {r.avg.std !== null && <span className="std"> ±{fmt(r.avg.std)}</span>}
+                  {mode !== 'opencode' && r.avg.std !== null && (
+                    <span className="std"> ±{fmt(r.avg.std)}</span>
+                  )}
                 </td>
                 {view === 'summary' && (
                   <>
