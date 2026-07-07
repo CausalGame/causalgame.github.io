@@ -4,7 +4,8 @@ import data from '../data/leaderboard.json';
 import rubric from '../data/rubric.json';
 import PipelineStory from '../components/PipelineStory.tsx';
 
-const CODE_URL = 'https://github.com/viewsetting/CausalGame';
+const CODE_URL = 'https://github.com/CausalGame/CausalGame';
+const ARXIV_URL = 'http://arxiv.org/abs/2607.04293';
 
 const _agentic = rubric.distribution.agentic;
 const _pctNoEngage = _agentic.patterns.A?.pct ?? 0;
@@ -77,7 +78,7 @@ const jsonLd = JSON.stringify({
     <p class="affil">{affiliations}</p>
     <p class="affil">* Equal contribution and core contributors</p>
     <div class="links">
-      <a class="btn disabled" title="arXiv link coming soon" aria-disabled="true">📄 arXiv (soon)</a>
+      <a class="btn disabled" href={ARXIV_URL} aria-disabled="true">📄 arXiv</a>
       <a class="btn primary" href={CODE_URL} target="_blank" rel="noopener">⌨️ Code</a>
       <a class="btn" href="/game/">🎮 The Game</a>
       <a class="btn" href="/leaderboard/">🏆 Leaderboard</a>
